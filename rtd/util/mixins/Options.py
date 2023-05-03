@@ -17,7 +17,6 @@ class Options(metaclass=ABCMeta):
     Written: 2023-05-02
     Last Revised: 2023-05-2 (Rei Meguro)
     '''
-    
     @staticmethod
     @abstractmethod
     def defaultoptions() -> dict:

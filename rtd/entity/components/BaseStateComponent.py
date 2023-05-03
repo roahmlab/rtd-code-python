@@ -15,7 +15,7 @@ class BaseStateComponent(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_state(self, time):
+    def get_state(self, time: float):
         pass
     
     @abstractmethod
@@ -23,5 +23,5 @@ class BaseStateComponent(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def commit_state_data(self, times, states):
+    def commit_state_data(self, time: float, state: list[float]):
         pass

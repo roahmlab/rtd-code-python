@@ -4,9 +4,10 @@ from bisect import bisect, bisect_left
 
 def interp1(x, y, x_at):
     '''
-    This takes a list of x, list of y, and returns the interpolated
-    y value at x_at. Length of x and y must be equal, x must be sorted
-    and x_at must be a single value. Interpolation type is linear.
+    This takes the lists `x` and `y`, and returns the interpolated
+    y value at `x_at`. Length of `x` and `y` must be equal, `x` must
+    be sorted and `x_at must` be a single value. Interpolation type is
+    linear
 
     E.g.,
     x=[0, 2, 6, 10]
@@ -31,7 +32,7 @@ def interp1(x, y, x_at):
 
 def interp1_list(x,y, x_at):
     '''
-    Same as interp1 but broadcasts it to each element in y.
+    Same as interp1 but broadcasts it to each element in `y`
     
     E.g.,
     x=[2, 4, 8]
@@ -49,4 +50,5 @@ def interp1_list(x,y, x_at):
     if i_left == i_right:
         return y[i_left]
     ratio = (x_at - x[i_left]) / (x[i_right] - x[i_left])
-    return [y[i_left][j] + ratio*(y[i_right][j] - y[i_left][j]) for j in range(len(y[0]))]
+    return [y[i_left][j] + ratio*(y[i_right][j] - y[i_left][j])
+            for j in range(len(y[0]))]

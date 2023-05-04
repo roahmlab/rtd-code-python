@@ -4,14 +4,14 @@ from rtd.functional.interpolate import interp1_list
 from random import uniform
 
 
+
 class GenericEntityState(BaseStateComponent, Options):
     '''
-    A generic entity state that stores a (n_states, :)
-    list to keep track of the state at each instance of
-    time. New states can be appended by calling
-    commit_state_data with the time interval and new state.
-    A state at any moment can be retrieved by calling
-    get_state. It will default to the most recent state
+    A generic entity state that stores an (n_states, :) list to keep track
+    of the state at each point in time. New states can be appended by calling
+    `commit_state_data` with the time interval and new state. A state at any
+    moment can be retrieved by calling `get_state`. It will default to the most
+    recent state.
     '''
     @staticmethod
     def defaultoptions() -> dict:
@@ -52,6 +52,12 @@ class GenericEntityState(BaseStateComponent, Options):
     
     def random_init(self, state_range: tuple[float, float],
                     save_to_options: bool = False):
+        '''
+        Randomly initializes the first state from the given range
+        `start_range[0]:start_range[1]` (inclusive). Will save
+        the initial state to options so that it will revert to this
+        state when `reset` is called
+        '''
         self.state = [[uniform(*state_range) for _ in range(self.n_states)]]
         self.time = [0]
         

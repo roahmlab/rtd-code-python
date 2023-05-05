@@ -84,3 +84,12 @@ class GenericEntityState(BaseStateComponent, Options):
             raise ValueError("Dimension of state and number of states must match!")
         self.time.append(self.time[-1] + time)
         self.state.append(state)
+    
+    
+    def __str__(self) -> str:
+        '''
+        Override string representation
+        '''
+        return (f"{repr(self)} with properties:\n" + 
+                f"\tentity_info: {repr(self.entityinfo)}\n"
+                f"\tn_states:    {self.n_states}\n")

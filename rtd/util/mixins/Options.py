@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from mergedeep import merge
 
 
 
@@ -29,15 +30,13 @@ class Options(metaclass=ABCMeta):
         self._instanceOptions = self.defaultoptions()
     
     
-    def mergeoptions(self, newOptions: dict | list[dict]) -> dict:
+    def mergeoptions(self, *newOptions: dict) -> dict:
         '''
-        Takes in an option or a list of options and updates the current
+        Takes in any number of options and updates the current
         `instanceOptions`. Returns a copy of the updated `instanceOptions`
         '''
-        if type(newOptions) is dict:
-            self._instanceOptions.update(newOptions)
-        else:
-            [self._instanceOptions.update(optionDict) for optionDict in newOptions]
+        for options in newOptions:
+            merge(self._instanceOptions, options)
         return self.getoptions()
 
     

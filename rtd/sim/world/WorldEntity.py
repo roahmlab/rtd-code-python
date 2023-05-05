@@ -9,10 +9,10 @@ class WorldEntity(Options):
     Requires `options` to be set up in a specific way to function (more
     details in the function comments below)
     '''
-    def construct_components(self, component_name, *component_args):
+    def construct_components(self, component_name: str, *component_args):
         '''
-        Creates component of type `options.components[component_name]`, taking
-        in `component_args` and `options.component_options[component_name]`
+        Creates component of type `options["components"][component_name]`, taking
+        in `component_args` and `options["component_options"][component_name]`
         as an argument, saving it under `self.component_name`
         
         E.g.,
@@ -61,3 +61,29 @@ class WorldEntity(Options):
                 getattr(self, component_name).reset(**options["component_options"][component_name])
             else:
                 getattr(self, component_name).reset()
+    
+    
+    @staticmethod
+    def get_componentOverrideOptions(components: dict) -> dict:
+        '''
+        Takes in a dict of components and saves their type under
+        `options["components"][component_name] and options under
+        `options["component_options"][component_name]`. Useful, for
+        example, inside the entity constructor to input pre-generated
+        components so that `construct_components` and `reset_components`
+        keep the options of the original input components
+        '''
+        options = {"components": dict(), "component_options": dict()}
+        
+        for component_name, component in components.items():
+            # set `options["components"]` to type of component so
+            # the component can be constructed inside
+            # `construct_components`
+            options["components"][component_name] = type(component)
+            
+            # if the component inherits Options, copy all of its
+            # options and store them under `options["component_options"]`
+            if issubclass(type(component), Options):
+                options["component_options"][component_name] = component.getoptions()
+        
+        return options

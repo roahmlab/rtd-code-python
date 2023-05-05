@@ -13,4 +13,4 @@ class EmptyInfoComponent(BaseInfoComponent):
         self.dimension = 2
     
     def reset(self):
-        raise NotImplementedError
+        pass

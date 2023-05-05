@@ -6,8 +6,7 @@ from demos.box2d import BoxAgentInfo
 
 class BoxAgent(WorldEntity):
     '''
-    A 2D box agent with an info, state, and
-    visual component. 
+    A 2D box agent with an info, state, and visual component. 
     '''
     @staticmethod
     def defaultoptions() -> dict:
@@ -19,28 +18,22 @@ class BoxAgent(WorldEntity):
         }
     
     
-    def __init__(self, components: dict = None, **options):
+    def __init__(self, info: BoxAgentInfo = BoxAgentInfo,
+                 state: GenericEntityState = GenericEntityState, **options):
         '''
-        Creates a BoxAgent, taking in a dict with the
-        `component_name` and object. It will copy the type
-        and the options of the object, saving it under 
-        `options["components"][component_name]` and
-        `options["component_options"][component_name]`,
-        and saving the component under `self.component_name`.
-        
-        If no `components` is provided, it will create a
-        default `info` and `state` property of type as defined
-        under `defaultoptions()`. If some components are
-        omitted, e.g., the state, it will use the remaining
-        provided components and use the default options for that
-        component otherwise
+        Creates a BoxAgent, taking in an info, state, and visual components.
+        The components can either be a class or an instance of a class. If
+        given a class, it will create the default component of that class.
+        If given an instance, it will copy the type and options of that
+        instance and reconstruct that component
         '''
         WorldEntity.__init__(self)
+        components = {
+            "info": info,
+            "state": state,
+        }
         # Get override options based on provided components
-        if components != None:
-            override_options = self.get_componentOverrideOptions(components)
-        else:
-            override_options = dict()
+        override_options = self.get_componentOverrideOptions(components)
         
         # Merge all options
         self.mergeoptions(options, override_options)

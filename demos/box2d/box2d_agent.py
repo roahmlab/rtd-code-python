@@ -1,5 +1,5 @@
 if __name__ == '__main__':
-    # add module to path
+    # add modules to path
     import sys
     sys.path.append("../../")
     
@@ -13,11 +13,7 @@ if __name__ == '__main__':
     info = BoxAgentInfo(width=2, color=[0.5, 0.2, 1])
     state = GenericEntityState(info, n_states=2)
     #state.random_init((-5, 5), save_to_options=True)
-    components = {
-        "info": info,
-        "state": state,
-    }
-    agent = BoxAgent(components)
+    agent = BoxAgent(info=info, state=state)
     
     
     print(agent.info)

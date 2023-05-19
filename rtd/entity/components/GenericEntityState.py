@@ -11,7 +11,7 @@ class GenericEntityState(BaseStateComponent, Options):
     of the state at each point in time. New states can be appended by calling
     `commit_state_data` with the time interval and new state. A state at any
     moment can be retrieved by calling `get_state`. It will default to the most
-    recent state.
+    recent state
     '''
     @staticmethod
     def defaultoptions() -> dict:
@@ -66,6 +66,10 @@ class GenericEntityState(BaseStateComponent, Options):
         
     
     def get_state(self, time: float = None) -> dict:
+        '''
+        Gets the state at a specific time (defaults to most recent
+        time), interpolating the values if needed
+        '''
         # default to last time
         if time == None:
             time = self.time[-1]
@@ -80,6 +84,10 @@ class GenericEntityState(BaseStateComponent, Options):
     
     
     def commit_state_data(self, time: float, state: list[float]):
+        '''
+        Takes in a state and appends it to the current state at time
+        `time` + the most recent time
+        '''
         if len(state) != self.n_states:
             raise ValueError("Dimension of state and number of states must match!")
         self.time.append(self.time[-1] + time)
@@ -87,9 +95,6 @@ class GenericEntityState(BaseStateComponent, Options):
     
     
     def __str__(self) -> str:
-        '''
-        Override string representation
-        '''
         return (f"{repr(self)} with properties:\n" + 
-                f"\tentity_info: {repr(self.entityinfo)}\n"
-                f"\tn_states:    {self.n_states}\n")
+                f"   entity_info: {repr(self.entityinfo)}\n"
+                f"   n_states:    {self.n_states}\n")

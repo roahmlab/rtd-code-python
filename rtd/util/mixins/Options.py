@@ -8,14 +8,14 @@ class Options(metaclass=ABCMeta):
     The Options mixin introduces an `instanceOptions` property which holds
     a dict of all sorts of configuration options. It also includes utility
     code for the merging of these dicts. This mixin requires you to write
-    a static `defaultoptions` method.
+    a static `defaultoptions` method
     '''
     @staticmethod
     @abstractmethod
     def defaultoptions() -> dict:
         '''
         Abstract static method which needs to be implemented to provide
-        the default options for any given class. Should return a dict.
+        the default options for any given class. Should return a dict
         '''
         pass
     

@@ -1,6 +1,6 @@
 from rtd.sim.world import WorldEntity
-from rtd.entity.components import EmptyInfoComponent, GenericEntityState
-from demos.box2d import BoxAgentInfo
+from rtd.entity.components import GenericEntityState
+from demos.box2d import BoxAgentInfo, BoxAgentVisual
 
 
 
@@ -14,12 +14,14 @@ class BoxAgent(WorldEntity):
             "components": {
                 "info": BoxAgentInfo,
                 "state": GenericEntityState,
+                "visual": BoxAgentVisual,
             },
         }
     
     
     def __init__(self, info: BoxAgentInfo = BoxAgentInfo,
-                 state: GenericEntityState = GenericEntityState, **options):
+                 state: GenericEntityState = GenericEntityState,
+                 visual: BoxAgentVisual = BoxAgentVisual, **options):
         '''
         Creates a BoxAgent, taking in an info, state, and visual components.
         The components can either be a class or an instance of a class. If
@@ -31,6 +33,7 @@ class BoxAgent(WorldEntity):
         components = {
             "info": info,
             "state": state,
+            "visual": visual,
         }
         # Get override options based on provided components
         override_options = self.get_componentOverrideOptions(components)
@@ -41,6 +44,7 @@ class BoxAgent(WorldEntity):
         # (Re)construct all components for consistency
         self.construct_components("info")
         self.construct_components("state", self.info)
+        self.construct_components("visual", self.info, self.state)
         
         # reset
         self.reset()

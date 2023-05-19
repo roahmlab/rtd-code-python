@@ -5,8 +5,8 @@ from rtd.util.mixins import Options
 
 class BoxAgentInfo(BaseInfoComponent, Options):
     '''
-    An info class that stores the agent's width,
-    height, and color.
+    An info component that stores the agent's width,
+    height, and color
     '''
     @staticmethod
     def defaultoptions() -> dict:
@@ -18,12 +18,12 @@ class BoxAgentInfo(BaseInfoComponent, Options):
     
     
     def __init__(self, **options):
+        # initialize base classes
         BaseInfoComponent.__init__(self)
         Options.__init__(self)
+        # initialize using given options
         self.mergeoptions(options)
         self.dimension = 2
-        
-        # initialize
         self.reset()
     
     
@@ -39,6 +39,6 @@ class BoxAgentInfo(BaseInfoComponent, Options):
         Override string representation
         '''
         return (f"{repr(self)} with properties:\n" + 
-                f"\twidth:  {self.width}\n" +
-                f"\theight: {self.height}\n" +
-                f"\tcolor:  {self.color}\n")
+                f"   width:  {self.width}\n" +
+                f"   height: {self.height}\n" +
+                f"   color:  {self.color}\n")

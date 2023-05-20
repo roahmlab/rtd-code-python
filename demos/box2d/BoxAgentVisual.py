@@ -37,6 +37,10 @@ class BoxAgentVisual(PatchVisualObject, Options):
     
     def reset(self, **options):
         options = self.mergeoptions(options)
+        self.face_color = options["face_color"]
+        self.face_opacity = options["face_opacity"]
+        self.edge_color = options["edge_color"]
+        self.edge_width = options["edge_width"]
         self.create_plot_data()
     
     
@@ -51,17 +55,18 @@ class BoxAgentVisual(PatchVisualObject, Options):
         options = self.getoptions()
         
         self.plot_data = Rectangle((0, 0), w, h,
-            facecolor=options["face_color"],
-            alpha=options["face_opacity"],
-            edgecolor=options["edge_color"],
-            linewidth=options["edge_width"],
+            facecolor=self.face_color,
+            alpha=self.face_opacity,
+            edgecolor=self.edge_color,
+            linewidth=self.edge_width,
         )
     
     
-    def get_plot_data(self, time: float = None) -> matplotlib.artist:
+    def plot(self, time: float = None) -> matplotlib.artist:
         '''
         Sets the anchor point of `self.plot_data` to the
-        state at the given time and returns it. Can be plotted
+        state at the given time and returns the plot data.
+        The plot data can be added to the current figure by
         using the `add_artist` method of the figure axes
         '''
         if time == None:

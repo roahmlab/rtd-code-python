@@ -1,5 +1,6 @@
 if __name__ == '__main__':
     # add modules to path
+    import os
     import sys
     from matplotlib.pyplot import xlim, ylim
     sys.path.append("../../")
@@ -9,35 +10,66 @@ if __name__ == '__main__':
     from rtd.entity.components import GenericEntityState
     from rtd.sim.systems.patch_visual import PatchVisualSystem
     
+    # configure logging
+    import logging.config
+    logging_config = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'standard': {
+                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            },
+        },
+        'handlers': {
+            'default_handler': {
+                'class': 'logging.StreamHandler',
+                'level': 'WARN',
+                'formatter': 'standard',
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['default_handler'],
+                'propagate': False
+            }
+        }
+    }
+    logging.config.dictConfig(logging_config)
+    
     
     
     # create BoxAgent
-    info = BoxAgentInfo(width=2, color=[0.5, 0.2, 1])
-    state = GenericEntityState(info, n_states=2)
-    visual = BoxAgentVisual(info, state)
-    agent = BoxAgent(info=info, state=state, visual=visual)
+    info1 = BoxAgentInfo(height=2, color=[0.5, 0.2, 1])
+    state1 = GenericEntityState(info1, n_states=2)
+    visual1 = BoxAgentVisual(info1, state1, edge_color=[1, 0, 0], edge_width=3, face_opacity=0.5)
+    agent1 = BoxAgent(info=info1, state=state1, visual=visual1)
+    
+    info2 = BoxAgentInfo(width=2, height=0.5, color=[0, 1, 0])
+    agent2 = BoxAgent(info=info2)
     
     # show that the objects in each components are all linked
-    print(agent.info)
-    print(agent.state)
-    print(agent.visual)
-    
-    '''
-    agent.state.commit_state_data(2, [1, 2])
-    print(agent.state.get_state())
-    agent.reset()
-    print(agent.state.get_state())
-    #print(agent.getoptions())'''
+    print(agent1.info)
+    print(agent1.state)
+    print(agent1.visual)
     
     # add states
-    agent.state.commit_state_data(2, [ 0,-2])   # ( 0,-2) at t=2
-    agent.state.commit_state_data(5, [-2, 1])   # (-2, 1) at t=7
-    agent.state.commit_state_data(2, [-4,-1])   # (-4,-1) at t=9
-    agent.state.commit_state_data(3, [ 4, 3])   # ( 4, 3) at t=12
-    agent.state.commit_state_data(2, [ 2, 0])   # ( 2, 0) at t=14
+    agent1.state.commit_state_data(1, [ 0,-2])   # ( 0,-2) at t=1
+    agent1.state.commit_state_data(2, [-2, 1])   # (-2, 1) at t=3
+    agent1.state.commit_state_data(1, [-4,-1])   # (-4,-1) at t=4
+    agent1.state.commit_state_data(3, [ 4, 3])   # ( 4, 3) at t=7
+    agent1.state.commit_state_data(2, [ 2, 0])   # ( 2, 0) at t=9
     
     # set up visual system and animate
-    vs = PatchVisualSystem(dynamic_objects=agent.visual)
+    vs = PatchVisualSystem(
+        static_objects=agent2.visual,
+        dynamic_objects=[agent1.visual] # can take both single object or list of objects
+    )
     xlim((-5, 5))
     ylim((-5, 5))
-    vs.updateVisual(10)
+    vs.redraw()
+    vs.updateVisual(5)
+    vs.updateVisual(4)
+    vs.animate(time_discretization=0.05)
+    
+    # wait until key pressed so program doesn't immediately close
+    os.system('pause')

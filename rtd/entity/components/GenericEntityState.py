@@ -1,4 +1,4 @@
-from rtd.entity.components import BaseStateComponent, EmptyInfoComponent
+from rtd.entity.components import BaseInfoComponent, BaseStateComponent
 from rtd.util.mixins import Options
 from rtd.functional.interpolate import interp1_list
 from random import uniform
@@ -18,7 +18,7 @@ class GenericEntityState(BaseStateComponent, Options):
         return dict()
     
     
-    def __init__(self, entity_info: EmptyInfoComponent, **options):
+    def __init__(self, entity_info: BaseInfoComponent, **options):
         # initialize base classes
         BaseStateComponent.__init__(self)
         Options.__init__(self)

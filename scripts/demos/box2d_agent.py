@@ -59,17 +59,24 @@ if __name__ == '__main__':
     agent1.state.commit_state_data(3, [ 4, 3])   # ( 4, 3) at t=7
     agent1.state.commit_state_data(2, [ 2, 0])   # ( 2, 0) at t=9
     
-    # set up visual system and animate
+    # set up visual system
     vs = PatchVisualSystem(
         static_objects=agent2.visual,
         dynamic_objects=[agent1.visual] # can take both single object or list of objects
     )
-    xlim((-5, 5))
-    ylim((-5, 5))
-    vs.redraw()
-    vs.updateVisual(5)
-    vs.updateVisual(4)
-    vs.animate(time_discretization=0.05)
+    time_discretization, pause_time = vs.get_discretization_and_pause(framerate=30, speed=1)
+    
+    # update time
+    #vs.redraw(xlim=(-5, 5), ylim=(-5, 5))   # run this to render while update is running
+    vs.updateVisual(9)
+    
+    # animate object
+    vs.animate(
+        time_discretization=time_discretization,
+        pause_time=pause_time,
+        xlim=(-5, 5),
+        ylim=(-5, 5)
+    )
     
     # wait until key pressed so program doesn't immediately close
     os.system('pause')

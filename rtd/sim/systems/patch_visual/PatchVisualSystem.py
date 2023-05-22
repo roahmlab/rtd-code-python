@@ -19,7 +19,8 @@ class PatchVisualSystem(SimulationSystem, Options):
     @staticmethod
     def defaultoptions() -> dict:
         return {
-            'time_discretization': 0.1,
+            "time_discretization": 0.1,
+            "draw_time": 0.05,
         }
     
     
@@ -41,7 +42,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         
         # animation options
         self.time_discretization = options["time_discretization"]
-        self.draw_time = 0.05
+        self.draw_time = options["draw_time"]
         
         # reset time and clear all stored objects
         self.time = [0]
@@ -62,7 +63,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         if (self.figure_handle == None or
         not plt.fignum_exists(self.figure_handle.number)):
             self.figure_handle = plt.figure()
-            plt.title(f'Figure 1 - {self.__class__.__name__}')
+            plt.title(f'Figure {self.figure_handle.number} - {self.__class__.__name__}')
             # bind pause key
     
     
@@ -113,22 +114,30 @@ class PatchVisualSystem(SimulationSystem, Options):
             ax = self.figure_handle.axes[-1]
             self.figure_handle.show()
             
-            # animate the next `t_update`
-            for t in t_vec:
-                # update the dynamic objects on the figure
-                for obj in self.dynamic_objects:
-                    obj.plot(time=t)
-                self.figure_handle.canvas.draw()
-                self.figure_handle.canvas.flush_events()
-                time.sleep(self.draw_time)
+            # get list of dynamic objects on the figure
+            artists = ax.patches + ax.collections
+            dynamic_objects = [obj for obj in self.dynamic_objects if obj.plot_data in artists]
+            
+            # animate the next `t_update` if dynamic
+            # artists are on the figure
+            if dynamic_objects:
+                for t in t_vec:
+                    # update the dynamic objects on the figure
+                    for obj in dynamic_objects:
+                        obj.plot(time=t)
+                    self.figure_handle.canvas.draw()
+                    self.figure_handle.canvas.flush_events()
+                    time.sleep(self.draw_time)
         except Exception as e:
-            print(e)
+            pass
             
         # append the updated time
         self.time += t_vec
     
     
-    def redraw(self, time: float = None):
+    def redraw(self, time: float = None,
+               xlim: list[float, float] = None,
+               ylim: list[float, float] = None):
         '''
         Recreates the figure handle if necessary and adds
         the artist objects to the current figure at the
@@ -143,6 +152,12 @@ class PatchVisualSystem(SimulationSystem, Options):
         # activate the current figure
         ax = self.figure_handle.axes[-1]
         self.figure_handle.show()
+        
+        # set xlim and ylim
+        if xlim != None:
+            ax.set_xlim(xlim)
+        if ylim != None:
+            ax.set_ylim(ylim)
         
         # clear figure content
         for artist in ax.patches + ax.collections:
@@ -161,7 +176,9 @@ class PatchVisualSystem(SimulationSystem, Options):
     
     def animate(self, t_span: list[float, float] = None,
                 time_discretization: float = None,
-                pause_time: float = None):
+                pause_time: float = None,
+                xlim: list[float, float] = None,
+                ylim: list[float, float] = None):
         '''
         Animates from `time` = `t_span[0]` to `t_span[1]`,
         dividing it into frames of length `time_discretization`
@@ -184,7 +201,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         t_vec = [start_time + i*time_discretization for i in range(int(count))]
         
         # redraw everything
-        self.redraw(0)
+        self.redraw(0, xlim=xlim, ylim=ylim)
         
         # animate dynamic objects
         ax = self.figure_handle.axes[-1]
@@ -209,4 +226,17 @@ class PatchVisualSystem(SimulationSystem, Options):
             time.sleep(max(draw_time, 0))
             # get current time and subtract from previous time
             # if delta_time > self.draw_time, print lagging message
+    
+    
+    @staticmethod
+    def get_discretization_and_pause(
+        framerate: float = 30, speed: float = 1) -> tuple[float, float]:
+        '''
+        Returns the time_discretization and pause_time to
+        get the desired framerate and speed. Speed of 2
+        means 1 second = 2 time
+        '''
+        pause_time = 1 / framerate
+        time_discretization = speed / framerate
+        return (time_discretization, pause_time)
         

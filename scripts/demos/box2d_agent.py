@@ -62,9 +62,10 @@ if __name__ == '__main__':
     # set up visual system
     vs = PatchVisualSystem(
         static_objects=agent2.visual,
-        dynamic_objects=[agent1.visual] # can take both single object or list of objects
+        dynamic_objects=[agent1.visual],    # can take both single object or list of objects
+        dimension=2,
     )
-    time_discretization, pause_time = vs.get_discretization_and_pause(framerate=30, speed=1)
+    time_discretization, pause_time = vs.get_discretization_and_pause(framerate=24, speed=1)
     
     # update time
     #vs.redraw(xlim=(-5, 5), ylim=(-5, 5))   # run this to render while update is running

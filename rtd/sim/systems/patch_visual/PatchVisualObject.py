@@ -21,8 +21,11 @@ class PatchVisualObject(metaclass=ABCMeta):
     
     def __init__(self):
         # a matplotlib artist object
-        plot_data = None
+        self.plot_data = None
     
     
     def isPlotDataValid(self, fieldname: str):
-        return NotImplementedError
+        '''
+        Checks if plot_data is a matplotlib artist object
+        '''
+        return issubclass(type(self.plot_data), matplotlib.artist)

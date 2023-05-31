@@ -21,6 +21,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         return {
             "time_discretization": 0.1,
             "draw_time": 0.05,
+            "dimension": 3,
         }
     
     
@@ -43,6 +44,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         # animation options
         self.time_discretization = options["time_discretization"]
         self.draw_time = options["draw_time"]
+        self.dimension = options["dimension"]
         
         # reset time and clear all stored objects
         self.time = [0]
@@ -109,7 +111,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         t_vec = [start_time + i*self.time_discretization for i in range(int(count))]
         logger.debug("Running Visualization!")
         
-        # try to set current figure
+        # activate the current figure
         try:
             ax = self.figure_handle.axes[-1]
             self.figure_handle.show()
@@ -149,8 +151,13 @@ class PatchVisualSystem(SimulationSystem, Options):
         # if the figure is closed or invalid, recreate it
         self.validateOrCreateFigure()
         
-        # activate the current figure
-        ax = self.figure_handle.axes[-1]
+        # create 2d or 3d axes on current figure
+        if self.dimension == 2:
+            ax = self.figure_handle.add_subplot()
+        elif self.dimension == 3:
+            ax = self.figure_handle.add_subplot(projection='3d')
+        else:
+            raise ValueError("Dimension must be 2 or 3!")
         self.figure_handle.show()
         
         # set xlim and ylim
@@ -203,11 +210,11 @@ class PatchVisualSystem(SimulationSystem, Options):
         # redraw everything
         self.redraw(0, xlim=xlim, ylim=ylim)
         
-        # animate dynamic objects
+        # activate the current figure
         ax = self.figure_handle.axes[-1]
         self.figure_handle.show()
         
-        # animate the next `t_update`
+        # animate the dynamic stuff for next `t_update`
         for t in t_vec:
             # get current time
             start_time = datetime.now()

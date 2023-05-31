@@ -1,0 +1,2 @@
+from rtd.sim.systems.patch3d_collision.Patch3dObject import Patch3dObject
+from rtd.sim.systems.patch3d_collision.Patch3dDynamicObject import Patch3dDynamicObject

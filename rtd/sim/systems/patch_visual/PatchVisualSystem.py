@@ -1,6 +1,7 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
 from rtd.sim.systems.patch_visual import PatchVisualObject
+from rtd.functional.sequences import toSequence, arrange, arrange_list
 import matplotlib.pyplot as plt
 from datetime import datetime
 import time
@@ -52,7 +53,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         self.dynamic_objects = []
         
         # Create a new figure
-        self.figure_handle = None
+        self._figure_handle = None
         self.validateOrCreateFigure()
     
     
@@ -62,10 +63,10 @@ class PatchVisualSystem(SimulationSystem, Options):
         create a new figure and save its reference to 
         `self.figure_handle`
         '''
-        if (self.figure_handle == None or
-        not plt.fignum_exists(self.figure_handle.number)):
-            self.figure_handle = plt.figure()
-            plt.title(f'Figure {self.figure_handle.number} - {self.__class__.__name__}')
+        if (self._figure_handle == None or
+        not plt.fignum_exists(self._figure_handle.number)):
+            self._figure_handle = plt.figure()
+            plt.title(f'Figure {self._figure_handle.number} - {self.__class__.__name__}')
             # bind pause key
     
     
@@ -76,16 +77,12 @@ class PatchVisualSystem(SimulationSystem, Options):
         Takes in a visual object or a list of visual objects
         and adds them to the corresponding list
         '''
-        if static != None:
-            if isinstance(static, list):
-                self.static_objects += static
-            else:
-                self.static_objects.append(static)
-        if dynamic != None:
-            if isinstance(dynamic, list):
-                self.dynamic_objects += dynamic
-            else:
-                self.dynamic_objects.append(dynamic)
+        # handle single items
+        static = toSequence(static)
+        dynamic = toSequence(dynamic)
+        
+        self.static_objects.extend(static)
+        self.dynamic_objects.extend(dynamic)
     
     
     def remove(self, *objects):
@@ -107,14 +104,13 @@ class PatchVisualSystem(SimulationSystem, Options):
         '''
         start_time = self.time[-1] + self.time_discretization
         end_time = self.time[-1] + t_update + self.time_discretization
-        count = (end_time - start_time) / self.time_discretization
-        t_vec = [start_time + i*self.time_discretization for i in range(int(count))]
+        t_vec = arrange_list(start_time, end_time, self.time_discretization)
         logger.debug("Running Visualization!")
         
         # activate the current figure
         try:
-            ax = self.figure_handle.axes[-1]
-            self.figure_handle.show()
+            ax = self._figure_handle.axes[-1]
+            self._figure_handle.show()
             
             # get list of dynamic objects on the figure
             artists = ax.patches + ax.collections
@@ -127,8 +123,8 @@ class PatchVisualSystem(SimulationSystem, Options):
                     # update the dynamic objects on the figure
                     for obj in dynamic_objects:
                         obj.plot(time=t)
-                    self.figure_handle.canvas.draw()
-                    self.figure_handle.canvas.flush_events()
+                    self._figure_handle.canvas.draw()
+                    self._figure_handle.canvas.flush_events()
                     time.sleep(self.draw_time)
         except Exception as e:
             pass
@@ -153,12 +149,12 @@ class PatchVisualSystem(SimulationSystem, Options):
         
         # create 2d or 3d axes on current figure
         if self.dimension == 2:
-            ax = self.figure_handle.add_subplot()
+            ax = self._figure_handle.add_subplot()
         elif self.dimension == 3:
-            ax = self.figure_handle.add_subplot(projection='3d')
+            ax = self._figure_handle.add_subplot(projection='3d')
         else:
             raise ValueError("Dimension must be 2 or 3!")
-        self.figure_handle.show()
+        self._figure_handle.show()
         
         # set xlim and ylim
         if xlim != None:
@@ -177,8 +173,8 @@ class PatchVisualSystem(SimulationSystem, Options):
         for obj in self.dynamic_objects:
             artist = obj.plot(time=time)
             ax.add_artist(artist)
-        self.figure_handle.canvas.draw()
-        self.figure_handle.canvas.flush_events()
+        self._figure_handle.canvas.draw()
+        self._figure_handle.canvas.flush_events()
     
     
     def animate(self, t_span: list[float, float] = None,
@@ -204,15 +200,14 @@ class PatchVisualSystem(SimulationSystem, Options):
         
         start_time = t_span[0]
         end_time = t_span[1] + time_discretization
-        count = (end_time - start_time) / time_discretization
-        t_vec = [start_time + i*time_discretization for i in range(int(count))]
+        t_vec = arrange(start_time, end_time, time_discretization)
         
         # redraw everything
         self.redraw(0, xlim=xlim, ylim=ylim)
         
         # activate the current figure
-        ax = self.figure_handle.axes[-1]
-        self.figure_handle.show()
+        ax = self._figure_handle.axes[-1]
+        self._figure_handle.show()
         
         # animate the dynamic stuff for next `t_update`
         for t in t_vec:
@@ -222,17 +217,16 @@ class PatchVisualSystem(SimulationSystem, Options):
             # update the dynamic objects on the figure
             for obj in self.dynamic_objects:
                 obj.plot(time=t)
-            self.figure_handle.canvas.draw()
-            self.figure_handle.canvas.flush_events()
+            self._figure_handle.canvas.draw()
+            self._figure_handle.canvas.flush_events()
             
-            # compute wait time
+            # get current time and subtract from previous time
+            # if delta_time > self.draw_time, print lagging message
             draw_time = pause_time - (datetime.now() - start_time).total_seconds()
             if draw_time < 0:
                 logger.warning(f"Warning, animation lagging by {-draw_time:.6f}s!")
             
             time.sleep(max(draw_time, 0))
-            # get current time and subtract from previous time
-            # if delta_time > self.draw_time, print lagging message
     
     
     @staticmethod

@@ -64,7 +64,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         
         # add the static objects to the collision handle
         for obj in static:
-            self._collision_handle.add_object(id(obj), obj)
+            self._collision_handle.add_object(str(id(obj)), obj.mesh)
     
     
     def remove(self, *objects):

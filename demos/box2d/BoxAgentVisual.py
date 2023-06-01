@@ -52,7 +52,6 @@ class BoxAgentVisual(PatchVisualObject, Options):
         '''
         w = self.box_info.width
         h = self.box_info.height
-        options = self.getoptions()
         
         self.plot_data = Rectangle((0, 0), w, h,
             facecolor=self.face_color,

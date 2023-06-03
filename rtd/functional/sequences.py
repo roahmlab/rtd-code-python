@@ -18,7 +18,7 @@ def arrange(start: float, end: float, step: float):
     Creates a generator from `start` (inclusive) to `end`
     (exclusive) with step size `step`
     '''
-    count = int((end - start) // step)
+    count = int((end - start) // step) + 1
     return (start + i*step for i in range(count))
 
 
@@ -28,5 +28,5 @@ def arrange_list(start: float, end: float, step: float):
     Creates a list from `start` (inclusive) to `end`
     (exclusive) with step size `step`
     '''
-    count = int((end - start) // step)
+    count = int((end - start) // step) + 1
     return [start + i*step for i in range(count)]

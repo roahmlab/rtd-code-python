@@ -78,11 +78,13 @@ class PatchVisualSystem(SimulationSystem, Options):
         and adds them to the corresponding list
         '''
         # handle single items
-        static = toSequence(static)
-        dynamic = toSequence(dynamic)
+        if static != None:
+            static = toSequence(static)
+            self.static_objects.extend(static)
         
-        self.static_objects.extend(static)
-        self.dynamic_objects.extend(dynamic)
+        if dynamic != None:
+            dynamic = toSequence(dynamic)
+            self.dynamic_objects.extend(dynamic)
     
     
     def remove(self, *objects):

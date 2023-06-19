@@ -2,7 +2,6 @@ from rtd.sim.systems.patch_visual import PatchVisualObject
 from rtd.util.mixins import Options
 import matplotlib
 from matplotlib.patches import Rectangle
-import numpy as np
 
 
 

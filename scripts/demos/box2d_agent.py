@@ -1,40 +1,12 @@
 if __name__ == '__main__':
-    # add modules to path
-    import os
-    import sys
-    from matplotlib.pyplot import xlim, ylim
-    sys.path.append("../../")
-    
     # import modules
-    from demos.box2d import BoxAgent, BoxAgentInfo, BoxAgentVisual
+    from rtd.demos.box2d import BoxAgent, BoxAgentInfo, BoxAgentVisual
     from rtd.entity.components import GenericEntityState
     from rtd.sim.systems.patch_visual import PatchVisualSystem
     
     # configure logging
-    import logging.config
-    logging_config = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'standard': {
-                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-            },
-        },
-        'handlers': {
-            'default_handler': {
-                'class': 'logging.StreamHandler',
-                'level': 'WARN',
-                'formatter': 'standard',
-            },
-        },
-        'loggers': {
-            '': {
-                'handlers': ['default_handler'],
-                'propagate': False
-            }
-        }
-    }
-    logging.config.dictConfig(logging_config)
+    from rtd.functional.logconfig import config_logger
+    config_logger('WARN')
     
     
     
@@ -68,6 +40,7 @@ if __name__ == '__main__':
     time_discretization, pause_time = vs.get_discretization_and_pause(framerate=24, speed=1)
     
     # update time
+    #from matplotlib.pyplot import xlim, ylim
     #vs.redraw(xlim=(-5, 5), ylim=(-5, 5))   # run this to render while update is running
     vs.updateVisual(9)
     
@@ -80,4 +53,4 @@ if __name__ == '__main__':
     )
     
     # wait until key pressed so program doesn't immediately close
-    os.system('pause')
+    vs.waituntilclose()

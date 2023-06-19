@@ -231,6 +231,15 @@ class PatchVisualSystem(SimulationSystem, Options):
             time.sleep(max(draw_time, 0))
     
     
+    
+    def waituntilclose(self):
+        '''
+        Waits until figure is closed before proceeding
+        '''
+        plt.ioff()
+        plt.show()
+    
+    
     @staticmethod
     def get_discretization_and_pause(
         framerate: float = 30, speed: float = 1) -> tuple[float, float]:
@@ -242,4 +251,3 @@ class PatchVisualSystem(SimulationSystem, Options):
         pause_time = 1 / framerate
         time_discretization = speed / framerate
         return (time_discretization, pause_time)
-        

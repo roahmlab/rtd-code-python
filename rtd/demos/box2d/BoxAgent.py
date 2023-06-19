@@ -1,6 +1,6 @@
 from rtd.sim.world import WorldEntity
 from rtd.entity.components import GenericEntityState
-from demos.box2d import BoxAgentInfo, BoxAgentVisual
+from rtd.demos.box2d import BoxAgentInfo, BoxAgentVisual
 
 
 

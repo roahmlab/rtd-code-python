@@ -2,6 +2,9 @@ import numpy as np
 from trimesh import Trimesh
 from trimesh.collision import CollisionManager
 
+# type hinting
+CollisionPair = tuple['Patch3dObject', 'Patch3dObject']
+
 
 
 class Patch3dObject:
@@ -11,15 +14,17 @@ class Patch3dObject:
     '''
     def __init__(self, mesh: Trimesh, parent=None):
         # trimesh.Trimesh object
-        self.mesh = mesh
+        self.mesh: Trimesh = mesh
+        
         # parent
-        self.parent = parent
+        self.parent: 'Patch3dObject' = parent
+        
         # collision handle
         self._collision_handle = CollisionManager()
         self._collision_handle.add_object(id(mesh), self.mesh)
     
     
-    def inCollision(self, other) -> tuple[bool, tuple]:
+    def inCollision(self, other: 'Patch3dObject') -> tuple[bool, CollisionPair]:
         '''
         Checks if this object is in collision with another object.
         Returns a bool as well as its and its collided pair's

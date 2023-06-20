@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from rtd.entity.components import BaseInfoComponent
 
 
 
@@ -10,13 +11,16 @@ class BaseStateComponent(metaclass=ABCMeta):
     '''
     def __init__(self):
         # stores a copy of the entity's info
-        self.entityinfo = None
+        self.entityinfo: BaseInfoComponent = None
+        
         # number of states in the entity
-        self.n_states = None
+        self.n_states: int = None
+        
         # an (n_states, :) list of states at various times
-        self.state = None
+        self.state: list[list] = None
+        
         # a list of times corresponding to each state
-        self.time = None
+        self.time: list[float] = None
     
 
     @abstractmethod
@@ -27,6 +31,7 @@ class BaseStateComponent(metaclass=ABCMeta):
         '''
         pass
 
+
     @abstractmethod
     def get_state(self, time: float) -> dict:
         '''
@@ -35,6 +40,7 @@ class BaseStateComponent(metaclass=ABCMeta):
         '''
         pass
     
+    
     @abstractmethod
     def random_init(self):
         '''
@@ -42,6 +48,7 @@ class BaseStateComponent(metaclass=ABCMeta):
         to initialize the starting `state` randomly
         '''
         pass
+    
     
     @abstractmethod
     def commit_state_data(self, time: float, state: list[float]):

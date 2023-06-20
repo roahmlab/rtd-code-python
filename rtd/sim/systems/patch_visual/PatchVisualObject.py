@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-import matplotlib
+from matplotlib import artist
 
 
 
@@ -9,7 +9,7 @@ class PatchVisualObject(metaclass=ABCMeta):
     rendering of an entity
     '''
     @abstractmethod
-    def plot(self, **options) -> matplotlib.artist:
+    def plot(self, **options) -> artist:
         '''
         Abstract method which needs to be implemented to update
         the current plot_data and returns a matplotlib artist
@@ -21,11 +21,11 @@ class PatchVisualObject(metaclass=ABCMeta):
     
     def __init__(self):
         # a matplotlib artist object
-        self.plot_data = None
+        self.plot_data: artist = None
     
     
-    def isPlotDataValid(self, fieldname: str):
+    def isPlotDataValid(self):
         '''
         Checks if plot_data is a matplotlib artist object
         '''
-        return issubclass(type(self.plot_data), matplotlib.artist)
+        return issubclass(type(self.plot_data), artist)

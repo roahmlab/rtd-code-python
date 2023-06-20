@@ -44,4 +44,4 @@ class Options(metaclass=ABCMeta):
         '''
         Returns a copy of the current `instanceOptions`
         '''
-        return self._instanceOptions.copy();
+        return self._instanceOptions.copy()

@@ -2,7 +2,7 @@ from bisect import bisect, bisect_left
 
 
 
-def interp1(x, y, x_at):
+def interp1(x: list[float], y: list[float], x_at: float) -> list[float]:
     '''
     This takes the lists `x` and `y`, and returns the interpolated
     y value at `x_at`. Length of `x` and `y` must be equal, `x` must
@@ -30,7 +30,7 @@ def interp1(x, y, x_at):
     return y[i_left] + ratio*(y[i_right] - y[i_left])
 
 
-def interp1_list(x,y, x_at):
+def interp1_list(x: list[float], y: list[list[float]], x_at: float) -> list[float]:
     '''
     Same as interp1 but broadcasts it to each element in `y`
     

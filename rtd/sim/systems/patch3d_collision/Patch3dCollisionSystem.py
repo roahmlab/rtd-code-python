@@ -8,6 +8,10 @@ from trimesh.collision import CollisionManager
 import logging
 logger = logging.getLogger(__name__)
 
+# type hinting
+CollisionPair = tuple[Patch3dObject, Patch3dObject]
+CollisionIDPair = tuple[int, int]
+
 
 
 class Patch3dCollisionSystem(SimulationSystem, Options):
@@ -96,7 +100,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
                 # during the collision check
     
     
-    def updateCollision(self, t_update: float) -> tuple[bool, set[tuple]]:
+    def updateCollision(self, t_update: float) -> tuple[bool, set[CollisionPair]]:
         '''
         Appends `t_update` to `time` and checks for any collision
         for `t_update` time
@@ -162,7 +166,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         }
     
     
-    def _dereference_pairs(self, names: set[tuple[int, int]]) -> set[tuple[Patch3dObject, Patch3dObject]]:
+    def _dereference_pairs(self, names: set[CollisionIDPair]) -> set[CollisionPair]:
         '''
         Takes in a set of pairs of collided object ids and
         dereferences it to create a set of pairs of the collided

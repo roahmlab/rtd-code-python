@@ -7,8 +7,8 @@ class SimulationSystem(metaclass=ABCMeta):
     Base class for visual and collision systems 
     '''
     def __init__(self):
-        self.time = None
-        self.time_discretization = None
+        self.time: list[float] = None
+        self.time_discretization: float = None
     
     
     @abstractmethod

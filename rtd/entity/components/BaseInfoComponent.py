@@ -10,7 +10,7 @@ class BaseInfoComponent(metaclass=ABCMeta):
     '''
     def __init__(self):
         # Number of dimensions. Should be 2 or 3
-        self.dimension = None
+        self.dimension: int = None
     
 
     @abstractmethod

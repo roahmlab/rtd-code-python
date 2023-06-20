@@ -12,5 +12,6 @@ class EmptyInfoComponent(BaseInfoComponent):
         BaseInfoComponent.__init__(self)
         self.dimension = 2
     
+    
     def reset(self):
         pass

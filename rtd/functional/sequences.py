@@ -1,3 +1,7 @@
+from typing import Iterator
+
+
+
 def toSequence(obj) -> list | tuple:
     '''
     Converts single elements into lists to make it easier
@@ -13,7 +17,7 @@ def toSequence(obj) -> list | tuple:
 
 
 
-def arrange(start: float, end: float, step: float):
+def arrange(start: float, end: float, step: float) -> Iterator[float]:
     '''
     Creates a generator from `start` (inclusive) to `end`
     (exclusive) with step size `step`
@@ -23,7 +27,7 @@ def arrange(start: float, end: float, step: float):
 
 
 
-def arrange_list(start: float, end: float, step: float):
+def arrange_list(start: float, end: float, step: float) -> list[float]:
     '''
     Creates a list from `start` (inclusive) to `end`
     (exclusive) with step size `step`

@@ -14,5 +14,12 @@ setup(
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
-        install_requires=[],
+        install_requires=[
+                'mergedeep>=1.3',
+                'numpy>=1.24',
+                'matplotlib>=3.7',
+                'trimesh>=3.21',
+                'python-fcl>=0.7',
+                'scipy>=1.10',
+        ],
 )

@@ -17,17 +17,17 @@ class Trajectory(metaclass=ABCMeta):
     def __init__(self):
         # Properties from the trajectory optimization, which also describes
         # the properties for the trajectory
-        trajOptProps: TrajOptProps = None
+        self.trajOptProps: TrajOptProps = None
         
         # The parameters used for this trajectory
-        trajectoryParams: list[float] = None
+        self.trajectoryParams: list[float] = None
         
         # The initial state for this trajectory
-        startState: EntityState = None
+        self.startState: EntityState = None
         
         # Set to true if this trajectory supports getting commands for a
         # time vector instead of just a single moment in time
-        vectorized = False
+        self.vectorized = False
     
     
     @abstractmethod
@@ -38,6 +38,12 @@ class Trajectory(metaclass=ABCMeta):
         A validation method to ensure that the trajectory this object
         describes is fully set. Has an additional argument to allow
         throwing an error if incorrect
+        
+        Arguments:
+            throwOnError (logical): whether or not to throw an error if invalid
+        
+        Returns:
+            logical: whether or not the trajectory is valid
         '''
         pass
     
@@ -50,6 +56,9 @@ class Trajectory(metaclass=ABCMeta):
         This allows for the entire trajectory described to be changed,
         but it should focus on this trajectory params while the
         constructor should focus on the start state
+        
+        Arguments:
+            trajectoryParams: the parameters of the trajectory to set.
         '''
         pass
     
@@ -61,5 +70,11 @@ class Trajectory(metaclass=ABCMeta):
         
         Should throw RTD:InvalidTrajectory if the trajectory isn't set
         Should take list[float] as `time` if `vectorized` is True
+        
+        Arguments:
+            time: Time to use to calculate the desired state for this trajectory
+        
+        Returns:
+            rtd.entity.states.EntityState: Desired state at the given time
         '''
         pass

@@ -1,15 +1,6 @@
 from typing import NamedTuple
 
 
-'''
-# for mutable (modifiable) variant
-from dataclasses import dataclass
-
-@dataclass
-class TrajOptProps
-'''
-
-
 
 class TrajOptProps(NamedTuple):
     '''

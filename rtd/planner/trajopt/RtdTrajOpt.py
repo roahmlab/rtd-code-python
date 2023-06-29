@@ -70,3 +70,52 @@ class RtdTrajOpt:
             objective used. `info` is a dict of optimization data.
         '''
         pass
+
+
+
+    class merge_constraints:
+        '''
+        A functor for computing the constraints
+        for a given input, with lookup for speed
+        optimizations
+        '''
+        def __init__(self, nlconCallback, nlconNames, buffer_size=16):
+            self.buffer = list()
+            self.buffer_size = buffer_size
+        
+        
+        def __call__(self, k):
+            '''
+            Overload call to work as a functor
+            '''
+            if (res:=self.findBuffer(k) != None):
+                return res
+            
+            # do some calculation
+            res = tuple()
+            self.updateBuffer(k, res)
+            return res
+        
+        
+        def updateBuffer(self, k, res):
+            '''
+            Ensure buffer size < buffer_size and add
+            input-output pair into buffer
+            '''
+            if len(self.buffer) > self.buffer_size:
+                self.buffer.pop(0)
+                self.buffer.append((k, res))
+            else:
+                self.buffer.append((k, res))
+        
+        
+        def findBuffer(self, k) -> tuple | None:
+            '''
+            Return output if result for given input
+            exists in the buffer, otherwise return
+            None
+            '''
+            for i in self.buffer:
+                if i[0] == k:
+                    return i[1]
+            return None

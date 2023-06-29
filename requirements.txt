@@ -18,7 +18,6 @@ pyparsing==3.0.9
 python-dateutil==2.8.2
 python-fcl==0.7.0.4
 pyvista==0.39.0
-requests==2.30.0
 -e git+https://github.com/roahmlab/rtd-code-python.git@567b7963546b87b6d774aae7ed5f88600461ff02#egg=rtd_code_python
 scipy==1.10.1
 scooby==0.7.2

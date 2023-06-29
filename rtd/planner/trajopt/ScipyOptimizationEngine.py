@@ -15,7 +15,7 @@ class ScipyOptimizationEngine(OptimizationEngine):
     
     
     def performOptimization(self, initialGuess: np.ndarray, objectiveCallback: Callable,
-                            constraintCallback: Callable, bounds: dict[str, np.ndarray]) -> tuple[bool, float, float]:
+            constraintCallback: Callable, bounds: dict[str, np.ndarray]) -> tuple[bool, float, float]:
         '''
         Use scipy solve to perform the optimization
         
@@ -46,11 +46,30 @@ class ScipyOptimizationEngine(OptimizationEngine):
         # build initial guess
         initialGuess = np.concatenate((initialGuess, initial_extra))
         
-        minimize(
+        # optimization call
+        ineqConstraint = lambda k: -constraintCallback(k)[0]
+        eqConstraint = lambda k: constraintCallback(k)[1]
+        ineqConstraintJac = lambda k: -constraintCallback(k)[2]
+        eqConstraintJac = lambda k: constraintCallback(k)[3]
+        
+        result = minimize(
             fun=objectiveCallback,
             x0=initialGuess,
-            jac=True,
+            method='SLSQP',
+            jac=True,   # use second return of fun as jacobean
             bounds=bounds["param_limits"],
+            constraints = [
+                {
+                    "type": 'eq',
+                    "fun": eqConstraint,
+                    "jac": eqConstraintJac,
+                },
+                {
+                    "type": 'ineq',
+                    "fun": ineqConstraint,
+                    "jac": ineqConstraintJac,
+                },          
+            ],
         )
         
-        
+        return (result.success, result.x, result.fun)

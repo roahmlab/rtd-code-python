@@ -1,7 +1,8 @@
 from rtd.planner.trajopt import OptimizationEngine, TrajOptProps
-import numpy as np
 from scipy.optimize import minimize
+import numpy as np
 from typing import Callable
+from numpy.typing import NDArray
 
 
 
@@ -10,12 +11,14 @@ class ScipyOptimizationEngine(OptimizationEngine):
     Optimization Engine based on scipy.optimize.fsolve
     '''
     def __init__(self, trajOptProps: TrajOptProps, **options):
-        self.trajOptProps = trajOptProps
+        # initialize base classes
+        OptimizationEngine.__init__(self)
+        # initialize other attributes
+        self.trajOptProps: TrajOptProps = trajOptProps
     
     
-    
-    def performOptimization(self, initialGuess: np.ndarray, objectiveCallback: Callable,
-            constraintCallback: Callable, bounds: dict[str, np.ndarray]) -> tuple[bool, float, float]:
+    def performOptimization(self, initialGuess: NDArray[np.float64], objectiveCallback: Callable,
+            constraintCallback: Callable, bounds: dict) -> tuple[bool, NDArray[np.float64], float]:
         '''
         Use scipy solve to perform the optimization
         
@@ -26,7 +29,7 @@ class ScipyOptimizationEngine(OptimizationEngine):
             bounds: A dict containing input and output bounds.
         
         Returns:
-            (success: bool, parameters: float, cost: double): `success`
+            (success: bool, parameters: list of floats, cost: float): `success`
             is if the optimization was successful or didn't time out.
             `parameters` are the trajectory parameters to use. `cost` is
             the final cost for the parameters found

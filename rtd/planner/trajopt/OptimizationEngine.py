@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
+import numpy as np
 from typing import Callable
+from numpy.typing import NDArray
 
 
 
@@ -8,8 +10,8 @@ class OptimizationEngine(metaclass=ABCMeta):
     Base class for any sort of nonlinear optimizer used
     '''
     @abstractmethod
-    def performOptimization(self, initialGuess: list[float], objectiveCallback: Callable,
-                            constraintCallback: Callable, bounds: dict) -> tuple[bool, float, float]:
+    def performOptimization(self, initialGuess: NDArray[np.float64], objectiveCallback: Callable,
+            constraintCallback: Callable, bounds: dict) -> tuple[bool, NDArray[np.float64], float]:
         '''
         Use the given optimizer to perform the optimization
         
@@ -20,7 +22,7 @@ class OptimizationEngine(metaclass=ABCMeta):
             bounds: A dict containing input and output bounds.
         
         Returns:
-            (success: bool, parameters: float, cost: double): `success`
+            (success: bool, parameters: list of floats, cost: float): `success`
             is if the optimization was successful or didn't time out.
             `parameters` are the trajectory parameters to use. `cost` is
             the final cost for the parameters found

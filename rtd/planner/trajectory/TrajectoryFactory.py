@@ -29,11 +29,11 @@ class TrajectoryFactory(metaclass=ABCMeta):
         here, or handled in the class properties
         
         Arguments:
-            robotState (rtd.entity.states.EntityState): Initial state of the robot
-            rsInstances (struct): Optional struct holding instances of reachablesets for the given state
+            robotState: EntityState: Initial state of the robot
+            rsInstances: dict: Optional dict holding instances of reachablesets for the given state
             trajectoryParms: Optional parameters to fully parameterize the trajectories generated
         
         Returns:
-            rtd.planner.trajectory.Trajectory: Desired Trajectory Object
+            Trajectory: Desired Trajectory Object
         '''
         pass

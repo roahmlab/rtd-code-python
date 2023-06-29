@@ -1,2 +1,2 @@
-from rtd.planner.trajectory import Trajectory
-from rtd.planner.trajectory import TrajectoryFactory
+from rtd.planner.trajectory.Trajectory import Trajectory
+from rtd.planner.trajectory.TrajectoryFactory import TrajectoryFactory

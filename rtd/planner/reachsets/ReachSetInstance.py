@@ -20,7 +20,7 @@ class ReachSetInstance(metaclass=ABCMeta):
         self.input_range: list[tuple[float, float]] = None
 
         # The number of main shared parameters used by this set. Generally,
-        # this should match the size of the final trajectory parameters.
+        # this should match the size of the final trajectory parameters
         self.num_parameters: float = None
     
     

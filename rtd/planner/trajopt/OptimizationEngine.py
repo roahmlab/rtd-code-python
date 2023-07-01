@@ -19,7 +19,7 @@ class OptimizationEngine(metaclass=ABCMeta):
             initialGuess: An initial guess vector used for the optimization. May not be the correct size and should be accounted for if not.
             objectiveCallback: A callback for the objective function of this specific optimization
             constraintCallback: A callback for the nonlinear constraints, where the return time is expected to be [c, ceq, gc, gceq].
-            bounds: A dict containing input and output bounds.
+            bounds: A dict containing input and output bounds
         
         Returns:
             (success: bool, parameters: list of floats, cost: float): `success`

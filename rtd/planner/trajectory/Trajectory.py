@@ -58,7 +58,7 @@ class Trajectory(metaclass=ABCMeta):
         constructor should focus on the start state
         
         Arguments:
-            trajectoryParams: the parameters of the trajectory to set.
+            trajectoryParams: the parameters of the trajectory to set
         '''
         pass
     

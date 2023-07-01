@@ -6,6 +6,10 @@ from rtd.planner.trajectory import Trajectory
 import numpy as np
 from numpy.typing import NDArray
 
+# define top level module logger
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class RtdTrajOpt:
@@ -14,7 +18,7 @@ class RtdTrajOpt:
     
     This object handles the necessary calls to perform the actual trajectory
     optimization when requested. It calls the generators for the reachble
-    sets and combines all the resulting nonlinear constraints in the end.
+    sets and combines all the resulting nonlinear constraints in the end
     '''
     def __init__(self, trajOptProps: TrajOptProps, robot: WorldEntity, reachableSets: dict,
                  objective: Objective, optimizationEngine: OptimizationEngine,
@@ -25,7 +29,7 @@ class RtdTrajOpt:
         Store all the handles to objects that we want to use.
         This should encapsulate the main trajectory optimization
         aspection of RTD & ideally need very little specialization
-        between versions.
+        between versions
         
         Arguments:
             trajOptProps: TrajOptProps
@@ -44,15 +48,15 @@ class RtdTrajOpt:
     
     
     def solveTrajOpt(self, robotState: EntityState, worldState, waypoint,
-                     initialGuess: Trajectory, **rsAdditionalArgs) -> tuple[Trajectory, float, dict]:
+                     initialGuess: Trajectory, **rsAdditionalArgs: dict[dict]) -> tuple[Trajectory, float, dict]:
         '''
-        Execute the solver for trajectory optimization.
+        Execute the solver for trajectory optimization
         
         Note:
             The returned `info` dict has the following entries:
             worldState, robotState, rsInstances, nlconCallbacks,
             objectiveCallback, waypoint, bounds, num_parameters, guess,
-            trajectory, cost.
+            trajectory, cost
         
         Arguments:
             robotState: EntityState: State of the robot.
@@ -69,9 +73,32 @@ class RtdTrajOpt:
             trajectory or empty. `cost` is the final cost of the
             objective used. `info` is a dict of optimization data.
         '''
-        pass
-
-
+        # generate reachable set
+        logger.info("Generating reachable sets and nonlinear constraints")
+        rsInstances_arr = dict()
+        
+        for rs_name in self.reachableSets:
+            logger.debug(f"Generating {rs_name}")
+            
+            # get additional arguments for current reachset
+            rs_args = dict()
+            if rs_name in rsAdditionalArgs:
+                logger.debug(f"Passing additional arguments to generate {rs_name}")
+                rs_args = rsAdditionalArgs[rs_name]
+            
+            # generate reachset
+            rs_dict = self.reachableSets[rs_name].getReachableSet(robotState, **rs_args, ignore_cache=False)
+            
+            # ???
+            for idx in range(len(rs_dict)):
+                rsInstances_arr[idx] = {
+                    'id': rs_dict[idx]["id"],
+                    'rs': {rs_name: rs_dict[idx]["rs"]},
+                }
+                rsInstances_arr[idx]["num_instances"] = len(rsInstances_arr[idx]["rs"])
+            
+            # generate nonlinear constraints 
+                
 
     class merge_constraints:
         '''
@@ -88,7 +115,7 @@ class RtdTrajOpt:
             '''
             Overload call to work as a functor
             '''
-            if (res:=self.findBuffer(k) != None):
+            if ((res:=self.findBuffer(k)) != None):
                 return res
             
             # do some calculation

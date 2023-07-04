@@ -4,7 +4,7 @@ from rtd.planner.trajopt import TrajOptProps
 from nptyping import NDArray, Shape, Float64
 
 # type hinting
-ColVec = NDArray[Shape['N,1'], Float64]
+RowVec = NDArray[Shape['N'], Float64]
 
 
 
@@ -23,7 +23,7 @@ class Trajectory(metaclass=ABCMeta):
         self.trajOptProps: TrajOptProps = None
         
         # The parameters used for this trajectory
-        self.trajectoryParams: ColVec = None
+        self.trajectoryParams: RowVec = None
         
         # The initial state for this trajectory
         self.startState: EntityState = None
@@ -43,7 +43,7 @@ class Trajectory(metaclass=ABCMeta):
         throwing an error if incorrect
         
         Arguments:
-            throwOnError: bool: whether or not to throw an error if invalid
+            throwOnError: bool: whether or not to throw InvalidTrajectory if invalid
         
         Returns:
             bool: whether or not the trajectory is valid
@@ -52,7 +52,7 @@ class Trajectory(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def setParameters(self, trajectoryParams: ColVec, **options):
+    def setParameters(self, trajectoryParams: RowVec, **options):
         '''
         Set the parameters for the trajectory
         
@@ -67,12 +67,12 @@ class Trajectory(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def getCommand(self, time: float | ColVec) -> EntityState:
+    def getCommand(self, time: float | RowVec) -> EntityState:
         '''
         Computes the actual state to track for the given time
         
-        Should throw RTD:InvalidTrajectory if the trajectory isn't set
-        Should take ColVector as `time` if `vectorized` is True
+        Should throw InvalidTrajectory if the trajectory isn't set
+        Should take RowVector as `time` if `vectorized` is True
         
         Arguments:
             time: Time to use to calculate the desired state for this trajectory
@@ -81,3 +81,10 @@ class Trajectory(metaclass=ABCMeta):
             EntityState: Desired state at the given time
         '''
         pass
+
+
+class InvalidTrajectory(Exception):
+    '''
+    An exception thrown when `validate()` of a trajectory fails
+    '''
+    pass

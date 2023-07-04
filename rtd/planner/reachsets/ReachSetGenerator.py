@@ -73,7 +73,7 @@ class ReachSetGenerator(metaclass=ABCMeta):
         # and string representation of the keyword arguments
         cache_hash = str(id(robotState)) + str(options)
         
-        # search cache if hash exists
+        # search cache if hash exists and return if it does
         for rs in self._cache:
             if rs[0] == cache_hash:
                 return rs[1]

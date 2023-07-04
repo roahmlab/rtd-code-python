@@ -1,5 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from typing import Callable
+from nptyping import NDArray, Shape, Float64
+
+# type hinting
+BoundVec = NDArray[Shape['N,2'], Float64]
 
 
 
@@ -11,13 +15,12 @@ class ReachSetInstance(metaclass=ABCMeta):
     hold the necessary information to make a nonlinear constraint. If a
     generated nonlinear constraint function is not atomic (specifically, if
     it can change class properties, the cache for the respective
-    `rtd.planner.reachsets.ReachSetGenerator`
-    should be disabled by setting `cache_max_size` to 0
+    `ReachSetGenerator` should be disabled by setting `cache_max_size` to 0
     '''
     def __init__(self):
         # A 2 column array denoting the input minimum and maximums for the
         # reachable set on the left and right, respectively
-        self.input_range: list[tuple[float, float]] = None
+        self.input_range: BoundVec = None
 
         # The number of main shared parameters used by this set. Generally,
         # this should match the size of the final trajectory parameters

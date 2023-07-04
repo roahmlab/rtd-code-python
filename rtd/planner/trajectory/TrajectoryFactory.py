@@ -2,6 +2,11 @@ from abc import ABCMeta, abstractmethod
 from rtd.entity.states import EntityState
 from rtd.planner.trajopt import TrajOptProps
 from rtd.planner.trajectory import Trajectory
+import numpy as np
+from nptyping import NDArray, Shape, Float64
+
+# type hinting
+ColVec = NDArray[Shape['N,1'], Float64]
 
 
 
@@ -20,7 +25,7 @@ class TrajectoryFactory(metaclass=ABCMeta):
     
     @abstractmethod
     def createTrajectory(self, robotState: EntityState, rsInstances: dict = None,
-                         trajectoryParams: list[float] = None, **options) -> Trajectory:
+                         trajectoryParams: ColVec = None, **options) -> Trajectory:
         '''
         Factory method to create the trajectory
         

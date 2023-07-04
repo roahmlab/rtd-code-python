@@ -1,0 +1,1 @@
+from armour.trajectory.PieceWiseArmTrajectory import PiecewiseArmTrajectory

@@ -1,10 +1,9 @@
 from rtd.planner.trajopt import TrajOptProps, Objective, OptimizationEngine
 from rtd.planner.trajectory import TrajectoryFactory
+from rtd.planner.reachsets import ReachSetGenerator
 from rtd.sim.world import WorldEntity
 from rtd.entity.states import EntityState
 from rtd.planner.trajectory import Trajectory
-import numpy as np
-from numpy.typing import NDArray
 
 # define top level module logger
 import logging
@@ -20,7 +19,8 @@ class RtdTrajOpt:
     optimization when requested. It calls the generators for the reachble
     sets and combines all the resulting nonlinear constraints in the end
     '''
-    def __init__(self, trajOptProps: TrajOptProps, robot: WorldEntity, reachableSets: dict,
+    def __init__(self, trajOptProps: TrajOptProps, robot: WorldEntity,
+                 reachableSets: dict[str, ReachSetGenerator],
                  objective: Objective, optimizationEngine: OptimizationEngine,
                  trajectoryFactory: TrajectoryFactory, **options):
         '''
@@ -33,15 +33,15 @@ class RtdTrajOpt:
         
         Arguments:
             trajOptProps: TrajOptProps
-            robot (rtd.sim.world.WorldEntity)
-            reachableSets (struct)
-            objective (rtd.planner.trajopt.Objective)
-            optimizationEngine (rtd.planner.trajopt.OptimizationEngine)
-            trajectoryFactory (rtd.planner.trajectory.TrajectoryFactory)
+            robot: WorldEntity
+            reachableSets: dict[str, ReachSetGenerator]
+            objective: Objective
+            optimizationEngine: OptimizationEngine
+            trajectoryFactory: TrajectoryFactory
         '''
         self.trajOptProps: TrajOptProps = None
         self.robot: WorldEntity = robot
-        self.reachableSets: dict = reachableSets
+        self.reachableSets: dict[str, ReachSetGenerator] = reachableSets
         self.objective: Objective = objective
         self.optimizationEngine: OptimizationEngine = optimizationEngine
         self.trajectoryFactory: TrajectoryFactory = trajectoryFactory
@@ -75,7 +75,7 @@ class RtdTrajOpt:
         '''
         # generate reachable set
         logger.info("Generating reachable sets and nonlinear constraints")
-        rsInstances_arr = dict()
+        rsInstances_list: list[dict] = list()
         
         for rs_name in self.reachableSets:
             logger.debug(f"Generating {rs_name}")
@@ -87,15 +87,15 @@ class RtdTrajOpt:
                 rs_args = rsAdditionalArgs[rs_name]
             
             # generate reachset
-            rs_dict = self.reachableSets[rs_name].getReachableSet(robotState, **rs_args, ignore_cache=False)
+            rs_list: list[dict] = self.reachableSets[rs_name].getReachableSet(robotState, ignore_cache=False, **rs_args)
             
             # ???
             for idx in range(len(rs_dict)):
-                rsInstances_arr[idx] = {
+                rs_arr[idx] = {
                     'id': rs_dict[idx]["id"],
                     'rs': {rs_name: rs_dict[idx]["rs"]},
                 }
-                rsInstances_arr[idx]["num_instances"] = len(rsInstances_arr[idx]["rs"])
+                rs_arr[idx]["num_instances"] = len(rs_arr[idx]["rs"])
             
             # generate nonlinear constraints 
                 

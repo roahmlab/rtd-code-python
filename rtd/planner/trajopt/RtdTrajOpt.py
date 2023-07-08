@@ -1,7 +1,7 @@
 from rtd.planner.trajopt import TrajOptProps, Objective, OptimizationEngine
 from rtd.planner.trajectory import TrajectoryFactory
 from rtd.planner.reachsets import ReachSetGenerator
-from rtd.sim.world import WorldEntity
+from rtd.sim.world import WorldEntity, WorldState
 from rtd.entity.states import EntityState
 from rtd.planner.trajectory import Trajectory
 from rtd.planner.reachsets import ReachSetInstance
@@ -46,7 +46,7 @@ class RtdTrajOpt:
             optimizationEngine: OptimizationEngine
             trajectoryFactory: TrajectoryFactory
         '''
-        self.trajOptProps: TrajOptProps = None
+        self.trajOptProps: TrajOptProps = trajOptProps
         self.robot: WorldEntity = robot
         self.reachableSets: dict[str, ReachSetGenerator] = reachableSets
         self.objective: Objective = objective
@@ -54,7 +54,7 @@ class RtdTrajOpt:
         self.trajectoryFactory: TrajectoryFactory = trajectoryFactory
     
     
-    def solveTrajOpt(self, robotState: EntityState, worldState, waypoint,
+    def solveTrajOpt(self, robotState: EntityState, worldState: WorldState, waypoint,
                      initialGuess: Trajectory, **rsAdditionalArgs: dict[dict]) -> tuple[Trajectory, float, dict]:
         '''
         Execute the solver for trajectory optimization
@@ -67,7 +67,7 @@ class RtdTrajOpt:
         
         Arguments:
             robotState: EntityState: State of the robot.
-            worldState: Observed state of the world for the reachable sets
+            worldState: WorldState: Observed state of the world for the reachable sets
             waypoint: Waypoint we want to optimize to
             initialGuess: Trajectory: Past trajectory to use as an initial guess
             rsAdditionalArgs: additional arguments to pass to the reachable sets, by set name
@@ -176,7 +176,7 @@ class RtdTrajOpt:
             parameter = parameters[min_idx]
             trajectory = self.trajectoryFactory.createTrajectory(robotState, rsInstances, parameter)
         else:
-            trajectory = list()
+            trajectory = None
         
         return {
             'worldState': worldState,

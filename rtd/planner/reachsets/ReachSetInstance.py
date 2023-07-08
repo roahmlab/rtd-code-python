@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from rtd.sim.world import WorldState
 from typing import Callable
 
 
@@ -24,7 +25,7 @@ class ReachSetInstance(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def genNLConstraint(self, worldState) -> Callable:
+    def genNLConstraint(self, worldState: WorldState) -> Callable:
         '''
         Generate the nonlinear constraint function for the provided worldState
         
@@ -35,7 +36,7 @@ class ReachSetInstance(metaclass=ABCMeta):
         gradients for the respective constraints
         
         Arguments:
-            worldState: The observation of the world we want to generate the constraint for
+            worldState: WorldState: The observation of the world we want to generate the constraint for
         
         Returns:
             function_handle: A function handle for the generated nlconstraint where the

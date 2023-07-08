@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import Callable
 from rtd.entity.states import EntityState
+from rtd.planner.reachsets import ReachSetInstance
 
 
 
@@ -13,7 +14,7 @@ class Objective(metaclass=ABCMeta):
     function calls can take place inside the object
     '''
     @abstractmethod
-    def genObjective(self, robotState: EntityState, waypoint, reachableSets: dict) -> Callable:
+    def genObjective(self, robotState: EntityState, waypoint, reachableSets: dict[str, ReachSetInstance]) -> Callable:
         '''
         Generate an objective callback for use with some optimizer
         

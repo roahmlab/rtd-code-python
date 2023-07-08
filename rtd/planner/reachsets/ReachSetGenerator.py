@@ -20,11 +20,11 @@ class ReachSetGenerator(metaclass=ABCMeta):
         self.cache_max_size: float = None
         # a list of length < cache_max_size that stores
         # (hash, reachableset) pairs
-        self._cache: list[tuple[str, ReachSetInstance]] = list()
+        self._cache: list[tuple[str, dict[int, ReachSetInstance]]] = list()
     
     
     @abstractmethod
-    def generateReachableSet(self, robotState: EntityState, **options) -> ReachSetInstance:
+    def generateReachableSet(self, robotState: EntityState, **options) -> dict[int, ReachSetInstance]:
         '''
         Generate a new reachable set given a robot state and extra arguments if desired
         
@@ -37,13 +37,13 @@ class ReachSetGenerator(metaclass=ABCMeta):
             robotState: EntityState: Some entity state which the ReachableSetInstance is generated for.
         
         Returns:
-            ReachSetInstance: A new instance of some derived version of `ReachSetInstance`
+            dict: A dict of problem id to `ReachSetInstance` pairs
         '''
         pass
     
     
     def getReachableSet(self, robotState: EntityState,
-                        ignore_cache: bool = False, **options) -> ReachSetInstance | None:
+                        ignore_cache: bool = False, **options) -> dict[int, ReachSetInstance]:
         '''
         Get a reachable set instance for the given robot state and passthrough arguments
         
@@ -62,7 +62,7 @@ class ReachSetGenerator(metaclass=ABCMeta):
             ignore_cache: bool: If set true, the cache is completely ignored
         
         Returns:
-            ReachSetInstance: The respective reachable set
+            dict: A dict of problem id to `ReachSetInstance` pairs
         '''
         # if we don't want to use the cache or don't have a cache,
         # return a newly generated reachableset

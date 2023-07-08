@@ -14,13 +14,13 @@ class ReachSetInstance(metaclass=ABCMeta):
     `ReachSetGenerator` should be disabled by setting `cache_max_size` to 0
     '''
     def __init__(self):
-        # A tuple denoting the input minimum and maximums for the
-        # reachable set on the left and right, respectively
+        # A tuple denoting the input minimum and maximums for the reachable
+        # set on the left and right, respectively
         self.input_range: tuple[float, float] = None
 
         # The number of main shared parameters used by this set. Generally,
         # this should match the size of the final trajectory parameters
-        self.num_parameters: float = None
+        self.num_parameters: int = None
     
     
     @abstractmethod

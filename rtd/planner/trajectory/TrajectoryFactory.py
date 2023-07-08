@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from rtd.entity.states import EntityState
 from rtd.planner.trajopt import TrajOptProps
 from rtd.planner.trajectory import Trajectory
+from rtd.planner.reachsets import ReachSetInstance
 from nptyping import NDArray, Shape, Float64
 
 # type hinting
@@ -23,7 +24,7 @@ class TrajectoryFactory(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def createTrajectory(self, robotState: EntityState, rsInstances: dict = None,
+    def createTrajectory(self, robotState: EntityState, rsInstances: dict[str, ReachSetInstance] = None,
                          trajectoryParams: RowVec = None, **options) -> Trajectory:
         '''
         Factory method to create the trajectory

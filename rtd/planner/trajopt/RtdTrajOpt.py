@@ -124,9 +124,7 @@ class RtdTrajOpt:
             
             # compute bounds
             logger.debug("Computing bounds")
-            param_bounds = np.zeros((num_parameters, 2))
-            param_bounds[:,0] = -np.inf
-            param_bounds[:,1] = np.inf
+            param_bounds = np.ones((num_parameters, 2)) * (-np.inf, np.inf)
             for rs in rsInstances.values():
                 new_bounds = np.tile(rs.input_range, (num_parameters, 1))
                 # Ensure bounds are the intersect of the intervals for the

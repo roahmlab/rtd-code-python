@@ -48,9 +48,9 @@ class PiecewiseArmTrajectory(Trajectory):
         self.trajectoryParams = trajectoryParams
         if self.trajectoryParams.size > self.jrsInstance.n_q:
             self.trajectoryParams = self.trajectoryParams[:self.jrsInstance.n_q]
-        if startState != None:
+        if startState == None:
             self.startState = startState
-        if jrsInstance != None:
+        if jrsInstance == None:
             self.jrsInstance = jrsInstance
         
         # perform internal update

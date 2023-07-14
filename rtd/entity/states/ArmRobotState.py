@@ -1,4 +1,5 @@
 from rtd.entity.states import EntityState
+from nptyping import NDArray, Shape, Float64
 
 
 

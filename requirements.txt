@@ -1,13 +1,24 @@
 certifi==2023.5.7
 charset-normalizer==3.1.0
+cloudpickle==2.2.1
 contourpy==1.0.7
 cycler==0.11.0
 Cython==0.29.35
+filelock==3.12.2
 fonttools==4.39.4
+gym==0.26.2
+gym-notices==0.0.8
 idna==3.4
+Jinja2==3.1.2
 kiwisolver==1.4.4
+lxml==4.9.3
+MarkupSafe==2.1.3
+mat4py==0.5.0
 matplotlib==3.7.1
 mergedeep==1.3.4
+mpmath==1.3.0
+networkx==3.1
+nptyping==2.5.0
 numpy==1.24.3
 packaging==23.1
 Pillow==9.5.0
@@ -18,10 +29,15 @@ pyparsing==3.0.9
 python-dateutil==2.8.2
 python-fcl==0.7.0.4
 pyvista==0.39.0
--e git+https://github.com/roahmlab/rtd-code-python.git@567b7963546b87b6d774aae7ed5f88600461ff02#egg=rtd_code_python
+requests==2.30.0
+-e git+https://github.com/roahmlab/rtd-code-python.git@36f64c1bdf040f0735a5da7e7912eedae6136f7f#egg=rtd_code_python
 scipy==1.10.1
 scooby==0.7.2
 six==1.16.0
+sympy==1.12
+torch==2.0.1
 trimesh==3.21.7
+typing_extensions==4.7.1
 urllib3==2.0.2
 vtk==9.2.6
+-e git+https://github.com/BuildingAtom/zonopy.git@69774a48471877651bb10738070c20ab48fc754a#egg=zonopy

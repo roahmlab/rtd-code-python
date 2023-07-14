@@ -52,4 +52,4 @@ class JRSGenerator(ReachSetGenerator):
          
         # initialize this particular instance and run
         rs.initialize(self.traj_type)
-        return rs
+        return {1: rs}

@@ -1,7 +1,5 @@
 from rtd.planner.trajectory import Trajectory, InvalidTrajectory
-from rtd.planner.trajectory.Trajectory import RowVec
-from rtd.planner.trajopt import TrajOptProps
-from rtd.entity.states import ArmRobotState, EntityState
+from rtd.entity.states import ArmRobotState
 import numpy as np
 from nptyping import NDArray, Shape, Float64
 

@@ -1,1 +1,4 @@
-from armour.trajectory.PieceWiseArmTrajectory import PiecewiseArmTrajectory
+from armour.trajectory.ZeroHoldArmTrajectory import ZeroHoldArmTrajectory
+from armour.trajectory.PiecewiseArmTrajectory import PiecewiseArmTrajectory
+from armour.trajectory.BernsteinArmTrajectory import BernsteinArmTrajectory
+from armour.trajectory.ArmTrajectoryFactory import ArmTrajectoryFactory

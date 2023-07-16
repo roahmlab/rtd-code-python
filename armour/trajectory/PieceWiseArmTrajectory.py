@@ -16,8 +16,7 @@ class PiecewiseArmTrajectory(Trajectory):
     PiecewiseArmTrajectory
     The original ArmTD trajectory with piecewise accelerations
     '''
-    def __init__(self, trajOptProps: TrajOptProps,
-                 startState: ArmRobotState, jrsInstance: JRSInstance):
+    def __init__(self, trajOptProps: TrajOptProps, startState: ArmRobotState, jrsInstance: JRSInstance):
         '''
         The PiecewiseArmTrajectory constructor, which simply sets parameters and
         attempts to call internalUpdate, a helper function made for this
@@ -142,7 +141,7 @@ class PiecewiseArmTrajectory(Trajectory):
             state[np.ix_(acc_idx,t_stop_mask)] = self.q_ddot_to_stop
 
         # Update all states after the horizon time
-        state[np.ix_(pos_idx, np.logical_not(t_plan_mask|t_stop_mask))] = self.q_end
+        state[np.ix_(pos_idx, np.logical_not(t_plan_mask|t_stop_mask))] = np.reshape(self.q_end, (self.q_end.size,1))
 
         # Generate the output.
         command = ArmRobotState(pos_idx, vel_idx, acc_idx)

@@ -12,12 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class JLSGenerator(ReachSetGenerator):
-    '''
-    InputReachableSet
-    This generates the upper and lower bound reachable sets on the input,
-    and creates an IRSInstance object
-    '''
-    def __init__(self, robot, jrsGenerator: JRSGenerator, **options):
+    def __init__(self, robot, jrsGenerator: JRSGenerator):
         # initialize base classes
         ReachSetGenerator().__init__(self)
         # set properties
@@ -67,10 +62,14 @@ class JLSGenerator(ReachSetGenerator):
                 q_buf = torch.sum(torch.abs(q_lim_tmp.Grest))
                 dq_buf = torch.sum(torch.abs(dq_lim_tmp.Grest))
                 # assign bounds at [i][j]
-                q_ub[i].append(polyZonotope(Z=[q_lim_tmp.c + q_buf, q_lim_tmp.G, list()], expmat=q_lim_tmp.expMat, id=q_lim_tmp.id) - joint_state_limits[1,j])
-                q_lb[i].append(-1*polyZonotope(Z=[q_lim_tmp.c + q_buf, q_lim_tmp.G, list()], expmat=q_lim_tmp.expMat, id=q_lim_tmp.id) + joint_state_limits[0,j])
-                dq_ub[i].append(polyZonotope(Z=[dq_lim_tmp.c + dq_buf, dq_lim_tmp.G, list()], expmat=dq_lim_tmp.expMat, id=dq_lim_tmp.id) - joint_speed_limits[1,j])
-                dq_lb[i].append(-1*polyZonotope(Z=[dq_lim_tmp.c + dq_buf, dq_lim_tmp.G, list()], expmat=dq_lim_tmp.expMat, id=dq_lim_tmp.id) + joint_speed_limits[0,j])
+                q_ub[i].append(polyZonotope(Z=[q_lim_tmp.c + q_buf, q_lim_tmp.G], n_dep_gens=q_lim_tmp.n_dep_gens,
+                                            expmat=q_lim_tmp.expMat, id=q_lim_tmp.id) - joint_state_limits[1,j])
+                q_lb[i].append(-1*polyZonotope(Z=[q_lim_tmp.c + q_buf, q_lim_tmp.G], n_dep_gens=q_lim_tmp.n_dep_gens,
+                                               expmat=q_lim_tmp.expMat, id=q_lim_tmp.id) + joint_state_limits[0,j])
+                dq_ub[i].append(polyZonotope(Z=[dq_lim_tmp.c + dq_buf, dq_lim_tmp.G], n_dep_gens=dq_lim_tmp.n_dep_gens,
+                                             expmat=dq_lim_tmp.expMat, id=dq_lim_tmp.id) - joint_speed_limits[1,j])
+                dq_lb[i].append(-1*polyZonotope(Z=[dq_lim_tmp.c + dq_buf, dq_lim_tmp.G], n_dep_gens=dq_lim_tmp.n_dep_gens,
+                                                expmat=dq_lim_tmp.expMat, id=dq_lim_tmp.id) + joint_speed_limits[0,j])
                 
         # Save the generated reachable sets into the JLSInstance
-        return JLSInstance(q_ub, q_lb, dq_ub, dq_lb, jrsInstance)
+        return {1: JLSInstance(q_ub, q_lb, dq_ub, dq_lb, jrsInstance)}

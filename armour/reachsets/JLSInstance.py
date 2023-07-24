@@ -17,8 +17,8 @@ BoundsVec = NDArray[Shape['N,2'], Float64]
 
 class JLSInstance(ReachSetInstance):
     '''
-    IRSInstance
-    This is just an individual instance of input reachable set from
+    JLSInstance
+    This is just an individual instance of joint limit set set from
     armour
     '''
     def __init__(self, q_ub: list[list[polyZonotope]], q_lb: list[list[polyZonotope]], 
@@ -38,12 +38,6 @@ class JLSInstance(ReachSetInstance):
     
     
     def genNLConstraint(self, worldState: WorldState) -> Callable:
-        '''
-        Generates an nlconstraint if needed, or will return a NOP
-        function.
-        Returns a function handle for the nlconstraint generated
-        where the function's return type is [c, ceq, gc, gceq]
-        '''
         constraints: list [Callable] = list()
         grad_constraints: list [Callable] = list()
         

@@ -16,7 +16,7 @@ class JRSInstance(ReachSetInstance):
     '''
     def __init__(self):
         # initialize base classes
-        ReachSetInstance().__init__(self)
+        ReachSetInstance.__init__(self)
         # set properties
         self.input_range: BoundsVec = (-1.0, 1.0)
         self.output_range: BoundsVec = (-1.0, 1.0)

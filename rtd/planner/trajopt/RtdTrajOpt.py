@@ -176,7 +176,7 @@ class RtdTrajOpt:
         else:
             trajectory = None
         
-        return {
+        info = {
             'worldState': worldState,
             'robotState': robotState,
             'rsInstances': rsInstances_dict,
@@ -192,6 +192,8 @@ class RtdTrajOpt:
             'successes': successes,
             'solution_idx': min_idx,
         }
+        
+        return (trajectory, cost, info)
              
 
     class merge_constraints:

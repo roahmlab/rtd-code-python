@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class JLSGenerator(ReachSetGenerator):
     def __init__(self, robot, jrsGenerator: JRSGenerator):
         # initialize base classes
-        ReachSetGenerator().__init__(self)
+        ReachSetGenerator.__init__(self)
         # set properties
         self.cache_max_size = 1
         self.robot = robot

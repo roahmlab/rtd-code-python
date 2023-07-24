@@ -20,7 +20,7 @@ class JRSGenerator(ReachSetGenerator):
     def __init__(self, robot, taylor_degree: int = 1, add_ultimate_bound: bool = True,
                  traj_type: str = "piecewise"):
         # initialize base classes
-        ReachSetGenerator().__init__(self)
+        ReachSetGenerator.__init__(self)
         # set properties
         self.cache_max_size = 1
         self.controller = robot.controller

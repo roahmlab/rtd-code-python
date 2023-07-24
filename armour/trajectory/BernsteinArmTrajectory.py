@@ -15,7 +15,7 @@ RowVec = NDArray[Shape['N'], Float64]
 class BernsteinArmTrajectory(Trajectory):
     def __init__(self, trajOptProps: TrajOptProps, startState: ArmRobotState, jrsInstance: JRSInstance):
         # initialize base classes
-        Trajectory().__init__(self)
+        Trajectory.__init__(self)
         # set properties
         self.vectorized = True
         # Initial parameters from the robot used to calculate the desired

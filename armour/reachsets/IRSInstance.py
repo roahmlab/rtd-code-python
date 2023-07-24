@@ -23,7 +23,7 @@ class IRSInstance(ReachSetInstance):
     '''
     def __init__(self, u_ub: list[list[polyZonotope]], u_lb: list[list[polyZonotope]], jrsInstance: JRSInstance):
         # initialize base classes
-        ReachSetInstance().__init__(self)
+        ReachSetInstance.__init__(self)
         
         # properties carried over from the original implementation
         self.u_ub: list[list[polyZonotope]] = u_ub

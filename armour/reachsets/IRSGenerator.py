@@ -20,7 +20,7 @@ class IRSGenerator(ReachSetGenerator):
     '''
     def __init__(self, robot, jrsGenerator: JRSGenerator, use_robost_input: bool = True):
         # initialize base classes
-        ReachSetGenerator().__init__(self)
+        ReachSetGenerator.__init__(self)
         # set properties
         self.cache_max_size = 1
         self.robot = robot
@@ -46,9 +46,9 @@ class IRSGenerator(ReachSetGenerator):
         
         tau_nom: list[list] = list()
         for i in range(jrsInstance.n_t):
-            f, n, u = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R_t[i], jrsInstance.dq[i],
+            f_pz, n_pz, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R_t[i], jrsInstance.dq[i],
                                      jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params, True)
-            tau_nom.append([u, f, n])
+            tau_nom.append([u_pz, f_pz, n_pz])
         
         v_norm = np.zeros(jrsInstance.n_t)
         

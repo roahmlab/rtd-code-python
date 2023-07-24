@@ -24,7 +24,7 @@ class PiecewiseArmTrajectory(Trajectory):
         parameterized
         '''
         # initialize base classes
-        Trajectory().__init__(self)
+        Trajectory.__init__(self)
         # set properties
         self.vectorized = True
         self.trajOptProps = trajOptProps

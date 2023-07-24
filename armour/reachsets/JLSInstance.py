@@ -24,7 +24,7 @@ class JLSInstance(ReachSetInstance):
     def __init__(self, q_ub: list[list[polyZonotope]], q_lb: list[list[polyZonotope]], 
                  dq_ub: list[list[polyZonotope]], dq_lb: list[list[polyZonotope]], jrsInstance: JRSInstance):
         # initialize base classes
-        ReachSetInstance().__init__(self)
+        ReachSetInstance.__init__(self)
         
         # properties carried over from the original implementation
         self.q_ub: list[list[polyZonotope]] = q_ub

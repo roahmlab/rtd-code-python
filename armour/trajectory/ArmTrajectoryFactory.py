@@ -14,7 +14,7 @@ RowVec = NDArray[Shape['N'], Float64]
 class ArmTrajectoryFactory(TrajectoryFactory):
     def __init__(self, trajOptProps: TrajOptProps, traj_type: str = "piecewise"):
         # initialize base classes
-        TrajectoryFactory().__init__(self)
+        TrajectoryFactory.__init__(self)
         # set properties
         self.trajOptProps = trajOptProps
         self.traj_type = traj_type

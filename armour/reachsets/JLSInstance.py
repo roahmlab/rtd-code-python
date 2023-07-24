@@ -21,7 +21,8 @@ class JLSInstance(ReachSetInstance):
     This is just an individual instance of input reachable set from
     armour
     '''
-    def __init__(self, q_ub, q_lb, dq_ub, dq_lb, jrsInstance: JRSInstance):
+    def __init__(self, q_ub: list[list[polyZonotope]], q_lb: list[list[polyZonotope]], 
+                 dq_ub: list[list[polyZonotope]], dq_lb: list[list[polyZonotope]], jrsInstance: JRSInstance):
         # initialize base classes
         ReachSetInstance().__init__(self)
         

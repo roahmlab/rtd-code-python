@@ -19,6 +19,9 @@ class JRSGenerator(ReachSetGenerator):
     '''
     def __init__(self, robot, taylor_degree: int = 1, add_ultimate_bound: bool = True,
                  traj_type: str = "piecewise"):
+        # initialize base classes
+        ReachSetGenerator().__init__(self)
+        # set properties
         self.cache_max_size = 1
         self.controller = robot.controller
         self.taylor_degree = taylor_degree
@@ -34,7 +37,6 @@ class JRSGenerator(ReachSetGenerator):
         Obtains the relevant reachable set for the robotstate provided
         and outputs the singular instance of a reachable set.
         Wraps create_jrs_online
-        Returns JRSInstance
         '''
         rs = JRSInstance()
         

@@ -29,7 +29,9 @@ class JRSGenerator(ReachSetGenerator):
         self.traj_type = traj_type
         # initialize zonopy's JRSGenerator
         traj_class = zpt.PiecewiseArmTrajectory if traj_type=="piecewise" else zpt.BernsteinArmTrajectory
-        self._jrnsgen = ZonoJRSGenerator(robot, traj_class)
+        self._jrnsgen = ZonoJRSGenerator(robot, traj_class, k_r=self.controller.k_r,
+                                         ultimate_bound=self.controller.ultimate_bound,
+                                         batched=True, unique_tid=False)
     
     
     def generateReachableSet(self, robotState: EntityState) -> dict[int, JRSInstance]:
@@ -44,7 +46,6 @@ class JRSGenerator(ReachSetGenerator):
         logger.info("The following message is from create_jrs_online")
         
         # generate it online
-        # note: controller and ultimate_bounds not used unlike the original MATLAB implementation
         zonojrs = self._jrnsgen.gen_JRS(robotState.q, robotState.q_dot, robotState.q_ddot, self.taylor_degree)
         rs.q_des = zonojrs['q_ref']
         rs.dq_des = zonojrs['qd_ref']
@@ -54,18 +55,16 @@ class JRSGenerator(ReachSetGenerator):
         rs.dq_a = zonojrs['qd_aux']
         rs.ddq_a = zonojrs['qdd_aux']
         rs.R_des = zonojrs['R_ref']
-        rs.R_t_des = zonojrs['']    # ???
         rs.R = zonojrs['R']
-        rs.R_t = zonojrs['']        # ???
         
-        n_q = rs.q.size
+        n_q = self._jrnsgen.num_q
         n_k = n_q
 
         rs.jrs_info = {
             'id': 1,
             'id_names': None,
             'k_id': np.arange(n_q).reshape(n_q,1),
-            'n_t': 1/0.01,
+            'n_t': self._jrnsgen.num_t,
             'n_q': n_q,
             'n_k': n_k,
             'c_k_orig': np.zeros(n_k),

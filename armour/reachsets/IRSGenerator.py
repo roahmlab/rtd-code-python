@@ -41,14 +41,44 @@ class IRSGenerator(ReachSetGenerator):
         logger.info("Generating input reachable set!")
         
         # set up zeros and overapproximation of r
+        zero_cell: list[polyZonotope] = list()
+        r: list[polyZonotope] = list()
         for j in range(jrsInstance.n_q):
-            pass
+            _, _, u_zero = poly_zono_rnea(...)
+            zero_cell.append(u_zero)
+            _, _, u_r = poly_zono_rnea(...)
+            r.append(u_r)
         
-        tau_nom: list[list] = list()
+        # start RNEA
+        tau_nom: list[list[polyZonotope]] = list()
+        w: list[list[polyZonotope]] = list()
         for i in range(jrsInstance.n_t):
-            f_pz, n_pz, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R_t[i], jrsInstance.dq[i],
-                                     jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params, True)
-            tau_nom.append([u_pz, f_pz, n_pz])
+            # RNEA for nominal
+            _, _, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
+                                     jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params.pz_nominal, True)
+            tau_nom.append(u_pz)
+            
+            if self.use_robost_input:
+                # RNEA interval for robust input
+                f_pz, n_pz, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
+                                     jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params.pz_interval, True)
+                
+                # calculate w from robust controller
+                for j in range(jrsInstance.n_q):
+                    w.append(u_pz[j] - tau_nom[i][j])
+                    w[i][j] = w[i][j].reduce(self.robot.info.params.pz_interval.zono_order)
+                
+                # calculate v_cell
+                _, _, v_cell = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], zero_cell,
+                                              zero_cell, r, self.robot.info.params.pz_interval, False)
+                v: list[polyZonotope] = list()
+                for j in range(jrsInstance.n_q):
+                    v.append(0.5*r[j]*v_cell[j])
+                    v[i] = v[i].reduce(self.robot.info.params.pz_interval.zono_order)
+                
+                v_diff
+        
+        
         
         v_norm = np.zeros(jrsInstance.n_t)
         

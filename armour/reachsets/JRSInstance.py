@@ -31,10 +31,8 @@ class JRSInstance(ReachSetInstance):
         self.dq_a = None
         self.ddq_a = None
         self.R_des = None
-        self.R_t_des = None
         self.R = None
-        self.R_t = None
-        self.jrs_info = None
+        self.jrs_info: dict = None
         
         # new properties to flatten structure
         self.n_q = None
@@ -45,19 +43,19 @@ class JRSInstance(ReachSetInstance):
     
     def initialize(self, traj_type: str):
         if self.traj_type == "piecewise":
-            c_k = self.jrs_info.c_k_orig
-            g_k = self.jrs_info.g_k_orig
+            c_k = self.jrs_info["c_k_orig"]
+            g_k = self.jrs_info["g_k_orig"]
         elif self.traj_type == "bernstein":
-            c_k = self.jrs_info.c_k_bernstein
-            g_k = self.jrs_info.g_k_bernstein
+            c_k = self.jrs_info["c_k_bernstein"]
+            g_k = self.jrs_info["g_k_bernstein"]
         self.input_range = np.ones((self.jrs_info.n_k, 1)) * self.input_range
         self.output_range = c_k + (-1, 1) * g_k
         
-        self.n_q = self.jrs_info.n_q
-        self.num_parameters = self.jrs_info.n_k
-        self.n_k = self.jrs_info.n_k
-        self.n_t = self.jrs_info.n_t
-        self.k_id = self.jrs_info.k_id
+        self.n_q = self.jrs_info["n_q"]
+        self.num_parameters = self.jrs_info["n_k"]
+        self.n_k = self.jrs_info["n_k"]
+        self.n_t = self.jrs_info["n_t"]
+        self.k_id = self.jrs_info["k_id"]
     
     
     def genNLConstraint(self, worldState: WorldState) -> Callable:

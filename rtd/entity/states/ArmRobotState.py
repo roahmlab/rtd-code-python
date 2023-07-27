@@ -1,5 +1,5 @@
 from rtd.entity.states import EntityState
-from nptyping import NDArray, Shape, Float64
+from nptyping import NDArray
 
 
 
@@ -23,6 +23,7 @@ class ArmRobotState(EntityState):
         self.position_indices: list[int] = position_indices
         self.velocity_indices: list[int] = velocity_indices
         self.acceleration_indices: list[int] = acceleration_indices
+        self.state: NDArray = None
     
     
     @property

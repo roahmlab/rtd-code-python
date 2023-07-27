@@ -7,3 +7,6 @@ rtd_venv/
 
 # packaging
 rtd_code_python.egg-info/
+
+# urdfs
+urdfs/

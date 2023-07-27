@@ -21,5 +21,6 @@ setup(
                 'trimesh>=3.21',
                 'python-fcl>=0.7',
                 'scipy>=1.10',
+                'urchin>=0.0.27',
         ],
 )

@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.spatial.transform import Rotation
 from nptyping import NDArray, Shape, Float64
 
 # type hinting
@@ -30,3 +31,8 @@ def rescale(vec: RowVec, scale_min: float, scale_max: float,
     vec += scale_min                # vec = [scale_min, scale_max]
     
     return vec
+
+
+def axang2rotm(axis: RowVec, angle: float):
+    r = Rotation.from_rotvec(angle * axis)
+    return r.as_matrix()

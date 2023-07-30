@@ -2,7 +2,6 @@ from rtd.entity.components import BaseStateComponent
 from rtd.entity.states import ArmRobotState
 from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo
-from rtd.functional.interpolate import interp1_list
 import numpy as np
 from nptyping import NDArray, Shape, Float64
 
@@ -19,10 +18,8 @@ class ArmourAgentState(BaseStateComponent, Options):
     @staticmethod
     def defaultoptions() -> dict:
         return {
-            "components": {
-                "initial_position": None,
-                "initial_velocity": None,
-            },
+            "initial_position": None,
+            "initial_velocity": None,
         }
     
     
@@ -102,7 +99,7 @@ class ArmourAgentState(BaseStateComponent, Options):
             self.mergeoptions({"initial_position": self.position, "initial_velocity": self.velocity})
     
     
-    def get_state(self, time: float = None) -> dict:
+    def get_state(self, time: float = None) -> ArmRobotState:
         if time is None:
             time = self.time[-1]
         state = ArmRobotState(self.position_indices, self.velocity_indices)
@@ -116,6 +113,7 @@ class ArmourAgentState(BaseStateComponent, Options):
         if mask.size > 1 and np.any(mask):
             for n in self.n_states:
                 state.state[n, mask] = np.interp(time[mask], time, self.state[n,:])
+        return state
     
     
     def commit_state_data(self, T_state: float, Z_state: list[float]):
@@ -174,3 +172,4 @@ class ArmourAgentState(BaseStateComponent, Options):
                 logger.error(f"t={t_check[t]:.2f}, {joint}-velocity limit exceeded: {vel_check[joint,t]:.5f}, [{lb:.5f},{ub:.5f}]")
         else:
             logger.info("No joint limits exceeded")
+        return out

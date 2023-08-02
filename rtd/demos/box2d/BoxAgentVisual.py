@@ -67,7 +67,7 @@ class BoxAgentVisual(PatchVisualObject, Options):
         The plot data can be added to the current figure by
         using the `add_artist` method of the figure axes
         '''
-        if time == None:
+        if time is None:
             time = self.box_state.time[-1]
 
         # set coordinate of rectangle to draw

@@ -19,9 +19,9 @@ def rescale(vec: RowVec, scale_min: float, scale_max: float,
         vec = vec.copy()
     
     # clamp
-    if input_min != None:
+    if input_min is not None:
         vec = np.maximum(vec, input_min)
-    if input_max != None:
+    if input_max is not None:
         vec = np.minimum(vec, input_max)
     
     # rescale

@@ -92,7 +92,7 @@ class WorldEntity(Options):
             
             # if the component inherits Options, copy all of its
             # options and store them under `options["component_options"]`
-            if (component_options := WorldEntity.get_componentOptions(component)) != None:
+            if (component_options := WorldEntity.get_componentOptions(component)) is not None:
                 options["component_options"][component_name] = component_options
         
         return options

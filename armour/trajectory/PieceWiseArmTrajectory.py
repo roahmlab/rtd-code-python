@@ -47,9 +47,9 @@ class PiecewiseArmTrajectory(Trajectory):
         self.trajectoryParams = trajectoryParams
         if self.trajectoryParams.size > self.jrsInstance.n_q:
             self.trajectoryParams = self.trajectoryParams[:self.jrsInstance.n_q]
-        if startState == None:
+        if startState is None:
             self.startState = startState
-        if jrsInstance == None:
+        if jrsInstance is None:
             self.jrsInstance = jrsInstance
         
         # perform internal update
@@ -61,9 +61,9 @@ class PiecewiseArmTrajectory(Trajectory):
         Validate that the trajectory is fully characterized
         '''
         # non-empty
-        valid = (self.trajectoryParams != None)
-        valid &= (self.jrsInstance != None)
-        valid &= (self.startState != None)
+        valid = (self.trajectoryParams is not None)
+        valid &= (self.jrsInstance is not None)
+        valid &= (self.startState is not None)
         
         # trajectory params makes sense
         valid &= (self.trajectoryParams.size == self.jrsInstance.n_q)

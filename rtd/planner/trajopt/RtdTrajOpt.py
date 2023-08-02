@@ -213,7 +213,7 @@ class RtdTrajOpt:
             Overload call to work as a functor.
             Utility function to merge the constraints
             '''
-            if ((res:=self.findBuffer(k)) != None):
+            if ((res:=self.findBuffer(k)) is not None):
                 return res
             
             # calculate result

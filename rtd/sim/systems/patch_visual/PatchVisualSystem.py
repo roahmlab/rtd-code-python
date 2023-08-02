@@ -63,7 +63,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         create a new figure and save its reference to 
         `self.figure_handle`
         '''
-        if (self._figure_handle == None or
+        if (self._figure_handle is None or
         not plt.fignum_exists(self._figure_handle.number)):
             self._figure_handle = plt.figure()
             plt.title(f'Figure {self._figure_handle.number} - {self.__class__.__name__}')
@@ -78,11 +78,11 @@ class PatchVisualSystem(SimulationSystem, Options):
         and adds them to the corresponding list
         '''
         # handle single items
-        if static != None:
+        if static is not None:
             static = toSequence(static)
             self.static_objects.extend(static)
         
-        if dynamic != None:
+        if dynamic is not None:
             dynamic = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
     
@@ -143,7 +143,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         the artist objects to the current figure at the
         input time. Defaults to the most recent `time`
         '''
-        if time == None:
+        if time is None:
             time = self.time[-1]
         
         # if the figure is closed or invalid, recreate it
@@ -159,9 +159,9 @@ class PatchVisualSystem(SimulationSystem, Options):
         self._figure_handle.show()
         
         # set xlim and ylim
-        if xlim != None:
+        if xlim is not None:
             ax.set_xlim(xlim)
-        if ylim != None:
+        if ylim is not None:
             ax.set_ylim(ylim)
         
         # clear figure content
@@ -193,11 +193,11 @@ class PatchVisualSystem(SimulationSystem, Options):
         the discretization will result in a faster animation
         speed. Defaults to 1 second per t
         '''
-        if t_span == None:
+        if t_span is None:
             t_span = (0, self.time[-1])
-        if time_discretization == None:
+        if time_discretization is None:
             time_discretization = self.time_discretization
-        if pause_time == None:
+        if pause_time is None:
             pause_time = time_discretization
         
         start_time = t_span[0]

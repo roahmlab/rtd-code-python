@@ -71,7 +71,7 @@ class GenericEntityState(BaseStateComponent, Options):
         time), interpolating the values if needed
         '''
         # default to last time
-        if time == None:
+        if time is None:
             time = self.time[-1]
             
         # get state at time, interporate if needed

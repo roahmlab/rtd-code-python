@@ -13,11 +13,11 @@ class ArmRobotState(EntityState):
         # initialize base classes
         EntityState.__init__(self)
         # handle empty data
-        if position_indices==None:
+        if position_indices is None:
             position_indices = list()
-        if velocity_indices==None:
+        if velocity_indices is None:
             velocity_indices = list()
-        if acceleration_indices==None:
+        if acceleration_indices is None:
             acceleration_indices = list()
         # set properties
         self.position_indices: list[int] = position_indices

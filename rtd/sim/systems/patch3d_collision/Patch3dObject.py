@@ -33,7 +33,7 @@ class Patch3dObject:
         collision checks with a single other object
         '''
         # skip collision check if they share the same parent
-        if self.parent == other.parent and self.parent != None:
+        if self.parent == other.parent and self.parent is not None:
             return (False, tuple())
         
         # check collision

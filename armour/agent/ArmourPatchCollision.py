@@ -7,13 +7,12 @@ from nptyping import NDArray
 
 
 class ArmourPatchCollision(Patch3dDynamicObject):
-    def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState, kinematics: ArmKinematics):
+    def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState):
         # initialize base classes
         Patch3dDynamicObject.__init__(self)
         # initialize
         self.arm_info = arm_info
         self.arm_state = arm_state
-        self.kinematics = kinematics
         
         # self.reset()
     

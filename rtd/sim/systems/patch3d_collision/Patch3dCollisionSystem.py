@@ -65,7 +65,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         and adds them to the corresponding list
         '''
         # handle single items
-        if static != None:
+        if static is not None:
             static: list[Patch3dObject] = toSequence(static)
             self.static_objects.extend(static)
             
@@ -77,7 +77,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
                     self._collision_handle.add_object(name=id(mesh), mesh=mesh)
                     self._name_refs[id(mesh)] = obj.parent
                 
-        if dynamic != None:
+        if dynamic is not None:
             dynamic = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
     
@@ -183,7 +183,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
             obj2 = self._name_refs[name2]
             
             # ignore if they share the same parent
-            if obj1 == obj2 and obj1 != None:
+            if obj1 == obj2 and obj1 is not None:
                 pass
             
             pairs.add((obj1, obj2))

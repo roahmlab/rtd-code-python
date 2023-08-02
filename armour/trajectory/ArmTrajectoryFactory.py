@@ -26,10 +26,10 @@ class ArmTrajectoryFactory(TrajectoryFactory):
         '''
         Create a new trajectory object for the given state
         '''
-        if traj_type == None:
+        if traj_type is None:
             traj_type = self.traj_type
         
-        if traj_type != "zerohold" and jrsInstance == None:
+        if traj_type != "zerohold" and jrsInstance is None:
             try:
                 jrsInstance = rsInstances["jrs"]
             except:
@@ -48,6 +48,6 @@ class ArmTrajectoryFactory(TrajectoryFactory):
             case _:
                 raise InvalidTrajectory("Traj_type must be one of 'zerohold', 'piecewise' or 'bernstein'!")
         
-        if trajectoryParams != None:
+        if trajectoryParams is not None:
             trajectory.setParameters(trajectoryParams)
         return trajectory

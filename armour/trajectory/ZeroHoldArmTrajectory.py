@@ -28,7 +28,7 @@ class ZeroHoldArmTrajectory(Trajectory):
         Set the parameters of the trajectory, with a focus on the
         parameters as the state should be set from the constructor
         '''
-        if startState == None:
+        if startState is None:
             self.startState = startState
         self.trajectoryParams = trajectoryParams
         self.startState = startState
@@ -39,7 +39,7 @@ class ZeroHoldArmTrajectory(Trajectory):
         Validate that the trajectory is fully characterized
         '''
         # Make sure we actually have a robot state to work with
-        valid = (self.startState != None)
+        valid = (self.startState is not None)
         
         if not valid and throwOnError:
             raise InvalidTrajectory("Must have some existing robot state to use this!")

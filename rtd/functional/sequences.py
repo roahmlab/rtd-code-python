@@ -10,7 +10,6 @@ def toSequence(obj) -> list | tuple:
     e.g. 
     [1, 2, 3] -> [1, 2, 3]
     ("a", "b") -> ("a", "b")
-    "hello" -> "hello"
     1 -> [1]
     '''
     return obj if type(obj) in (list, tuple) else [obj]

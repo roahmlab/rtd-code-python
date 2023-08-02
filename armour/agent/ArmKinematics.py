@@ -34,6 +34,21 @@ class ArmKinematics(Options):
         self.mergeoptions(options)
     
     
+    def get_link_transform(self, time):
+        if time > self.arm_state.time[-1]:
+            time = self.arm_state.time[-1]
+            logger.warn("Invalid time entered! Using agent''s final time t={t} instead.")
+        # interpolate the state for the corresponding time
+        config = self.arm_state.get_state(time).q
+        return self.get_link_transform_from_config(config)
+        
+    
+    
+    def get_link_transform_from_config(self, config):
+        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        return fk.values()[1:]
+    
+    
     def get_link_rotations_and_translations(self, time_or_config: float | NDArray = 0, cad_flag: bool = False) -> tuple[NDArray, NDArray, NDArray]:
         # get joint data
         if isinstance(t, float) or isinstance(t, int):
@@ -135,42 +150,3 @@ class ArmKinematics(Options):
             j_loc_local = j_locs[dim:,idx]
             J[:,idx] = -R_succ*j_loc_local + T_succ
         return (R, T, J)
-
-    
-    def get_joint_locations(self, times_or_configs: float | NDArray) -> NDArray:
-        '''
-        Return the joint locations in 2-D or 3-D space.
-    
-        If the input is a single time t in R, or a single
-        configuration q in Q, the output is a d-by-n array, where
-        n = A.n_links_and_joints and d = A.dimension.
-    
-        If the input is a 1-by-N vector of times or an n-by-N vector
-        of configurations, the output is a 1-by-N array where each
-        entry is the d-by-n array of joint locations for the
-        corresponding time or configuration
-        '''
-        
-        if isinstance(times_or_configs, float) or isinstance(times_or_configs, int):
-            _, _, J = self.get_link_rotations_and_translations(times_or_configs)
-        else:
-            n, N = (1, times_or_configs.size) if times_or_configs.ndim==1 else times_or_configs.shape
-            J = np.zeros(N)
-            
-            if times_or_configs.ndim==1:
-                # for the case of multiple times, iterate through the
-                # list and get the joint locations for each time
-                for idx in range(times_or_configs.size):
-                    _, _, J_idx = self.get_link_rotations_and_translations(times_or_configs[idx])
-                    J[idx] = J_idx
-            else:
-                # for the case of multiple configurations, make a cell
-                # array of the configurations
-                n, N = times_or_configs.shape
-                Q = mat2cell(times_or_configs, n, ones(1,N)) 
-                J = cellfun(@(q) self.get_joint_locations_from_configuration(q),Q,'UniformOutput',false)
-        return J
-    
-    
-    def get_joint_locations_from_configuration(self, q: NDArray) -> NDArray:
-        pass

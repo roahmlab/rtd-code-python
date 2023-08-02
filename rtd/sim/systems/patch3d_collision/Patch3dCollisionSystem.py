@@ -9,8 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # type hinting
-CollisionPair = tuple[Patch3dObject, Patch3dObject]
-CollisionIDPair = tuple[int, int]
+CollisionPair = tuple[int, int]
 
 
 
@@ -47,15 +46,15 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         
         # reset time and clear all stored objects
         self.time = [0]
-        self.static_objects = []
-        self.dynamic_objects = []
+        self.static_objects: list[Patch3dObject] = list()
+        self.dynamic_objects: list[Patch3dDynamicObject] = list()
         
         # collision handle, returns a set of
         # the collided pair's ids
         self._collision_handle = CollisionManager()
         # store id(object): object.parent to
         # make sense of the collision handle output
-        self._name_refs = dict()
+        self._name_refs: dict[int, int] = dict()
     
     
     def addObjects(self,
@@ -67,22 +66,23 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         '''
         # handle single items
         if static != None:
-            static = toSequence(static)
+            static: list[Patch3dObject] = toSequence(static)
             self.static_objects.extend(static)
             
-            # add the static objects to the collision handle
-            # using its id as the name, and reference the id
-            # to the object's parent
+            # add each mesh of each static objects to the collision
+            # handle using the mesh id as the name, and reference the
+            # id to the static object's parent
             for obj in static:
-                self._collision_handle.add_object(name=id(obj), mesh=obj.mesh)
-                self._name_refs[id(obj)] = obj.parent
+                for mesh in obj.meshes:
+                    self._collision_handle.add_object(name=id(mesh), mesh=mesh)
+                    self._name_refs[id(mesh)] = obj.parent
                 
         if dynamic != None:
             dynamic = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
     
     
-    def remove(self, *objects):
+    def remove(self, *objects: Patch3dObject | Patch3dDynamicObject):
         '''
         Takes in a collision object or a list of collision objects
         and removes them from static and dynamic objects list. 
@@ -91,8 +91,9 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         for obj in objects:
             if obj in self.static_objects:
                 self.static_objects.remove(obj)
-                self._collision_handle.remove_object(id(obj))
-                self._name_refs.pop(id(obj))
+                for mesh in obj.meshes:
+                    self._collision_handle.remove_object(id(mesh))
+                    self._name_refs.pop(id(mesh))
             elif obj in self.dynamic_objects:
                 self.dynamic_objects.remove(obj)
                 # no need to remove from collision handle
@@ -135,16 +136,19 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         collided pair's parents and the number of pairs
         '''
         # resolve dynamic object and add to handle
+        added_meshes_ids = list()
         for obj in self.dynamic_objects:
             resolved = obj.getCollisionObject(time=time)
-            self._collision_handle.add_object(name=id(obj), mesh=resolved.mesh)
-            self._name_refs[id(obj)] = resolved.parent
+            for mesh in resolved.meshes:
+                self._collision_handle.add_object(name=id(mesh), mesh=mesh)
+                self._name_refs[id(mesh)] = resolved.parent
+                added_meshes_ids.append(id(mesh))
         
         # check collision
         collided, names = self._collision_handle.in_collision_internal(return_names=True)
         
         # get pairs of collided pair's parents
-        pairs = self._dereference_pairs(names) if collided else set()
+        pairs: set[CollisionPair] = self._dereference_pairs(names) if collided else set()
         
         # logging
         if collided:
@@ -154,9 +158,9 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
                 logger.debug(f"Collision detected between {obj1} and {obj2}")
         
         # remove dynamic objects from handle and reference
-        for obj in self.dynamic_objects:
-            self._collision_handle.remove_object(id(obj))
-            self._name_refs.pop(id(obj))
+        for mesh_id in added_meshes_ids:
+            self._collision_handle.remove_object(mesh_id)
+            self._name_refs.pop(mesh_id)
         
         return {
             "time": time,
@@ -166,7 +170,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         }
     
     
-    def _dereference_pairs(self, names: set[CollisionIDPair]) -> set[CollisionPair]:
+    def _dereference_pairs(self, names: set[CollisionPair]) -> set[CollisionPair]:
         '''
         Takes in a set of pairs of collided object ids and
         dereferences it to create a set of pairs of the collided
@@ -197,19 +201,19 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         
         # accumulate collision result over time
         collided = False
-        pairs = set()
+        pairs: set[CollisionPair] = set()
         
         # check against static objects
         for obj in self.static_objects:
-            res, pair = obj.inCollision(collision_obj)
-            collided |= res
-            if res:
+            col, pair = obj.inCollision(collision_obj)
+            collided |= col
+            if col:
                 pairs.add(pair)
         # check against dynamic objects
         for obj in resolved:
-            res, pair = obj.inCollision(collision_obj)
-            collided |= res
-            if res:
+            col, pair = obj.inCollision(collision_obj)
+            collided |= col
+            if col:
                 pairs.add(pair)
         
         return {

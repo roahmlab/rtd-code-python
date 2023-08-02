@@ -1,8 +1,8 @@
-from typing import Iterator
+from typing import Iterator, Iterable
 
 
 
-def toSequence(obj) -> list | tuple:
+def toSequence(obj) -> Iterable:
     '''
     Converts single elements into lists to make it easier
     to handle either a single input or a list of inputs
@@ -12,7 +12,7 @@ def toSequence(obj) -> list | tuple:
     ("a", "b") -> ("a", "b")
     1 -> [1]
     '''
-    return obj if type(obj) in (list, tuple) else [obj]
+    return obj if hasattr(obj, '__iter__') else [obj]
 
 
 

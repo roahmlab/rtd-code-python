@@ -15,15 +15,20 @@ class ArmourPatchCollision(Patch3dDynamicObject):
         self.arm_state = arm_state
         self.kinematics = kinematics
         
-        self.reset()
+        # self.reset()
     
     
     def reset(self):
-        self.create_collision_patch_data()
-    
-    
-    def getCollisionObject(self, q = None, time = None) -> Patch3dObject:
         '''
+        Not needed as collision objects are created on demand
+        '''
+        pass
+    
+    
+    def getCollisionObject(self, q: NDArray = None, time: float = None) -> Patch3dObject:
+        '''
+        Generates Patch3dObject for a given time `time` or
+        configuration `q`
         '''
         if q is None:
             q = self.arm_state.position[:,-1]       # last position
@@ -32,7 +37,5 @@ class ArmourPatchCollision(Patch3dDynamicObject):
         config = self.arm_state.get_state(time).q
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
-        return [Patch3dObject(mesh, id(self.arm_info)) for mesh in meshes]
-        # make patch3dcollision system handle multiple Patch3dObjects returned from getcollisionobject
-        
+        return Patch3dObject(meshes, id(self.arm_info))       
          

@@ -16,7 +16,7 @@ class Patch3dObject:
         # trimesh.Trimesh object
         self.meshes: list[Trimesh] = toSequence(meshes)
         
-        # parent (an id)
+        # parent (usually id of info component)
         self.parent: int = parent
         
         # collision handle

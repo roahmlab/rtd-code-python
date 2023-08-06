@@ -1,4 +1,4 @@
 from armour.agent.ArmourAgentInfo import ArmourAgentInfo
 from armour.agent.ArmourAgentState import ArmourAgentState
 from armour.agent.ArmKinematics import ArmKinematics
-from armour.agent.ArmourPatchCollision import ArmourPatchCollision
+from armour.agent.ArmourAgentVisual import ArmourAgentVisual

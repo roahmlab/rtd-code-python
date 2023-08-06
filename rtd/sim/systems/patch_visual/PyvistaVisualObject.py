@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from rtd.functional.sequences import toSequence
 from pyvista import Actor
 
 
@@ -9,23 +10,30 @@ class PyvistaVisualObject(metaclass=ABCMeta):
     rendering of an entity
     '''
     @abstractmethod
-    def plot(self, **options) -> Actor:
+    def plot(self, **options):
         '''
         Abstract method which needs to be implemented to update
-        the current plot_data and returns a pyvista actor
-        object, which can be added to the current plot through
-        the `add_actor` method of the plotter
+        the generated plot data
+        '''
+        pass
+    
+    
+    @abstractmethod
+    def create_plot_data(self, **options) -> Actor | list[Actor]:
+        '''
+        Abstract method which needs to be implemented to generate
+        and return the plot data
         '''
         pass
     
     
     def __init__(self):
         # a pyvista actor object
-        self.plot_data: Actor = None
+        self.plot_data: Actor | list[Actor] = None
     
     
     def isPlotDataValid(self):
         '''
         Checks if plot_data is a pyvista actor object
         '''
-        return issubclass(type(self.plot_data), Actor)
+        return issubclass(type(toSequence(self.plot_data)[0]), Actor)

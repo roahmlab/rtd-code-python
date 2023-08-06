@@ -43,12 +43,15 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
         self.create_plot_data()
     
     
-    def create_plot_data(self):
+    def create_plot_data(self, time: float = None) -> Actor:
         '''
         Creates a pyvista actor object and saves it
         as `self.plot_data`. Its starting position is
         (0, 0)
         '''
+        if time is None:
+            time = self.box_state.time[-1]
+            
         w = self.box_info.width
         h = self.box_info.height
         
@@ -63,9 +66,15 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
             self.plot_data.prop.EdgeVisibilityOn()
             self.plot_data.prop.SetLineWidth(self.edge_width)
             self.plot_data.prop.SetEdgeColor(*self.edge_color)
+        
+        # set coordinate of rectangle to draw
+        x, y = self.box_state.get_state(time)["state"]
+        self.plot_data.SetPosition(x, y, 0.0)
+        
+        return self.plot_data
     
     
-    def plot(self, time: float = None) -> Actor:
+    def plot(self, time: float = None):
         '''
         Sets the anchor point of `self.plot_data` to the
         state at the given time and returns the plot data.
@@ -78,8 +87,6 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
         # set coordinate of rectangle to draw
         x, y = self.box_state.get_state(time)["state"]
         self.plot_data.SetPosition(x, y, 0.0)
-        
-        return self.plot_data
 
 
     def __str__(self) -> str:

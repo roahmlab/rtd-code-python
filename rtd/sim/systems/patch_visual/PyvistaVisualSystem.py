@@ -3,7 +3,6 @@ from rtd.sim import SimulationSystem
 from rtd.sim.systems.patch_visual import PyvistaVisualObject
 from rtd.functional.sequences import toSequence, arrange, arrange_list
 from pyvista import Plotter
-import pyvista as pv
 from datetime import datetime
 import time
 
@@ -151,8 +150,9 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         
         # add objects to the figure
         for obj in self.static_objects + self.dynamic_objects:
-            actor = obj.plot(time=time)
-            self._plotter.add_actor(actor)
+            actors = toSequence(obj.create_plot_data(time=time))
+            for actor in actors:
+                self._plotter.add_actor(actor)
         self._plotter.show(interactive_update=True)
     
     

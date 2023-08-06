@@ -1,16 +1,10 @@
 from rtd.entity.components import BaseInfoComponent
-from rtd.entity.states import ArmRobotState
 from rtd.util.mixins import Options
 from urchin import URDF
-import numpy as np
-from nptyping import NDArray, Shape, Float64
 
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
-# type hinting
-BoundsVec = NDArray[Shape['N,2'], Float64]
 
 
 
@@ -42,6 +36,11 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
         options = self.mergeoptions(options)        
         # fill in other dependent factors
         self.robot.Gravity = options["gravity"]
-        self.n_links_and_joints = self.params.nomianal.num_joints
-        self.num_q = self.params.nominal.num_q
-        self.body_joint_index = self.params.nominal.q_index
+        #self.n_links_and_joints = self.params.nomianal.num_joints
+        self.n_q = len(self.robot.actuated_joints)
+        #self.body_joint_index = self.params.nominal.q_index
+    
+    
+    def __str__(self):
+        return (f"{repr(self)} with properties:\n" + 
+                f"   n_q:  {self.n_q}\n")

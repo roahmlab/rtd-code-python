@@ -1,3 +1,2 @@
-from armour.legacy.create_jrs_online import create_jrs_online
 from armour.legacy.bernstein_to_poly import bernstein_to_poly
 from armour.legacy.match_deg5_bernstein_coefficients import match_deg5_bernstein_coefficients

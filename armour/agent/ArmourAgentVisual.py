@@ -3,6 +3,7 @@ from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 from pyvista import Actor
 import pyvista as pv
+import numpy as np
 from trimesh import Trimesh
 from typing import OrderedDict
 from nptyping import NDArray
@@ -54,7 +55,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
             time = self.box_state.time[-1]
 
         # generate mesh
-        config = self.arm_state.get_state(time).q
+        config = self.arm_state.get_state(np.array([time])).q
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         
@@ -85,7 +86,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
             time = self.box_state.time[-1]
 
         # generate mesh
-        config = self.arm_state.get_state(time).q
+        config = self.arm_state.get_state(np.array([time])).q
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
 

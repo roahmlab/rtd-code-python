@@ -99,20 +99,25 @@ class ArmourAgentState(BaseStateComponent, Options):
             self.mergeoptions({"initial_position": self.position, "initial_velocity": self.velocity})
     
     
-    def get_state(self, time: float = None) -> ArmRobotState:
+    def get_state(self, time: NDArray = None) -> ArmRobotState:
+        # default to the last time and state
         if time is None:
-            time = self.time[-1]
+            time = self.time[-1:]
         state = ArmRobotState(self.position_indices, self.velocity_indices)
         
-        # default to the last time and state
         state.time = time
-        state.state = np.tile(self.state[:,-1], time.size)
+        
+        # cannot interpolate
+        if self.time.size == 1:
+            state.state = self.state[:,0:][..., None]
+            return state
+        
+        # otherwise, interpolate
+        state.state = np.zeros((self.n_states, time.size))
         
         # if we can and need to interpolate the state, do it
-        mask = time <= self.time[-1]
-        if mask.size > 1 and np.any(mask):
-            for n in self.n_states:
-                state.state[n, mask] = np.interp(time[mask], time, self.state[n,:])
+        for i in range(self.n_states):
+            state.state[i,:] = np.interp(time, self.time, self.state[i,:])
         return state
     
     
@@ -126,7 +131,7 @@ class ArmourAgentState(BaseStateComponent, Options):
         '''
         # update the time and state
         self.step_start_idxs = np.append(self.time, self.time.size+1)
-        self.time = np.concatenate((self.time, self.time[-1], T_state[1:]))
+        self.time = np.concatenate((self.time, self.time[-1] + T_state[1:]))
         self.state = np.concatenate((self.state, Z_state[:,1:]), 1)
     
     
@@ -173,3 +178,9 @@ class ArmourAgentState(BaseStateComponent, Options):
         else:
             logger.info("No joint limits exceeded")
         return out
+
+    
+    def __str__(self):
+        return (f"{repr(self)} with properties:\n" + 
+                f"   arm_info:  {repr(self.entityinfo)}\n"
+                f"   state dim:  {self.state.shape}\n")

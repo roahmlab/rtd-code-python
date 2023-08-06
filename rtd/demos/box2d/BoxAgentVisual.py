@@ -1,11 +1,11 @@
-from rtd.sim.systems.patch_visual import PatchVisualObject
+from rtd.sim.systems.patch_visual import PyvistaVisualObject
 from rtd.util.mixins import Options
-import matplotlib
-from matplotlib.patches import Rectangle
+from pyvista import Actor
+import pyvista as pv
 
 
 
-class BoxAgentVisual(PatchVisualObject, Options):
+class BoxAgentVisual(PyvistaVisualObject, Options):
     '''
     A visual component used to generate the plot data of
     the box agent
@@ -13,16 +13,16 @@ class BoxAgentVisual(PatchVisualObject, Options):
     @staticmethod
     def defaultoptions() -> dict:
         return {
-            "face_color": [1, 0, 1],
+            "face_color": [1.0, 0.0, 1.0],
             "face_opacity": 0.2,
-            "edge_color": [0, 0, 0],
+            "edge_color": [0.0, 0.0, 0.0],
             "edge_width": 1,
         }
 
     
     def __init__(self, box_info, box_state, **options):
         # initialize base classes
-        PatchVisualObject.__init__(self)
+        PyvistaVisualObject.__init__(self)
         Options.__init__(self)
         # initialize using given options
         options["face_color"] = box_info.color
@@ -45,33 +45,39 @@ class BoxAgentVisual(PatchVisualObject, Options):
     
     def create_plot_data(self):
         '''
-        Creates a matplotlib artist object and saves it
-        as `self.plot_data`. It's starting position is
+        Creates a pyvista actor object and saves it
+        as `self.plot_data`. Its starting position is
         (0, 0)
         '''
         w = self.box_info.width
         h = self.box_info.height
         
-        self.plot_data = Rectangle((0, 0), w, h,
-            facecolor=self.face_color,
-            alpha=self.face_opacity,
-            edgecolor=self.edge_color,
-            linewidth=self.edge_width,
-        )
+        mesh = pv.Rectangle([[0,0,0], [w,0,0], [0,h,0]])
+        mapper = pv.DataSetMapper(mesh)
+        self.plot_data = pv.Actor(mapper=mapper)
+        
+        # set properties
+        self.plot_data.prop.SetColor(*self.face_color)
+        self.plot_data.prop.SetOpacity(self.face_opacity)
+        if self.edge_width > 0:
+            self.plot_data.prop.EdgeVisibilityOn()
+            self.plot_data.prop.SetLineWidth(self.edge_width)
+            self.plot_data.prop.SetEdgeColor(*self.edge_color)
     
     
-    def plot(self, time: float = None) -> matplotlib.artist:
+    def plot(self, time: float = None) -> Actor:
         '''
         Sets the anchor point of `self.plot_data` to the
         state at the given time and returns the plot data.
         The plot data can be added to the current figure by
-        using the `add_artist` method of the figure axes
+        using the `add_actor` method of the plotter
         '''
         if time is None:
             time = self.box_state.time[-1]
 
         # set coordinate of rectangle to draw
-        self.plot_data.xy = self.box_state.get_state(time)["state"]
+        x, y = self.box_state.get_state(time)["state"]
+        self.plot_data.SetPosition(x, y, 0.0)
         
         return self.plot_data
 

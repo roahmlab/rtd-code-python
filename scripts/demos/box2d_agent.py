@@ -41,14 +41,13 @@ if __name__ == '__main__':
     
     # update time
     #from matplotlib.pyplot import xlim, ylim
-    #vs.redraw(0, [-10, 10, -10, 10, -10, 10])   # run this to render while update is running
+    #vs.redraw(0)   # run this to render while update is running
     vs.updateVisual(9)
     
     # animate object
     vs.animate(
         time_discretization=time_discretization,
         pause_time=pause_time,
-        axes_bounds=[-10, 10, -10, 10, -10, 10]
     )
     
     # wait until key pressed so program doesn't immediately close

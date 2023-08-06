@@ -44,11 +44,6 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
     
     
     def create_plot_data(self, time: float = None) -> Actor:
-        '''
-        Creates a pyvista actor object and saves it
-        as `self.plot_data`. Its starting position is
-        (0, 0)
-        '''
         if time is None:
             time = self.box_state.time[-1]
             
@@ -75,12 +70,6 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
     
     
     def plot(self, time: float = None):
-        '''
-        Sets the anchor point of `self.plot_data` to the
-        state at the given time and returns the plot data.
-        The plot data can be added to the current figure by
-        using the `add_actor` method of the plotter
-        '''
         if time is None:
             time = self.box_state.time[-1]
 

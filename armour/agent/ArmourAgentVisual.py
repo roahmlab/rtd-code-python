@@ -1,9 +1,10 @@
 from rtd.sim.systems.patch_visual import PyvistaVisualObject
 from rtd.util.mixins import Options
+from armour.agent import ArmourAgentInfo, ArmourAgentState
 from pyvista import Actor
 import pyvista as pv
-from typing import OrderedDict
 from trimesh import Trimesh
+from typing import OrderedDict
 from nptyping import NDArray
 
 
@@ -23,15 +24,15 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         }
 
     
-    def __init__(self, arm_info, arm_state, **options):
+    def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState, **options):
         # initialize base classes
         PyvistaVisualObject.__init__(self)
         Options.__init__(self)
         # initialize using given options
         self.mergeoptions(options)
         
-        self.arm_info = arm_info
-        self.arm_state = arm_state
+        self.arm_info: ArmourAgentInfo = arm_info
+        self.arm_state: ArmourAgentState = arm_state
         
         self.reset()
     
@@ -44,7 +45,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         self.edge_width = options["edge_width"]
     
     
-    def plot(self, time: float = None) -> Actor:
+    def create_plot_data(self, time: float = None) -> list[Actor]:
         '''
         Generate the trimesh meshes at the given time and
         converts them into actors
@@ -57,7 +58,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         
-        self.plot_data = list()
+        self.plot_data: list[Actor] = list()
         
         # generate actors from mesh
         for mesh in meshes:
@@ -74,7 +75,26 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
                 self.plot_data[-1].prop.SetEdgeColor(*self.edge_color)
         
         return self.plot_data
+    
+    
+    def plot(self, time: float = None):
+        '''
+        Replaces the mesh of the actors to update their pose
+        '''
+        if time is None:
+            time = self.box_state.time[-1]
 
+        # generate mesh
+        config = self.arm_state.get_state(time).q
+        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
+
+        for actor, mesh in zip(self.plot_data, meshes):
+            # replace mesh of actor with new mesh
+            mesh = pv.wrap(mesh)
+            mapper = pv.DataSetMapper(mesh)
+            actor.SetMapper(mapper)
+            
 
     def __str__(self) -> str:
         return (f"{repr(self)} with properties:\n" + 

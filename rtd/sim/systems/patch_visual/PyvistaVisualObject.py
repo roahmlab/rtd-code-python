@@ -10,19 +10,19 @@ class PyvistaVisualObject(metaclass=ABCMeta):
     rendering of an entity
     '''
     @abstractmethod
-    def plot(self, **options):
-        '''
-        Abstract method which needs to be implemented to update
-        the generated plot data
-        '''
-        pass
-    
-    
-    @abstractmethod
     def create_plot_data(self, **options) -> Actor | list[Actor]:
         '''
         Abstract method which needs to be implemented to generate
         and return the plot data
+        '''
+        pass
+
+    
+    @abstractmethod
+    def plot(self, **options):
+        '''
+        Abstract method which needs to be implemented to update
+        the generated plot data
         '''
         pass
     

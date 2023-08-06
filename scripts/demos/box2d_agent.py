@@ -2,7 +2,7 @@ if __name__ == '__main__':
     # import modules
     from rtd.demos.box2d import BoxAgent, BoxAgentInfo, BoxAgentVisual
     from rtd.entity.components import GenericEntityState
-    from rtd.sim.systems.patch_visual import PatchVisualSystem
+    from rtd.sim.systems.patch_visual import PyvistaVisualSystem
     
     # configure logging
     from rtd.functional.logconfig import config_logger
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     agent1.state.commit_state_data(2, [ 2, 0])   # ( 2, 0) at t=9
     
     # set up visual system
-    vs = PatchVisualSystem(
+    vs = PyvistaVisualSystem(
         static_objects=agent2.visual,
         dynamic_objects=[agent1.visual],    # can take both single object or list of objects
         dimension=2,
@@ -41,15 +41,14 @@ if __name__ == '__main__':
     
     # update time
     #from matplotlib.pyplot import xlim, ylim
-    #vs.redraw(xlim=(-5, 5), ylim=(-5, 5))   # run this to render while update is running
+    #vs.redraw(0, [-10, 10, -10, 10, -10, 10])   # run this to render while update is running
     vs.updateVisual(9)
     
     # animate object
     vs.animate(
         time_discretization=time_discretization,
         pause_time=pause_time,
-        xlim=(-5, 5),
-        ylim=(-5, 5)
+        axes_bounds=[-10, 10, -10, 10, -10, 10]
     )
     
     # wait until key pressed so program doesn't immediately close

@@ -40,14 +40,14 @@ if __name__ == '__main__':
     time_discretization, pause_time = vs.get_discretization_and_pause(framerate=24, speed=1)
     
     # update time
-    #from matplotlib.pyplot import xlim, ylim
-    #vs.redraw(0)   # run this to render while update is running
+    vs.redraw(0, [-5, 5,-5, 5])   # run this to render while update is running
     vs.updateVisual(9)
     
     # animate object
     vs.animate(
         time_discretization=time_discretization,
         pause_time=pause_time,
+        axlim=[-5, 5,-5, 5]
     )
     
     # wait until key pressed so program doesn't immediately close

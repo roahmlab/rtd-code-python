@@ -1,16 +1,16 @@
 from rtd.sim.systems.patch_visual import PyvistaVisualObject
 from rtd.util.mixins import Options
-from rtd.demos.box2d import BoxAgentInfo
+from rtd.entity.box_obstacle import BoxObstacleInfo
 from rtd.entity.components import GenericEntityState
 from pyvista import Actor
 import pyvista as pv
 
 
 
-class BoxAgentVisual(PyvistaVisualObject, Options):
+class BoxObstacleVisual(PyvistaVisualObject, Options):
     '''
     A visual component used to generate the plot data of
-    the box agent
+    the box obstacle
     '''
     @staticmethod
     def defaultoptions() -> dict:
@@ -22,7 +22,7 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
         }
 
     
-    def __init__(self, box_info: BoxAgentInfo, box_state: GenericEntityState, **options):
+    def __init__(self, box_info: BoxObstacleInfo, box_state: GenericEntityState, **options):
         # initialize base classes
         PyvistaVisualObject.__init__(self)
         Options.__init__(self)
@@ -30,7 +30,7 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
         options["face_color"] = box_info.color
         self.mergeoptions(options)
         
-        self.box_info: BoxAgentInfo = box_info
+        self.box_info: BoxObstacleInfo = box_info
         self.box_state: GenericEntityState = box_state
         
         self.reset()
@@ -48,11 +48,9 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
     def create_plot_data(self, time: float = None) -> Actor:
         if time is None:
             time = self.box_state.time[-1]
-            
-        w = self.box_info.width
-        h = self.box_info.height
         
-        mesh = pv.Rectangle([[0,0,0], [w,0,0], [0,h,0]])
+        xw, yw, zw = self.box_info.dims
+        mesh = pv.Box([0, xw, 0, yw, 0, zw])
         mapper = pv.DataSetMapper(mesh)
         self.plot_data = pv.Actor(mapper=mapper)
         
@@ -65,8 +63,8 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
             self.plot_data.prop.SetEdgeColor(*self.edge_color)
         
         # set coordinate of rectangle to draw
-        x, y = self.box_state.get_state(time)["state"]
-        self.plot_data.SetPosition(x, y, 0.0)
+        x, y, z = self.box_state.get_state(time)["state"]
+        self.plot_data.SetPosition(x, y, z)
         
         return self.plot_data
     
@@ -75,9 +73,9 @@ class BoxAgentVisual(PyvistaVisualObject, Options):
         if time is None:
             time = self.box_state.time[-1]
 
-        # set coordinate of rectangle to draw
-        x, y = self.box_state.get_state(time)["state"]
-        self.plot_data.SetPosition(x, y, 0.0)
+        # set coordinate of box to draw
+        x, y, z = self.box_state.get_state(time)["state"]
+        self.plot_data.SetPosition(x, y, z)
 
 
     def __str__(self) -> str:

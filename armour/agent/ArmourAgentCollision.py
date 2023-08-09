@@ -1,12 +1,12 @@
 from trimesh import Trimesh
 from rtd.sim.systems.patch3d_collision import Patch3dDynamicObject, Patch3dObject
-from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmKinematics
+from armour.agent import ArmourAgentInfo, ArmourAgentState
 from collections import OrderedDict
 from nptyping import NDArray
 
 
 
-class ArmourPatchCollision(Patch3dDynamicObject):
+class ArmourAgentCollision(Patch3dDynamicObject):
     def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState):
         # initialize base classes
         Patch3dDynamicObject.__init__(self)

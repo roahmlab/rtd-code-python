@@ -3,6 +3,7 @@ from rtd.planner.reachsets import ReachSetGenerator
 from armour.reachsets import FOInstance, JRSGenerator
 from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
 from itertools import combinations
+from zonopy.kinematics import FO as FOcc
 import torch
 import numpy as np
 
@@ -27,7 +28,6 @@ class FOGenerator(ReachSetGenerator):
         self.cache_max_size = 0 # we don't want to cache any FO
         self.robot = robot
         self.jrsGenerator: JRSGenerator = jrsGenerator
-        self.smooth_obs: bool = smooth_obs
         self.obs_frs_combs: dict = obs_frs_combs
         if self.obs_frs_combs['combs'] is None:
             self.obs_frs_combs['combs'] = self.generate_combinations_upto(self.obs_frs_combs['maxcombs'])
@@ -41,20 +41,12 @@ class FOGenerator(ReachSetGenerator):
         '''
         jrsInstance = self.jrsGenerator.getReachableSet(robotState, ignore_cache=True)
         logger.info("Generating forward occupancy!")
-        FO: list[list[polyZonotope]] = list()
-        R_w = list[list] = list()
-        p_w = list[list] = list()
-        for i in range(jrsInstance.n_t):
-            R_w_i, p_w_i = pzfk(jrsInstance.R[i], self.robot.info.params.pz_nominal)
-            R_w.append(R_w_i)
-            p_w.append(p_w_i)
-            FO.append(list())
-            for j in range(self.robot.info.params.pz_nominal.num_bodies):
-                FO[i].append(R_w_i[j]*self.robot.info.links[j].poly_zonotope + p_w_i[j])
-                FO[i][j] = FO[i][j].reduce(self.robot.info.params.pz_interval.zono_order)
-                FO[i][j] = FO[i][j].reduce_indep(jrsInstance.k_id[-1])
-        
-        return FOInstance(self.robot.info, R_w, p_w, FO, jrsInstance, self.smooth_obs, self.obs_frs_combs)
+        forwardocc = list()
+        for t in range(jrsInstance.n_t):
+            fo_at_t = list(FOcc.forward_occupancy(jrsInstance.R[t], self.robot)[0].values())
+            # ignore static base link (hence the 1:)
+            forwardocc.append(fo_at_t[1:])
+        return FOInstance(self.robot.info, forwardocc, jrsInstance, self.obs_frs_combs)
                     
     
     @staticmethod

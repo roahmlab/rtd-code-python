@@ -1,6 +1,6 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
-from rtd.sim.systems.patch3d_collision import Patch3dObject, Patch3dDynamicObject
+from rtd.sim.systems.collision import CollisionObject, DynamicCollisionObject
 from rtd.functional.sequences import toSequence, arrange_list
 from trimesh.collision import CollisionManager
 
@@ -13,9 +13,9 @@ CollisionPair = tuple[int, int]
 
 
 
-class Patch3dCollisionSystem(SimulationSystem, Options):
+class TrimeshCollisionSystem(SimulationSystem, Options):
     '''
-    Takes in a list of Patch3dObject and Patch3dDynamicObjects
+    Takes in a list of CollisionObjects and DynamicCollisionObjects
     and handles their collision detection
     '''
     @staticmethod
@@ -26,8 +26,8 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
     
     
     def __init__(self,
-                 static_objects: Patch3dObject | list[Patch3dObject] = None,
-                 dynamic_objects: Patch3dDynamicObject | list[Patch3dDynamicObject] = None,
+                 static_objects: CollisionObject | list[CollisionObject] = None,
+                 dynamic_objects: DynamicCollisionObject | list[DynamicCollisionObject] = None,
                  **options):
         # initialize base classes
         SimulationSystem.__init__(self)
@@ -46,8 +46,8 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         
         # reset time and clear all stored objects
         self.time = [0]
-        self.static_objects: list[Patch3dObject] = list()
-        self.dynamic_objects: list[Patch3dDynamicObject] = list()
+        self.static_objects: list[CollisionObject] = list()
+        self.dynamic_objects: list[DynamicCollisionObject] = list()
         
         # collision handle, returns a set of
         # the collided pair's ids
@@ -58,15 +58,15 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
     
     
     def addObjects(self,
-                   static: Patch3dObject | list[Patch3dObject] = None,
-                   dynamic: Patch3dDynamicObject | list[Patch3dDynamicObject] = None):
+                   static: CollisionObject | list[CollisionObject] = None,
+                   dynamic: DynamicCollisionObject | list[DynamicCollisionObject] = None):
         '''
         Takes in a collision object or a list of collision objects
         and adds them to the corresponding list
         '''
         # handle single items
         if static is not None:
-            static: list[Patch3dObject] = toSequence(static)
+            static: list[CollisionObject] = toSequence(static)
             self.static_objects.extend(static)
             
             # add each mesh of each static objects to the collision
@@ -82,7 +82,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
             self.dynamic_objects.extend(dynamic)
     
     
-    def remove(self, *objects: Patch3dObject | Patch3dDynamicObject):
+    def remove(self, *objects: CollisionObject | DynamicCollisionObject):
         '''
         Takes in a collision object or a list of collision objects
         and removes them from static and dynamic objects list. 
@@ -191,7 +191,7 @@ class Patch3dCollisionSystem(SimulationSystem, Options):
         return pairs
 
     
-    def checkCollisionObject(self, collision_obj: Patch3dObject) -> dict:
+    def checkCollisionObject(self, collision_obj: CollisionObject) -> dict:
         '''
         Check for every collision against collision_obj (does not
         check for internal collision) at the most recent time

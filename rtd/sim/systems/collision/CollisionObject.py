@@ -7,7 +7,7 @@ CollisionPair = tuple[int, int]
 
 
 
-class Patch3dObject:
+class CollisionObject:
     '''
     A class for storing the mesh of an object to handle its
     collision
@@ -25,7 +25,7 @@ class Patch3dObject:
             self._collision_handle.add_object(id(mesh), mesh)
     
     
-    def inCollision(self, other: 'Patch3dObject') -> tuple[bool, CollisionPair]:
+    def inCollision(self, other: 'CollisionObject') -> tuple[bool, CollisionPair]:
         '''
         Checks if this object is in collision with another object.
         Returns a bool as well as its and its collided pair's

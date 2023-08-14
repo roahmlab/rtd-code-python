@@ -2,7 +2,7 @@ if __name__ == '__main__':
     # import modules
     from rtd.demos.box2d import BoxAgent, BoxAgentInfo, BoxAgentVisual
     from rtd.entity.components import GenericEntityState
-    from rtd.sim.systems.patch_visual import PyvistaVisualSystem
+    from rtd.sim.systems.visual import PyvistaVisualSystem
     
     # configure logging
     from rtd.functional.logconfig import config_logger

@@ -1,1 +1,2 @@
 from armour.ArmourPlanner import ArmourPlanner
+from armour.ArmourAgent import ArmourAgent

@@ -6,7 +6,7 @@ from rtd.demos.box2d import BoxAgentInfo, BoxAgentVisual
 
 class BoxAgent(WorldEntity):
     '''
-    A 2D box agent with an info, state, and visual component. 
+    A 2D box agent with an info, state, and visual component
     '''
     @staticmethod
     def defaultoptions() -> dict:

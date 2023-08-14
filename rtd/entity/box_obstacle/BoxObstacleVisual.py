@@ -1,4 +1,4 @@
-from rtd.sim.systems.patch_visual import PyvistaVisualObject
+from rtd.sim.systems.visual import PyvistaVisualObject
 from rtd.util.mixins import Options
 from rtd.entity.box_obstacle import BoxObstacleInfo
 from rtd.entity.components import GenericEntityState

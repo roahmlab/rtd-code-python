@@ -6,7 +6,7 @@ from rtd.entity.box_obstacle import BoxObstacleInfo, BoxObstacleVisual, BoxObsta
 
 class BoxObstacle(WorldEntity):
     '''
-    A 3D box obstacle with an info, state, visual, and collision component. 
+    A 3D box obstacle with an info, state, visual, and collision component
     '''
     @staticmethod
     def defaultoptions() -> dict:

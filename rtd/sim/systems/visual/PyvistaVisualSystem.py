@@ -1,8 +1,8 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
-from rtd.sim.systems.patch_visual import PatchVisualObject
+from rtd.sim.systems.visual import PyvistaVisualObject
 from rtd.functional.sequences import toSequence, arrange, arrange_list
-import matplotlib.pyplot as plt
+from pyvista import Plotter
 from datetime import datetime
 import time
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 
-class PatchVisualSystem(SimulationSystem, Options):
+class PyvistaVisualSystem(SimulationSystem, Options):
     '''
     Takes in a list of static and dynamic objects and handles
     their rendering
@@ -27,8 +27,8 @@ class PatchVisualSystem(SimulationSystem, Options):
     
     
     def __init__(self,
-                 static_objects: PatchVisualObject | list[PatchVisualObject] = None,
-                 dynamic_objects: PatchVisualObject | list[PatchVisualObject] = None,
+                 static_objects: PyvistaVisualObject | list[PyvistaVisualObject] = None,
+                 dynamic_objects: PyvistaVisualObject | list[PyvistaVisualObject] = None,
                  **options):
         # initialize base classes
         SimulationSystem.__init__(self)
@@ -49,30 +49,29 @@ class PatchVisualSystem(SimulationSystem, Options):
         
         # reset time and clear all stored objects
         self.time = [0]
-        self.static_objects = []
-        self.dynamic_objects = []
+        self.static_objects: list[PyvistaVisualObject] = []
+        self.dynamic_objects: list[PyvistaVisualObject] = []
         
-        # Create a new figure
-        self._figure_handle = None
+        # Create a new plotter
+        self._plotter: Plotter = None
         self.validateOrCreateFigure()
     
     
     def validateOrCreateFigure(self):
         '''
-        If figure_handle does not exists or is no longer valid,
+        If plotter does not exists or is no longer valid,
         create a new figure and save its reference to 
-        `self.figure_handle`
+        `self._plotter`
         '''
-        if (self._figure_handle is None or
-        not plt.fignum_exists(self._figure_handle.number)):
-            self._figure_handle = plt.figure()
-            plt.title(f'Figure {self._figure_handle.number} - {self.__class__.__name__}')
-            # bind pause key
+        if self._plotter is None or self._plotter._closed:
+            self._plotter = Plotter()
+            self._plotter.add_title(f'{self.__class__.__name__}')
+            self._plotter.set_background('white')
     
     
     def addObjects(self,
-                   static: PatchVisualObject | list[PatchVisualObject] = None,
-                   dynamic: PatchVisualObject | list[PatchVisualObject] = None):
+                   static: PyvistaVisualObject | list[PyvistaVisualObject] = None,
+                   dynamic: PyvistaVisualObject | list[PyvistaVisualObject] = None):
         '''
         Takes in a visual object or a list of visual objects
         and adds them to the corresponding list
@@ -87,7 +86,7 @@ class PatchVisualSystem(SimulationSystem, Options):
             self.dynamic_objects.extend(dynamic)
     
     
-    def remove(self, *objects):
+    def remove(self, *objects: PyvistaVisualObject):
         '''
         Takes in a visual object or a list of visual objects
         and removes them from static and dynamic objects list
@@ -109,81 +108,58 @@ class PatchVisualSystem(SimulationSystem, Options):
         t_vec = arrange_list(start_time, end_time, self.time_discretization)
         logger.debug("Running Visualization!")
         
-        # activate the current figure
-        try:
-            ax = self._figure_handle.axes[-1]
-            self._figure_handle.show()
-            
-            # get list of dynamic objects on the figure
-            artists = ax.patches + ax.collections
-            dynamic_objects = [obj for obj in self.dynamic_objects if obj.plot_data in artists]
-            
-            # animate the next `t_update` if dynamic
-            # artists are on the figure
-            if dynamic_objects:
-                for t in t_vec:
-                    # update the dynamic objects on the figure
-                    for obj in dynamic_objects:
-                        obj.plot(time=t)
-                    self._figure_handle.canvas.draw()
-                    self._figure_handle.canvas.flush_events()
-                    time.sleep(self.draw_time)
-        except Exception as e:
-            pass
+        # render if plotter is open
+        if self._plotter.iren.initialized and not self._plotter._closed:
+            for t in t_vec:
+                # update the dynamic objects on the plotter
+                for obj in self.dynamic_objects:
+                    obj.plot(time=t)
+                self._plotter.update()
+                time.sleep(self.draw_time)
             
         # append the updated time
         self.time += t_vec
     
     
-    def redraw(self, time: float = None,
-               xlim: list[float, float] = None,
-               ylim: list[float, float] = None):
+    def redraw(self, time: float = None, axlim: list = None):
         '''
-        Recreates the figure handle if necessary and adds
-        the artist objects to the current figure at the
-        input time. Defaults to the most recent `time`
+        Recreates the plotter if necessary and adds the actors
+        to the current plotter at the input time. Defaults to
+        the most recent `time`
         '''
         if time is None:
             time = self.time[-1]
         
-        # if the figure is closed or invalid, recreate it
+        # if the plotter is closed or invalid, recreate it
         self.validateOrCreateFigure()
         
-        # create 2d or 3d axes on current figure
+        # set view based on dimensions
         if self.dimension == 2:
-            ax = self._figure_handle.add_subplot()
-        elif self.dimension == 3:
-            ax = self._figure_handle.add_subplot(projection='3d')
-        else:
+            self._plotter.view_xy(render=False)
+        elif self.dimension != 3:
             raise ValueError("Dimension must be 2 or 3!")
-        self._figure_handle.show()
         
-        # set xlim and ylim
-        if xlim is not None:
-            ax.set_xlim(xlim)
-        if ylim is not None:
-            ax.set_ylim(ylim)
+        # axes bounds
+        if axlim is not None:
+            if len(axlim) == 4: # auto fit z-axis
+                axlim = [*axlim, 0, 0]
+            self._plotter.reset_camera(bounds=axlim)
         
         # clear figure content
-        for artist in ax.patches + ax.collections:
-            artist.remove()
+        self._plotter.clear_actors()
         
         # add objects to the figure
-        for obj in self.static_objects:
-            artist = obj.plot(time=time)
-            ax.add_artist(artist)
-        for obj in self.dynamic_objects:
-            artist = obj.plot(time=time)
-            ax.add_artist(artist)
-        self._figure_handle.canvas.draw()
-        self._figure_handle.canvas.flush_events()
+        for obj in self.static_objects + self.dynamic_objects:
+            actors = toSequence(obj.create_plot_data(time=time))
+            for actor in actors:
+                self._plotter.add_actor(actor)
+        self._plotter.show(interactive_update=True)
     
     
     def animate(self, t_span: list[float, float] = None,
                 time_discretization: float = None,
                 pause_time: float = None,
-                xlim: list[float, float] = None,
-                ylim: list[float, float] = None):
+                axlim: list = None):
         '''
         Animates from `time` = `t_span[0]` to `t_span[1]`,
         dividing it into frames of length `time_discretization`
@@ -205,11 +181,7 @@ class PatchVisualSystem(SimulationSystem, Options):
         t_vec = arrange(start_time, end_time, time_discretization)
         
         # redraw everything
-        self.redraw(0, xlim=xlim, ylim=ylim)
-        
-        # activate the current figure
-        ax = self._figure_handle.axes[-1]
-        self._figure_handle.show()
+        self.redraw(0, axlim)
         
         # animate the dynamic stuff for next `t_update`
         for t in t_vec:
@@ -219,8 +191,7 @@ class PatchVisualSystem(SimulationSystem, Options):
             # update the dynamic objects on the figure
             for obj in self.dynamic_objects:
                 obj.plot(time=t)
-            self._figure_handle.canvas.draw()
-            self._figure_handle.canvas.flush_events()
+            self._plotter.update()
             
             # get current time and subtract from previous time
             # if delta_time > self.draw_time, print lagging message
@@ -231,13 +202,11 @@ class PatchVisualSystem(SimulationSystem, Options):
             time.sleep(max(draw_time, 0))
     
     
-    
     def waituntilclose(self):
         '''
-        Waits until figure is closed before proceeding
+        Waits until plotter is closed before proceeding
         '''
-        plt.ioff()
-        plt.show()
+        self._plotter.show()
     
     
     @staticmethod

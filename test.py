@@ -1,6 +1,10 @@
 print("Loading modules...")
-from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual
-from rtd.sim.systems.patch_visual import PyvistaVisualSystem
+from armour import ArmourAgent
+from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision
+from rtd.entity.box_obstacle import BoxObstacleInfo, BoxObstacleVisual, BoxObstacleCollision, BoxObstacle
+from rtd.entity.components import GenericEntityState
+from rtd.sim.systems.visual import PyvistaVisualSystem
+from rtd.sim.systems.collision import TrimeshCollisionSystem
 from urchin import URDF
 import numpy as np
 
@@ -9,24 +13,20 @@ import numpy as np
 print("Loading URDF...")
 robot = URDF.load("./urdfs/kinova_arm/kinova_without_gripper.urdf")
 
-
-# generate info 
-print("Generating Info Component: ")
+# generate Armour Components 
 arm_info = ArmourAgentInfo(robot, None)
-print(arm_info)
-
-
-# generate state
-print("Generating State Component: ")
 arm_state = ArmourAgentState(arm_info)
-arm_state.reset()
-print(arm_state)
-
-
-# generate visual
-print("Generating Visual Component: ")
 arm_visual = ArmourAgentVisual(arm_info, arm_state)
-print(arm_visual)
+arm_collision = ArmourAgentCollision(arm_info, arm_state)
+arm_state.reset()
+print(f"Info:\n{arm_info}")
+print(f"State:\n{arm_state}")
+print(f"Visual:\n{arm_visual}")
+print(f"Collision:\n{arm_collision}")
+
+# generate armour agent
+arm_agent = ArmourAgent(arm_info, arm_state, arm_visual, arm_collision)
+print(f"Agent:\n{arm_agent}")
 
 
 # commit state at time=1
@@ -35,7 +35,7 @@ state = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1],
 ]).T
-arm_state.commit_state_data(time, state)
+arm_agent.state.commit_state_data(time, state)
 
 # commit more states at time=3, 4
 time = np.array([0, 2, 3])
@@ -44,15 +44,27 @@ state = np.array([
     [-1, -0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1],
     [-0.5, 0, -1, 0.1, 0.5, 0.1, -0.5, 0.1, -1, 0.1, -1, 0.1, -1, 0.1],
 ]).T
-arm_state.commit_state_data(time, state)
+arm_agent.state.commit_state_data(time, state)
 
-print(f"{arm_state.time=}")
-print(f"{arm_state.state=}")
+print(f"state.time: {arm_agent.state.time}")
+print(f"state.state:\n{arm_agent.state.state}")
+
+
+# add an obstacles
+box_info = BoxObstacleInfo(dims=[0.1,0.1,0.1], color=[1,0,0])
+box_state = GenericEntityState(box_info)
+box_state.reset(initial_state=[0,0,0.7])
+box_visual = BoxObstacleVisual(box_info, box_state, face_opacity=1)
+box_collision = BoxObstacleCollision(box_info, box_state)
+box_obstacle = BoxObstacle(box_info, box_state, box_visual, box_collision)
+
 
 
 # set up visual system
-vs = PyvistaVisualSystem(dynamic_objects=arm_visual, dimension=3)
-vs.redraw(0)
+vs = PyvistaVisualSystem(dynamic_objects=[arm_agent.visual, box_obstacle.visual], dimension=3)
+cs = TrimeshCollisionSystem(dynamic_objects=[arm_agent.collision, box_obstacle.collision])
+# vs.redraw(0)
 vs.updateVisual(3)
 vs.animate()
 vs.waituntilclose()
+#cs.updateCollision(3)

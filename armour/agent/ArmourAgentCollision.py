@@ -1,15 +1,16 @@
 from trimesh import Trimesh
-from rtd.sim.systems.patch3d_collision import Patch3dDynamicObject, Patch3dObject
+from rtd.sim.systems.collision import DynamicCollisionObject, CollisionObject
 from armour.agent import ArmourAgentInfo, ArmourAgentState
+import numpy as np
 from collections import OrderedDict
 from nptyping import NDArray
 
 
 
-class ArmourAgentCollision(Patch3dDynamicObject):
+class ArmourAgentCollision(DynamicCollisionObject):
     def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState):
         # initialize base classes
-        Patch3dDynamicObject.__init__(self)
+        DynamicCollisionObject.__init__(self)
         # initialize
         self.arm_info = arm_info
         self.arm_state = arm_state
@@ -24,17 +25,22 @@ class ArmourAgentCollision(Patch3dDynamicObject):
         pass
     
     
-    def getCollisionObject(self, q: NDArray = None, time: float = None) -> Patch3dObject:
+    def getCollisionObject(self, q: NDArray = None, time: float = None) -> CollisionObject:
         '''
-        Generates Patch3dObject for a given time `time` or
+        Generates a CollisionObject for a given time `time` or
         configuration `q`
         '''
         if q is None:
-            q = self.arm_state.position[:,-1]       # last position
+            q = self.arm_state.position[:,-1]                   # last position
         if time is not None:
-            q = self.arm_state.get_state(time).q    # position at given time
-        config = self.arm_state.get_state(time).q
+            q = self.arm_state.get_state(np.array([time])).q    # position at given time
+        config = self.arm_state.get_state(np.array([time])).q
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
-        return Patch3dObject(meshes, id(self.arm_info))       
-         
+        return CollisionObject(meshes, id(self.arm_info))       
+    
+    
+    def __str__(self) -> str:
+        return (f"{repr(self)} with properties:\n" + 
+                f"   arm_info:  {repr(self.arm_info)}\n"
+                f"   arm_state: {repr(self.arm_state)}\n")  

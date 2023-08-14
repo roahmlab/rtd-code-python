@@ -1,0 +1,2 @@
+class ArmourAgentDynamics:
+    pass

@@ -149,6 +149,7 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         
         # get pairs of collided pair's parents
         pairs: set[CollisionPair] = self._dereference_pairs(names) if collided else set()
+        collided = len(pairs) > 0
         
         # logging
         if collided:
@@ -184,7 +185,7 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
             
             # ignore if they share the same parent
             if obj1 == obj2 and obj1 is not None:
-                pass
+                continue
             
             pairs.add((obj1, obj2))
             

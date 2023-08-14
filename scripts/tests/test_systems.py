@@ -11,12 +11,12 @@ import numpy as np
 
 # load robot
 print("Loading URDF...")
-robot = URDF.load("./urdfs/kinova_arm/kinova_without_gripper.urdf")
+robot = URDF.load("../../urdfs/kinova_arm/kinova_without_gripper.urdf")
 
 # generate Armour Components 
 arm_info = ArmourAgentInfo(robot, None)
 arm_state = ArmourAgentState(arm_info)
-arm_visual = ArmourAgentVisual(arm_info, arm_state)
+arm_visual = ArmourAgentVisual(arm_info, arm_state, edge_width=0)
 arm_collision = ArmourAgentCollision(arm_info, arm_state)
 arm_state.reset()
 print(f"Info:\n{arm_info}")
@@ -63,8 +63,8 @@ box_obstacle = BoxObstacle(box_info, box_state, box_visual, box_collision)
 # set up visual system
 vs = PyvistaVisualSystem(dynamic_objects=[arm_agent.visual, box_obstacle.visual], dimension=3)
 cs = TrimeshCollisionSystem(dynamic_objects=[arm_agent.collision, box_obstacle.collision])
-# vs.redraw(0)
+#vs.redraw(0)
 vs.updateVisual(3)
 vs.animate()
 vs.waituntilclose()
-#cs.updateCollision(3)
+cs.updateCollision(3)

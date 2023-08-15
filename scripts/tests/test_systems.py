@@ -67,4 +67,5 @@ cs = TrimeshCollisionSystem(dynamic_objects=[arm_agent.collision, box_obstacle.c
 vs.updateVisual(3)
 vs.animate()
 vs.waituntilclose()
+
 cs.updateCollision(3)

@@ -2,3 +2,5 @@ from rtd.entity.components.BaseInfoComponent import BaseInfoComponent
 from rtd.entity.components.EmptyInfoComponent import EmptyInfoComponent
 from rtd.entity.components.BaseStateComponent import BaseStateComponent
 from rtd.entity.components.GenericEntityState import GenericEntityState
+from rtd.entity.components.BaseDynamicsComponent import BaseDynamicsComponent
+from rtd.entity.components.BaseControllerComponent import BaseControllerComponent

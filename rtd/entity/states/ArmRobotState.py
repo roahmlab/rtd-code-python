@@ -23,7 +23,8 @@ class ArmRobotState(EntityState):
         self.position_indices: list[int] = position_indices
         self.velocity_indices: list[int] = velocity_indices
         self.acceleration_indices: list[int] = acceleration_indices
-        self.state: NDArray = None
+        self.state: NDArray = None  # 2d array of state at time (n_states, n_time)
+        self.time: NDArray = None   # 1d array of time
     
     
     @property

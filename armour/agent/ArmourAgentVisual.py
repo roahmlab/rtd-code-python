@@ -98,6 +98,6 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
             
 
     def __str__(self) -> str:
-        return (f"{repr(self)} with properties:\n" + 
-                f"   arm_info:  {repr(self.arm_info)}\n"
+        return (f"Visual component {repr(self)} with properties:\n" + 
+                f"   arm_info:  {repr(self.arm_info)}\n" +
                 f"   arm_state: {repr(self.arm_state)}\n")

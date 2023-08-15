@@ -37,7 +37,7 @@ class ArmourAgent(WorldEntity):
         self.mergeoptions(options, override_options)
         
         # (Re)construct all components for consistency
-        self.info = info
+        self.info: ArmourAgentInfo = info
         self.construct_components("state", self.info)
         self.construct_components("visual", self.info, self.state)
         self.construct_components("collision", self.info, self.state)

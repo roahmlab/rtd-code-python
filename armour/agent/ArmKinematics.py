@@ -2,6 +2,7 @@ from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 from rtd.functional.vectools import axang2rotm
 import numpy as np
+from collections import OrderedDict
 from nptyping import NDArray
 
 # define top level module logger

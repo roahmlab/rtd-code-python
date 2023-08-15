@@ -181,6 +181,6 @@ class ArmourAgentState(BaseStateComponent, Options):
 
     
     def __str__(self):
-        return (f"{repr(self)} with properties:\n" + 
-                f"   arm_info:  {repr(self.entityinfo)}\n"
+        return (f"State component {repr(self)} with properties:\n" + 
+                f"   arm_info:  {repr(self.entityinfo)}\n" +
                 f"   state dim:  {self.state.shape}\n")

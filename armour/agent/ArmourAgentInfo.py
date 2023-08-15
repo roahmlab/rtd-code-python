@@ -42,5 +42,5 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
     
     
     def __str__(self):
-        return (f"{repr(self)} with properties:\n" + 
+        return (f"Info component {repr(self)} with properties:\n" + 
                 f"   n_q:  {self.n_q}\n")

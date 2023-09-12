@@ -6,7 +6,7 @@ if __name__ == '__main__':
     
     # configure logging
     from rtd.functional.logconfig import config_logger
-    config_logger('WARN')
+    config_logger('INFO')
     
     
     

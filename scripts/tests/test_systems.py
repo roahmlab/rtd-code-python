@@ -8,6 +8,10 @@ from rtd.sim.systems.collision import TrimeshCollisionSystem
 from urchin import URDF
 import numpy as np
 
+# configure logging
+from rtd.functional.logconfig import config_logger
+config_logger('INFO')
+
 
 # load robot
 print("Loading URDF...")

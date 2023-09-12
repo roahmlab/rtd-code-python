@@ -48,13 +48,6 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         self.time = [0]
         self.static_objects: list[CollisionObject] = list()
         self.dynamic_objects: list[DynamicCollisionObject] = list()
-        
-        # collision handle, returns a set of
-        # the collided pair's ids
-        self._collision_handle = CollisionManager()
-        # store id(object): object.parent to
-        # make sense of the collision handle output
-        self._name_refs: dict[int, int] = dict()
     
     
     def addObjects(self,
@@ -68,14 +61,6 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         if static is not None:
             static: list[CollisionObject] = toSequence(static)
             self.static_objects.extend(static)
-            
-            # add each mesh of each static objects to the collision
-            # handle using the mesh id as the name, and reference the
-            # id to the static object's parent
-            for obj in static:
-                for mesh in obj.meshes:
-                    self._collision_handle.add_object(name=id(mesh), mesh=mesh)
-                    self._name_refs[id(mesh)] = obj.parent
                 
         if dynamic is not None:
             dynamic = toSequence(dynamic)
@@ -91,14 +76,8 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         for obj in objects:
             if obj in self.static_objects:
                 self.static_objects.remove(obj)
-                for mesh in obj.meshes:
-                    self._collision_handle.remove_object(id(mesh))
-                    self._name_refs.pop(id(mesh))
             elif obj in self.dynamic_objects:
                 self.dynamic_objects.remove(obj)
-                # no need to remove from collision handle
-                # and name references as they only exist
-                # during the collision check
     
     
     def updateCollision(self, t_update: float) -> tuple[bool, set[CollisionPair]]:
@@ -135,21 +114,28 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         a bool if any collision happened, as well as a set of
         collided pair's parents and the number of pairs
         '''
-        # resolve dynamic object and add to handle
-        added_meshes_ids = list()
-        for obj in self.dynamic_objects:
-            resolved = obj.getCollisionObject(time=time)
-            for mesh in resolved.meshes:
-                self._collision_handle.add_object(name=id(mesh), mesh=mesh)
-                self._name_refs[id(mesh)] = resolved.parent
-                added_meshes_ids.append(id(mesh))
+        collided: bool = False
+        pairs: set[CollisionPair] = set()
         
-        # check collision
-        collided, names = self._collision_handle.in_collision_internal(return_names=True)
+        resolved = [obj.getCollisionObject(time=time) for obj in self.dynamic_objects]
         
-        # get pairs of collided pair's parents
-        pairs: set[CollisionPair] = self._dereference_pairs(names) if collided else set()
-        collided = len(pairs) > 0
+        for dyn1_i in range(len(resolved)):
+            dyn1 = resolved[dyn1_i]
+            
+            # check each dynamic object with each static object
+            for stat in self.static_objects:
+                if dyn1.parent != stat.parent:
+                    c, pair = dyn1.inCollision(stat)
+                    if c: pairs.add(pair)
+                    collided |= c
+            
+            # check each dynamic object with remaining dynamic objects
+            for dyn2_i in range(dyn1_i, len(resolved)):
+                dyn2 = resolved[dyn2_i]
+                if dyn1.parent != dyn2.parent:
+                    c, pair = dyn1.inCollision(dyn2)
+                    if c: pairs.add(pair)
+                    collided |= c
         
         # logging
         if collided:
@@ -158,38 +144,12 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
             for obj1, obj2 in pairs:
                 logger.debug(f"Collision detected between {obj1} and {obj2}")
         
-        # remove dynamic objects from handle and reference
-        for mesh_id in added_meshes_ids:
-            self._collision_handle.remove_object(mesh_id)
-            self._name_refs.pop(mesh_id)
-        
         return {
             "time": time,
             "collided": collided,
             "n_pairs": len(pairs),
             "pairs": pairs,
         }
-    
-    
-    def _dereference_pairs(self, names: set[CollisionPair]) -> set[CollisionPair]:
-        '''
-        Takes in a set of pairs of collided object ids and
-        dereferences it to create a set of pairs of the collided
-        pair's parents, ignoring pairs with the same parent
-        '''
-        pairs = set()
-        for name1, name2 in names:
-            # get parents
-            obj1 = self._name_refs[name1]
-            obj2 = self._name_refs[name2]
-            
-            # ignore if they share the same parent
-            if obj1 == obj2 and obj1 is not None:
-                continue
-            
-            pairs.add((obj1, obj2))
-            
-        return pairs
 
     
     def checkCollisionObject(self, collision_obj: CollisionObject) -> dict:

@@ -6,7 +6,7 @@ from rtd.sim.types import SimulationState
 class BaseSimulation(metaclass=ABCMeta):
     def __init__(self):
         self.simulation_state: SimulationState = SimulationState.INVALID
-        self.simulation_timestep = None
+        self.simulation_timestep: float = None
     
     @abstractmethod
     def add_object(self, object):

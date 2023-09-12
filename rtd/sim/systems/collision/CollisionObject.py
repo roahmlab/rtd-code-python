@@ -37,5 +37,5 @@ class CollisionObject:
             return (False, tuple())
         
         # check collision
-        collided, _ = self._collision_handle.in_collision_other(other._collision_handle)
+        collided = self._collision_handle.in_collision_other(other._collision_handle)
         return (True, (self.parent, other.parent)) if collided else (False, tuple())

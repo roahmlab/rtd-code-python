@@ -57,3 +57,16 @@ class BoxObstacle(WorldEntity):
     def reset(self, **options):
         self.mergeoptions(options)
         self.reset_components()
+
+
+    @staticmethod
+    def make_box(center: tuple[float] = (0,0,0), dims: tuple[float] = (0, 0, 0),
+                 color: tuple[float] = (1, 0, 1)) -> 'BoxObstacle':
+        '''
+        Creates a box obstacle with the specified parameters
+        '''
+        info = BoxObstacleInfo(dims=dims, color=color)
+        state = GenericEntityState(info, initial_state=center)
+        visual = BoxObstacleVisual(info, state)
+        collision = BoxObstacleCollision(info, state)
+        return BoxObstacle(info, state, visual, collision)

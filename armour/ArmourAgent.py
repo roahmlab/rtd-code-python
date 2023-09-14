@@ -1,5 +1,5 @@
 from rtd.sim.world import WorldEntity
-from armour.agent import ArmourAgentDynamics, ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision
+from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision
 
 
 

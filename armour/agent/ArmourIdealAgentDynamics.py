@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 
-class ArmourIdealAgentDynamics(BaseDynamicsComponent):
+class ArmourIdealAgentDynamics(BaseDynamicsComponent, Options):
     '''
     Dynamics component that assumes the agent perfectly
     executes the reference trajectory

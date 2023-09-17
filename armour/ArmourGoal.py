@@ -25,6 +25,7 @@ class ArmourGoal(PyvistaVisualObject, Options):
             'face_color': [0, 1, 0],
             'face_opacity': 0.1,
             'edge_color': [0, 1, 0],
+            'edge_width': 1,
             'start_position': None,
             'goal_position': None,
             'min_dist_start_to_goal': None,

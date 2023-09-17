@@ -4,7 +4,7 @@ from rtd.sim.systems.collision import TrimeshCollisionSystem, DynamicCollisionOb
 from rtd.sim.systems.visual import PyvistaVisualSystem, PyvistaVisualObject
 from rtd.entity.box_obstacle import BoxObstacle
 from armour import ArmourAgent, ArmourGoal
-from math import pi
+import numpy as np
 from typing import Callable
 
 # define top level module logger
@@ -87,7 +87,7 @@ class ArmourSimulation(BaseSimulation):
         self.simulation_state = SimulationState.INITIALIZING
         
         # initialize agent state
-        self.agent.state.reset(initial_position=[0,-pi/2,0,0,0,0,0])
+        self.agent.state.reset(initial_position=np.array([0,-np.pi/2,0,0,0,0,0]).reshape(-1, 1))
         
         # create obstacles
         n_obstacles = 3

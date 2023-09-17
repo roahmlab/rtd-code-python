@@ -37,7 +37,7 @@ class BaseSimulation(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def setp(self):
+    def step(self):
         '''
         Execute all the updates needed for each step
         '''

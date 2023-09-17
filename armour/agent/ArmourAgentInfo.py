@@ -35,7 +35,7 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
     def reset(self, **options):
         options = self.mergeoptions(options)        
         # fill in other dependent factors
-        self.robot.Gravity = options["gravity"]
+        self.params["gravity"] = options["gravity"]
         #self.n_links_and_joints = self.params.nomianal.num_joints
         self.n_q = len(self.robot.actuated_joints)
         #self.body_joint_index = self.params.nominal.q_index

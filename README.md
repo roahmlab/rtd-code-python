@@ -57,6 +57,9 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [ ] armour/agent/ArmourDynamics
 - [ ] armour/ArmourSimulation
 - [ ] armour/reachsets/IRSGenerator
+- [ ] armour/agent/ArmourAgentInfo
+- [ ] armour/agent/ArmKinematics
+- [ ] ArmourSimulation and collision/visual pause utility
 
 
 
@@ -69,7 +72,12 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [x] rtd/sim/systems/collision
 - [x] rtd/sim/world
 - [x] rtd/util
-- [x] armour/agent
+- [ ] armour/agent/ArmourAgentInfo
+- [x] armour/agent/ArmourAgentState
+- [x] armour/agent/ArmourAgentVisual
+- [x] armour/agent/ArmourAgentCollision
+- [ ] armour/agent/ArmourIdealAgentDynamics
+- [ ] armour/agent/ArmourMexController
 - [ ] armour/legacy
 - [ ] armour/reachsets
 - [ ] armour/trajectory

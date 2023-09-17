@@ -5,6 +5,11 @@ from rtd.sim.systems.visual import PyvistaVisualSystem, PyvistaVisualObject
 from rtd.entity.box_obstacle import BoxObstacle
 from armour import ArmourAgent, ArmourGoal
 from math import pi
+from typing import Callable
+
+# define top level module logger
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -54,7 +59,6 @@ class ArmourSimulation(BaseSimulation):
                 self.visual_system.addObjects(static=visual)
 
         # TODO setup custom event data to return the object added
-        notify(self, 'NewObjectAdded')
     
     
     def setup(self, agent: ArmourAgent):
@@ -75,6 +79,9 @@ class ArmourSimulation(BaseSimulation):
     
     
     def initialize(self):
+        '''
+        Initializes the agent, goal, and obstacles
+        '''
         if self.simulation_state > SimulationState.INITIALIZING:
             pass
         self.simulation_state = SimulationState.INITIALIZING
@@ -101,3 +108,73 @@ class ArmourSimulation(BaseSimulation):
         self.goal_system = ArmourGoal(self.collision_system, self.agent, goal_position=goal_position)
         self.visual_system.addObjects(static=self.goal_system)
         
+        self.agent.reset()
+        self.visual_system.redraw()
+        self.simulation_state = SimulationState.READY
+    
+    
+    def pre_step(self) -> dict:
+        self.simulation_state = SimulationState.PRE_STEP
+        return dict()
+    
+    
+    def step(self) -> dict:
+        self.simulation_state = SimulationState.STEP
+        
+        # update entries
+        agent_results = self.agent.update(self.simulation_timestep)
+        
+        collided, contactedPairs = self.collision_system.updateCollision(self.simulation_timestep)
+        
+        if collided:
+            logger.error("Collision Detected, Breakpoint!")
+            input("Press Enter to Unpause")
+        
+        return {
+            "agent_results": agent_results,
+            "collided": collided,
+            "contactPairs": contactedPairs,
+        }
+    
+    
+    def post_step(self) -> dict:
+        self.simulation_state
+        goal = self.goal_system.updateGoal(self.simulation_timestep)
+        self.visual_system.updateVisual(self.simulation_timestep)
+        return {
+            "goal": goal,
+        }
+    
+    
+    def summary(self, **options):
+        # does nothing
+        return
+    
+    
+    def run(self, max_steps: int = 1e8, pre_step_callback: Callable = None, step_callback: Callable = None,
+            post_step_callback: Callable = None, stop_on_goal: bool = True):
+        # build the execution order
+        execution_queue = [self.pre_step]
+        if pre_step_callback is not None:
+            execution_queue.append(pre_step_callback)
+        execution_queue.append(self.step)
+        if step_callback is not None:
+            execution_queue.append(step_callback)
+        execution_queue.append(self.post_step)
+        if post_step_callback is not None:
+            execution_queue.append(post_step_callback)
+        
+        steps = 0
+        stop = False
+        
+        while steps<max_steps and not stop:
+            for fcn in execution_queue:
+                info = fcn()
+                # automate logging here
+                stop = True if ("stop" in info and info.stop) else False
+                if stop_on_goal and "goal" in info and info.goal:
+                    stop = True
+                    print("Goal acheived!")
+                # TODO pause on request with keyboard
+                
+            steps += 1

@@ -1,12 +1,9 @@
 if __name__ == '__main__':
     #-------------------- imports --------------------#
     print("Loading modules...")
-    from armour import ArmourAgent, ArmourSimulation
+    from armour import ArmourAgent, ArmourSimulation, ArmourPlanner
     from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision, ArmourIdealAgentDynamics, ArmourMexController
-    from rtd.entity.box_obstacle import BoxObstacleInfo, BoxObstacleVisual, BoxObstacleCollision, BoxObstacle
-    from rtd.entity.components import GenericEntityState
-    from rtd.sim.systems.visual import PyvistaVisualSystem
-    from rtd.sim.systems.collision import TrimeshCollisionSystem
+    from rtd.planner.trajopt import TrajOptProps
     from urchin import URDF
     import numpy as np
     
@@ -64,3 +61,28 @@ if __name__ == '__main__':
     sim.setup(agent)
     sim.initialize()
     sim.visual_system.waituntilclose()
+    
+    
+    
+    #-------------------- interface of the planner --------------------#
+    trajOptProp = TrajOptProps(
+        timeForCost=1,
+        planTime=0.5,
+        horizonTime=1,
+        doTimeout=False,
+        timeoutTime=0.5,
+        randomInit=True
+    )
+    
+    input_constraints_flag = False
+    use_robust_input = False
+    smooth_obs = False
+    
+    planner = ArmourPlanner(
+        trajOptProps=trajOptProp,
+        robot=sim.agent,
+        input_constraints_flag=input_constraints_flag,
+        use_robust_input=use_robust_input,
+        smooth_obs=smooth_obs,
+        traj_type="bernstein"
+    )

@@ -7,6 +7,7 @@ if __name__ == '__main__':
     from rtd.sim.systems.visual import PyvistaVisualSystem
     from rtd.sim.systems.collision import TrimeshCollisionSystem
     from urchin import URDF
+    import os
     import numpy as np
 
     # configure logging
@@ -16,7 +17,8 @@ if __name__ == '__main__':
 
     # load robot
     print("Loading URDF...")
-    robot = URDF.load("../../urdfs/kinova_arm/kinova_without_gripper.urdf")
+    urdf_path = os.path.join(os.path.dirname(__file__), "../../urdfs/kinova_arm/kinova_without_gripper.urdf")
+    robot = URDF.load(urdf_path)
 
     # generate Armour Components 
     arm_info = ArmourAgentInfo(robot, None)

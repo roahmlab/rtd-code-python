@@ -26,8 +26,7 @@ class RtdTrajOpt:
     optimization when requested. It calls the generators for the reachble
     sets and combines all the resulting nonlinear constraints in the end
     '''
-    def __init__(self, trajOptProps: TrajOptProps, robot: WorldEntity,
-                 reachableSets: dict[str, ReachSetGenerator],
+    def __init__(self, trajOptProps: TrajOptProps, reachableSets: dict[str, ReachSetGenerator],
                  objective: Objective, optimizationEngine: OptimizationEngine,
                  trajectoryFactory: TrajectoryFactory, **options):
         '''
@@ -40,14 +39,12 @@ class RtdTrajOpt:
         
         Arguments:
             trajOptProps: TrajOptProps
-            robot: WorldEntity
             reachableSets: dict[str, ReachSetGenerator]
             objective: Objective
             optimizationEngine: OptimizationEngine
             trajectoryFactory: TrajectoryFactory
         '''
         self.trajOptProps: TrajOptProps = trajOptProps
-        self.robot: WorldEntity = robot
         self.reachableSets: dict[str, ReachSetGenerator] = reachableSets
         self.objective: Objective = objective
         self.optimizationEngine: OptimizationEngine = optimizationEngine

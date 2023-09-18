@@ -2,7 +2,7 @@ from rtd.entity.states import EntityState
 from rtd.planner.reachsets import ReachSetGenerator
 from armour.reachsets import IRSInstance, JRSGenerator
 from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
-from zonopy.dynamics.RNEA import poly_zono_rnea
+from zonopy.dynamics.RNEA import pzrnea
 import torch
 import numpy as np
 
@@ -54,13 +54,13 @@ class IRSGenerator(ReachSetGenerator):
         w: list[list[polyZonotope]] = list()
         for i in range(jrsInstance.n_t):
             # RNEA for nominal
-            _, _, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
+            _, _, u_pz = pzrnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
                                      jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params.pz_nominal, True)
             tau_nom.append(u_pz)
             
             if self.use_robost_input:
                 # RNEA interval for robust input
-                f_pz, n_pz, u_pz = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
+                f_pz, n_pz, u_pz = pzrnea(jrsInstance.R[i], jrsInstance.R.T[i], jrsInstance.dq[i],
                                      jrsInstance.dq_a[i], jrsInstance.ddq_a[i], self.robot.info.params.pz_interval, True)
                 
                 # calculate w from robust controller
@@ -69,7 +69,7 @@ class IRSGenerator(ReachSetGenerator):
                     w[i][j] = w[i][j].reduce(self.robot.info.params.pz_interval.zono_order)
                 
                 # calculate v_cell
-                _, _, v_cell = poly_zono_rnea(jrsInstance.R[i], jrsInstance.R.T[i], zero_cell,
+                _, _, v_cell = pzrnea(jrsInstance.R[i], jrsInstance.R.T[i], zero_cell,
                                               zero_cell, r, self.robot.info.params.pz_interval, False)
                 v: list[polyZonotope] = list()
                 for j in range(jrsInstance.n_q):

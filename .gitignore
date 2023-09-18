@@ -10,3 +10,6 @@ rtd_code_python.egg-info/
 
 # urdfs
 urdfs/
+
+# vscode
+.vscode/

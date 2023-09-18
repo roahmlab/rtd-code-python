@@ -91,8 +91,8 @@ class ArmourSimulation(BaseSimulation):
         
         # create obstacles
         n_obstacles = 3
-        centers = [(-0.0584, 0.1813, 0.4391), (0.5333, -0.2291, 0.2884), (0.2826, 0.5121, 0.2953)]
-        side_lengths = [(-0.0584, 0.1813, 0.4391), (0.5333, -0.2291, 0.2884), (0.2826, 0.5121, 0.2953)]
+        centers = [(-0.0584, 0.5333, 0.2826), (0.1813, -0.2291, 0.5121), (0.4391, 0.2884, 0.2953)]
+        side_lengths = [(0.3915, 0.0572, 0.1350), (0.1760, 0.3089, 0.1013), (0.1545, 0.2983, 0.0352)]
         
         # place obstacles
         for obs_i in range(n_obstacles):
@@ -108,7 +108,8 @@ class ArmourSimulation(BaseSimulation):
         self.goal_system = ArmourGoal(self.collision_system, self.agent, goal_position=goal_position)
         self.visual_system.addObjects(static=self.goal_system)
         
-        self.agent.reset()
+        override_options = self.agent.get_componentOverrideOptions({'state': self.agent.state})
+        self.agent.reset(**override_options)
         self.visual_system.redraw()
         self.simulation_state = SimulationState.READY
     

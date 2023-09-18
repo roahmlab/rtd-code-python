@@ -1,4 +1,5 @@
 from rtd.util.mixins import Options
+from mergedeep import merge
 
 
 
@@ -99,7 +100,7 @@ class WorldEntity(Options):
     
     
     @staticmethod
-    def get_componentOptions(component) -> dict:
+    def get_componentOptions(component) -> dict | None:
         '''
         Takes in a component class or instance and returns either
         the defaultoptions of that class or the actual options of

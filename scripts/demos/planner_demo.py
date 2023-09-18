@@ -4,7 +4,9 @@ if __name__ == '__main__':
     from armour import ArmourAgent, ArmourSimulation, ArmourPlanner
     from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision, ArmourIdealAgentDynamics, ArmourMexController
     from rtd.planner.trajopt import TrajOptProps
+    from zonopy.robots2.robot import ZonoArmRobot
     from urchin import URDF
+    import os
     import numpy as np
     
     # configure logging
@@ -29,17 +31,17 @@ if __name__ == '__main__':
         },
         
         "visual": {
-            "face_opacity": 1,
+            "edge_width": 0,
         },
     }
     
     
     
     #-------------------- setup the agent --------------------#
-    robot = URDF.load("../../urdfs/kinova_arm/kinova_without_gripper.urdf")
-    params = {
-        "gravity": [0, 0, -9,81],
-    }
+    urdf_path = os.path.join(os.path.dirname(__file__), agent_urdf)
+    robot = URDF.load(urdf_path)
+    params = ZonoArmRobot.load(robot)
+
     vel_limits = [[-1.3963, -1.3963, -1.3963, -1.3963, -1.2218, -1.2218, -1.2218],
                   [1.3963,  1.3963,  1.3963,  1.3963,  1.2218,  1.2218,  1.2218]]
     input_limits = [[-56.7, -56.7, -56.7, -56.7, -29.4, -29.4, -29.4],
@@ -81,6 +83,7 @@ if __name__ == '__main__':
     planner = ArmourPlanner(
         trajOptProps=trajOptProp,
         robot=sim.agent,
+        params=params,
         input_constraints_flag=input_constraints_flag,
         use_robust_input=use_robust_input,
         smooth_obs=smooth_obs,

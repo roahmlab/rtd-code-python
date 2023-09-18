@@ -23,14 +23,14 @@ class JRSGenerator(ReachSetGenerator):
         ReachSetGenerator.__init__(self)
         # set properties
         self.cache_max_size = 1
-        self.controller = robot.controller
+        #self.controller = robot.controller
         self.taylor_degree = taylor_degree
         self.add_ultimate_bound = add_ultimate_bound
         self.traj_type = traj_type
         # initialize zonopy's JRSGenerator
         traj_class = zpt.PiecewiseArmTrajectory if traj_type=="piecewise" else zpt.BernsteinArmTrajectory
-        self._jrnsgen = ZonoJRSGenerator(robot, traj_class, k_r=self.controller.k_r,
-                                         ultimate_bound=self.controller.ultimate_bound,
+        self._jrnsgen = ZonoJRSGenerator(robot, traj_class, k_r=None, # k_r=self.controller.k_r
+                                         ultimate_bound=None, # ultimate_bound=self.controller.ultimate_bound
                                          batched=True, unique_tid=False)
     
     

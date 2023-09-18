@@ -42,6 +42,9 @@ class ArmourAgent(WorldEntity):
         # Merge all options
         self.mergeoptions(options, override_options)
         
+        if "component_options" in options:
+            self.mergeoptions(options, options)
+        
         # For intellisense
         self.state: ArmourAgentState
         self.visual: ArmourAgentVisual

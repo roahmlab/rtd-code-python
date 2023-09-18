@@ -37,7 +37,7 @@ python-fcl==0.7.0.4
 pyvista==0.39.0
 PyYAML==6.0
 requests==2.31.0
--e git+https://github.com/roahmlab/rtd-code-python.git@926e78bcaa401a636765ecd2a321406d6fe26e82#egg=rtd_code_python
+-e git+https://github.com/roahmlab/rtd-code-python.git@27c6e0bfaf6671807b5d621bed8ae28e1b411b02#egg=rtd_code_python
 scipy==1.10.1
 scooby==0.7.2
 six==1.16.0
@@ -48,4 +48,4 @@ typing_extensions==4.7.1
 urchin==0.0.27
 urllib3==2.0.2
 vtk==9.2.6
--e git+https://github.com/BuildingAtom/zonopy.git@3244afb629359a3652cecb591bf85997f2e5c694#egg=zonopy
+-e git+https://github.com/BuildingAtom/zonopy.git@5a7060ac303393d6bd2cb120d2f4002b88ee4b2e#egg=zonopy

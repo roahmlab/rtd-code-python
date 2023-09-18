@@ -1,5 +1,6 @@
 from rtd.entity.components import BaseInfoComponent
 from rtd.util.mixins import Options
+from zonopy.robots2.robot import ZonoArmRobot
 from urchin import URDF
 
 # define top level module logger
@@ -19,7 +20,7 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
         }
     
     
-    def __init__(self, robot: URDF, params, **options):
+    def __init__(self, robot: URDF, params: ZonoArmRobot, **options):
          # initialize base classes
         BaseInfoComponent.__init__(self)
         Options.__init__(self)
@@ -35,7 +36,6 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
     def reset(self, **options):
         options = self.mergeoptions(options)        
         # fill in other dependent factors
-        self.params["gravity"] = options["gravity"]
         #self.n_links_and_joints = self.params.nomianal.num_joints
         self.n_q = len(self.robot.actuated_joints)
         #self.body_joint_index = self.params.nominal.q_index

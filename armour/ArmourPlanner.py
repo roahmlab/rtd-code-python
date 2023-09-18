@@ -6,6 +6,8 @@ from rtd.planner.trajopt import TrajOptProps, RtdTrajOpt, GenericArmObjective, S
 from rtd.sim.world import WorldState
 from armour.reachsets import JRSGenerator, FOGenerator, IRSGenerator, JLSGenerator
 from armour.trajectory import ArmTrajectoryFactory
+from zonopy.robots2.robot import ZonoArmRobot
+from urchin import URDF
 
 
 
@@ -20,18 +22,18 @@ class ArmourPlanner(RtdPlanner, Options):
         }
         
         
-    def __init__(self, trajOptProps: TrajOptProps, robot, **options):
+    def __init__(self, trajOptProps: TrajOptProps, robot: URDF, params: ZonoArmRobot, **options):
         # initialize base classes
         RtdPlanner.__init__(self)
         Options.__init__(self)
         # initialize using given options
         self.mergeoptions(options)
         self.rsGenerators = dict()
-        self.rsGenerators["jrs"] = JRSGenerator(robot, traj_type=options["traj_type"])
-        self.rsGenerators["fo"] = FOGenerator(robot, self.rsGenerators["jrs"], smooth_obs=options["smooth_obs"])
+        self.rsGenerators["jrs"] = JRSGenerator(params, traj_type=options["traj_type"])
+        self.rsGenerators["fo"] = FOGenerator(params, self.rsGenerators["jrs"], smooth_obs=options["smooth_obs"])
         if options["input_constraints_flag"]:
-            self.rsGenerators["irs"] = IRSGenerator(robot, self.rsGenerators["jrs"], use_robost_input=options["use_robust_input"])
-            self.rsGenerators["jls"] = JLSGenerator(robot, self.rsGenerators["jrs"])
+            self.rsGenerators["irs"] = IRSGenerator(params, self.rsGenerators["jrs"], use_robost_input=options["use_robust_input"])
+            self.rsGenerators["jls"] = JLSGenerator(params, self.rsGenerators["jrs"])
         
         # create the trajectory factory
         self.trajectoryFactory = ArmTrajectoryFactory(trajOptProps, options["traj_type"])
@@ -43,7 +45,7 @@ class ArmourPlanner(RtdPlanner, Options):
         self.optimizationEngine = ScipyOptimizationEngine(trajOptProps)
         
         # create the trajopt object
-        self.trajopt = RtdTrajOpt(trajOptProps, robot, self.rsGenerators, self.objective,
+        self.trajopt = RtdTrajOpt(trajOptProps, self.rsGenerators, self.objective,
                                   self.optimizationEngine, self.trajectoryFactory)
     
     

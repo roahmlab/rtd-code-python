@@ -50,5 +50,6 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "terminal.integrated.defaultProfile.windows": "Command Prompt"
 }

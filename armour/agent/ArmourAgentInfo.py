@@ -39,6 +39,10 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
         #self.n_links_and_joints = self.params.nomianal.num_joints
         self.n_q = len(self.robot.actuated_joints)
         #self.body_joint_index = self.params.nominal.q_index
+        self.M_min_eigenvalue = options["M_min_eigenvalue"]
+        self.gravity = options["gravity"]
+        self.transmission_inertia = options["transmission_inertia"]
+        self.buffer_dist = options["buffer_dist"]
     
     
     def __str__(self):

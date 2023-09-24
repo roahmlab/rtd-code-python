@@ -52,7 +52,8 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 
 
 
-## Not Implemented Yet
+## Not Fully Implemented Yet
+- [ ] armour/agent/ArmourController
 - [ ] armour/agent/ArmourMexController
 - [ ] armour/agent/ArmourDynamics
 - [ ] armour/ArmourSimulation
@@ -77,8 +78,11 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [x] armour/agent/ArmourAgentVisual
 - [x] armour/agent/ArmourAgentCollision
 - [ ] armour/agent/ArmourIdealAgentDynamics
+- [ ] armour/agent/ArmourController
 - [ ] armour/agent/ArmourMexController
-- [ ] armour/legacy
+- [ ] armour/legacy/bernstein_to_poly
+- [ ] armour/legacy/match_deg5_bernstein_coefficients
+- [ ] armour/legacy/StraightLineHLP
 - [ ] armour/reachsets
 - [ ] armour/trajectory
 - [x] armour/ArmourAgent

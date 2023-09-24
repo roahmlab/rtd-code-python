@@ -92,8 +92,9 @@ if __name__ == '__main__':
     )
     #-------------------- high level planner --------------------#
     world_info = {'goal': sim.goal_system.goal_position}
+    agent_info.joint_state_indices = sim.agent.state.position_indices
     HLP = StraightLineHLP()
-    HLP.setup(world_info)
+    HLP.setup(agent_info, world_info)
     
     
     

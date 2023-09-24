@@ -1,3 +1,4 @@
+from armour.agent import ArmourAgentInfo
 from nptyping import NDArray
 import numpy as np
 
@@ -7,10 +8,12 @@ class StraightLineHLP():
     def __init__(self):
         self.default_lookahead_distance: float = 1
         self.goal: NDArray = None
+        self.joint_state_indices: NDArray = None
     
     
-    def setup(self, world_info: dict):
+    def setup(self, agent_info: ArmourAgentInfo, world_info: dict):
         self.goal = world_info["goal"]
+        self.arm_joint_state_indices = agent_info.joint_state_indices
         
     
     def get_waypoint(self, state: NDArray, lookahead_distance: float = None):

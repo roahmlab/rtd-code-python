@@ -52,7 +52,7 @@ class RtdTrajOpt:
     
     
     def solveTrajOpt(self, robotState: EntityState, worldState: WorldState, waypoint,
-                     initialGuess: Trajectory, **rsAdditionalArgs: dict[dict]) -> tuple[Trajectory, float, dict]:
+                     initialGuess: Trajectory = None, **rsAdditionalArgs: dict[dict]) -> tuple[Trajectory, float, dict]:
         '''
         Execute the solver for trajectory optimization
         

@@ -2,12 +2,12 @@ if __name__ == '__main__':
     #-------------------- imports --------------------#
     print("Loading modules...")
     from armour import ArmourAgent, ArmourSimulation, ArmourPlanner
-    from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision, ArmourIdealAgentDynamics, ArmourMexController
+    from armour.agent import ArmourAgentInfo, ArmourMexController
+    from armour.legacy import StraightLineHLP
     from rtd.planner.trajopt import TrajOptProps
     from zonopy.robots2.robot import ZonoArmRobot
     from urchin import URDF
     import os
-    import numpy as np
     
     # configure logging
     from rtd.functional.logconfig import config_logger
@@ -89,3 +89,36 @@ if __name__ == '__main__':
         smooth_obs=smooth_obs,
         traj_type="bernstein"
     )
+    #-------------------- high level planner --------------------#
+    world_info = {'goal': sim.goal_system.goal_position}
+    HLP = StraightLineHLP()
+    HLP.setup(world_info)
+    
+    
+    
+    #-------------------- run planning step by step --------------------#
+    lookahead = 0.4
+    sim_i = 0
+    cb = lambda s: planner_callback(s, planner, agent_info, world_info, lookahead, HLP)
+    sim.run(max_steps=100, pre_step_callback=cb)
+    
+    
+    def planner_callback(sim: ArmourSimulation, planner: ArmourPlanner, agent_info: ArmourAgentInfo,
+                         world_info: dict, lookahead: float, HLP) -> dict:
+        # get the end state
+        time = sim.agent.state.time[-1]
+        ref_state = sim.agent.controller.trajectories[-1].getCommand(time)
+        agent_info.state = sim.agent.state.state[:, -1]
+        
+        q_des = HLP.get_waypoint(sim.agent.state.state[:,-1], lookahead)
+        if q_des is None:
+            print("Waypoint creation failed! Using global goal instead.")
+            q_des = HLP.goal
+        
+        worldState = {'obstacles': zonotope_sensor(sim.world, sim.agent, time)}
+        trajectory, plan_info = planner.planTrajectory(ref_state, worldState, q_des)
+        
+        if trajectory is not None:
+            sim.agent.controller.setTrajectory(trajectory)
+        
+        return plan_info

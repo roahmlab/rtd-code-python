@@ -155,13 +155,13 @@ class ArmourSimulation(BaseSimulation):
     def run(self, max_steps: int = 1e8, pre_step_callback: Callable = None, step_callback: Callable = None,
             post_step_callback: Callable = None, stop_on_goal: bool = True):
         # build the execution order
-        execution_queue = [self.pre_step]
+        execution_queue = [ArmourSimulation.pre_step]
         if pre_step_callback is not None:
             execution_queue.append(pre_step_callback)
-        execution_queue.append(self.step)
+        execution_queue.append(ArmourSimulation.step)
         if step_callback is not None:
             execution_queue.append(step_callback)
-        execution_queue.append(self.post_step)
+        execution_queue.append(ArmourSimulation.post_step)
         if post_step_callback is not None:
             execution_queue.append(post_step_callback)
         
@@ -170,7 +170,7 @@ class ArmourSimulation(BaseSimulation):
         
         while steps<max_steps and not stop:
             for fcn in execution_queue:
-                info = fcn()
+                info = fcn(self)
                 # automate logging here
                 stop = True if ("stop" in info and info.stop) else False
                 if stop_on_goal and "goal" in info and info.goal:

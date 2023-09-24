@@ -1,5 +1,5 @@
 from rtd.sim.world import WorldEntity
-from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision, ArmourIdealAgentDynamics, ArmourMexController
+from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourAgentVisual, ArmourAgentCollision, ArmourIdealAgentDynamics, ArmourController
 
 
 
@@ -15,7 +15,7 @@ class ArmourAgent(WorldEntity):
                 "state": ArmourAgentState,
                 "visual": ArmourAgentVisual,
                 "collision": ArmourAgentCollision,
-                "controller": ArmourMexController,
+                "controller": ArmourController,
                 "dynamics": ArmourIdealAgentDynamics,
             },
         }
@@ -25,7 +25,7 @@ class ArmourAgent(WorldEntity):
                  state: ArmourAgentState = ArmourAgentState,
                  visual: ArmourAgentVisual = ArmourAgentVisual, 
                  collision: ArmourAgentCollision = ArmourAgentCollision,
-                 controller: ArmourMexController = ArmourMexController,
+                 controller: ArmourController = ArmourController,
                  dynamics: ArmourIdealAgentDynamics = ArmourIdealAgentDynamics, **options):
         WorldEntity.__init__(self)
         components = {
@@ -49,7 +49,7 @@ class ArmourAgent(WorldEntity):
         self.state: ArmourAgentState
         self.visual: ArmourAgentVisual
         self.collision: ArmourAgentCollision
-        self.controller: ArmourMexController
+        self.controller: ArmourController
         self.dynamics: ArmourIdealAgentDynamics
         
         # (Re)construct all components for consistency

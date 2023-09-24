@@ -1,4 +1,3 @@
-from armour.agent import ArmourAgentInfo
 from nptyping import NDArray
 import numpy as np
 

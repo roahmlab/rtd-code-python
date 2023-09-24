@@ -2,9 +2,10 @@ if __name__ == '__main__':
     #-------------------- imports --------------------#
     print("Loading modules...")
     from armour import ArmourAgent, ArmourSimulation, ArmourPlanner
-    from armour.agent import ArmourAgentInfo, ArmourMexController
+    from armour.agent import ArmourAgentInfo, ArmourController
     from armour.legacy import StraightLineHLP
     from rtd.planner.trajopt import TrajOptProps
+    from rtd.sim.world import WorldState
     from zonopy.robots2.robot import ZonoArmRobot
     from urchin import URDF
     import os
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     agent_info = ArmourAgentInfo(robot, params, joint_velocity_limits=vel_limits, joint_torque_limits=input_limits,
                                  transmission_inertia=transmision_inertia, M_min_eigenvalue=M_min_eigenvalue)
     
-    armour_controller = ArmourMexController
+    armour_controller = ArmourController
     
     agent = ArmourAgent(info=agent_info, controller=armour_controller, component_options=component_options)
     
@@ -62,7 +63,7 @@ if __name__ == '__main__':
     sim = ArmourSimulation()
     sim.setup(agent)
     sim.initialize()
-    sim.visual_system.waituntilclose()
+    #sim.visual_system.waituntilclose()
     
     
     
@@ -97,12 +98,6 @@ if __name__ == '__main__':
     
     
     #-------------------- run planning step by step --------------------#
-    lookahead = 0.4
-    sim_i = 0
-    cb = lambda s: planner_callback(s, planner, agent_info, world_info, lookahead, HLP)
-    sim.run(max_steps=100, pre_step_callback=cb)
-    
-    
     def planner_callback(sim: ArmourSimulation, planner: ArmourPlanner, agent_info: ArmourAgentInfo,
                          world_info: dict, lookahead: float, HLP) -> dict:
         # get the end state
@@ -115,10 +110,16 @@ if __name__ == '__main__':
             print("Waypoint creation failed! Using global goal instead.")
             q_des = HLP.goal
         
-        worldState = {'obstacles': zonotope_sensor(sim.world, sim.agent, time)}
+        worldState = WorldState()
+        #worldState.obstacles = zonotope_sensor(sim.world, sim.agent, time)
         trajectory, plan_info = planner.planTrajectory(ref_state, worldState, q_des)
         
         if trajectory is not None:
             sim.agent.controller.setTrajectory(trajectory)
         
         return plan_info
+    
+    
+    lookahead = 0.4
+    cb = lambda s: planner_callback(s, planner, agent_info, world_info, lookahead, HLP)
+    sim.run(max_steps=100, pre_step_callback=cb)

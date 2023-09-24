@@ -1,6 +1,6 @@
 from rtd.entity.components import BaseDynamicsComponent
 from rtd.util.mixins import Options
-from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourMexController
+from armour.agent import ArmourAgentInfo, ArmourAgentState, ArmourController
 from rtd.planner.trajectory import Trajectory
 import numpy as np
 
@@ -23,7 +23,7 @@ class ArmourIdealAgentDynamics(BaseDynamicsComponent, Options):
     
     
     def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState, 
-                 arm_controller: ArmourMexController, **options):
+                 arm_controller: ArmourController, **options):
          # initialize base classes
         BaseDynamicsComponent.__init__(self)
         Options.__init__(self)
@@ -31,7 +31,7 @@ class ArmourIdealAgentDynamics(BaseDynamicsComponent, Options):
         self.mergeoptions(options)
         self.robot_info: ArmourAgentInfo = arm_info
         self.robot_state: ArmourAgentState = arm_state
-        self.controller: ArmourMexController = arm_controller
+        self.controller: ArmourController = arm_controller
         
         # initialzie
         self.reset()

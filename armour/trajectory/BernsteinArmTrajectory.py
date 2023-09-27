@@ -39,9 +39,9 @@ class BernsteinArmTrajectory(Trajectory):
         self.trajectoryParams = trajectoryParams
         if self.trajectoryParams.size > self.jrsInstance.n_q:
             self.trajectoryParams = self.trajectoryParams[:self.jrsInstance.n_q]
-        if startState is None:
+        if startState is not None:
             self.startState = startState
-        if jrsInstance is None:
+        if jrsInstance is not None:
             self.jrsInstance = jrsInstance
         
         # perform internal update
@@ -101,8 +101,8 @@ class BernsteinArmTrajectory(Trajectory):
         # Do a parameter check and time check, and throw if anything is
         # invalid.
         self.validate(throwOnError=True)
-        t_shifted = time - self.startState.time
-        if t_shifted < 0:
+        t_shifted = np.atleast_1d(np.asarray(time - self.startState.time))
+        if np.any(t_shifted < 0):
             raise InvalidTrajectory("Invalid time provided to PiecewiseArmTrajectory")
 
         t_size = t_shifted.size

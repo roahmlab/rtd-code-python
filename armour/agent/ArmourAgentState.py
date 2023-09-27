@@ -113,7 +113,8 @@ class ArmourAgentState(BaseStateComponent, Options):
             return state
         
         # otherwise, interpolate
-        state.state = np.zeros((self.n_states, time.size))
+        timesize = time.size if isinstance(time, NDArray) else 1
+        state.state = np.zeros((self.n_states, timesize))
         
         # if we can and need to interpolate the state, do it
         for i in range(self.n_states):

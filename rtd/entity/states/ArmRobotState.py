@@ -29,15 +29,15 @@ class ArmRobotState(EntityState):
     
     @property
     def position(self):
-        return self.state[self.position_indices,:]
+        return self.state[self.position_indices,:].squeeze()
     
     @property
     def velocity(self):
-        return self.state[self.velocity_indices,:]
+        return self.state[self.velocity_indices,:].squeeze()
     
     @property
     def acceleration(self):
-        return self.state[self.acceleration_indices,:]
+        return self.state[self.acceleration_indices,:].squeeze()
     
     # compat
     @property

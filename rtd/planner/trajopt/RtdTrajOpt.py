@@ -108,7 +108,7 @@ class RtdTrajOpt:
         for (rs_id, rsInstances) in rsInstances_dict.items():
             logger.info(f"Solving problem {rs_id}")
             logger.debug("Generating nonlinear constraints")
-            nlconCallbacks = {rs_name: rs.genNLConstraint(worldState) for (rs_name, rs) in rsInstances}
+            nlconCallbacks = {rs_name: rs.genNLConstraint(worldState) for (rs_name, rs) in rsInstances.items()}
             
             # validate that rs sizes are all equal
             logger.debug("Validating sizes")
@@ -123,11 +123,11 @@ class RtdTrajOpt:
             logger.debug("Computing bounds")
             param_bounds = np.ones((num_parameters, 2)) * (-np.inf, np.inf)
             for rs in rsInstances.values():
-                new_bounds = np.tile(rs.input_range, (num_parameters, 1))
+                new_bounds = rs.input_range*np.ones((1, num_parameters))
                 # Ensure bounds are the intersect of the intervals for the
                 # parameters
-                param_bounds[:,0] = np.maximum(param_bounds[:,0], new_bounds[:,0])
-                param_bounds[:,1] = np.minimum(param_bounds[:,1], new_bounds[:,1])
+                param_bounds[:,0] = np.maximum(param_bounds[:,0], new_bounds[0])
+                param_bounds[:,1] = np.minimum(param_bounds[:,1], new_bounds[1])
             
             # combine nlconCallbacks
             constraintCallback = self.merge_constraints(nlconCallbacks)
@@ -214,19 +214,26 @@ class RtdTrajOpt:
                 return res
             
             # calculate result
-            h = list()
-            heq = list()
-            grad_h = list()
-            grad_heq = list()
+            h = [np.empty(0)]
+            heq = [np.empty(0)]
+            grad_h = [np.empty((0, len(k)))]
+            grad_heq = [np.empty((0, len(k)))]
             
             for nlconCb in self.nlconCallbacks.values():
+                if nlconCb is None:
+                    continue
+                
                 (rs_h, rs_heq, rs_grad_h, rs_grad_heq) = nlconCb(k)
-                h.append(rs_h)
-                heq.append(rs_heq)
-                grad_h.append(rs_grad_h)
-                grad_heq.append(rs_grad_heq)
-               
-            res = (h, heq, grad_h, grad_heq)
+                if rs_h is not None:
+                    h.append(rs_h)
+                if rs_heq is not None:
+                    heq.append(rs_heq)
+                if rs_grad_h is not None:
+                    grad_h.append(rs_grad_h)
+                if rs_grad_heq is not None:
+                    grad_heq.append(rs_grad_heq)
+            
+            res = (np.hstack(h), np.hstack(heq), np.vstack(grad_h), np.vstack(grad_heq))
             
             self.updateBuffer(k, res)
             return res
@@ -251,6 +258,6 @@ class RtdTrajOpt:
             None
             '''
             for i in self.buffer:
-                if i[0] == k:
+                if np.all(i[0] == k):
                     return i[1]
             return None

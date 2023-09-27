@@ -59,7 +59,8 @@ class ArmourController(BaseControllerComponent, Options):
     
     
     def setTrajectory(self, trajectory: Trajectory):
-        return NotImplementedError
+        if trajectory.validate():
+            self.trajectories.append(trajectory)
     
     
     def getControlInputs(self, **options):

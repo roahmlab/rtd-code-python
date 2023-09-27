@@ -62,7 +62,7 @@ class ScipyOptimizationEngine(OptimizationEngine):
             fun=objectiveCallback,
             x0=initialGuess,
             method='SLSQP',
-            jac=True,   # use second return of fun as jacobean
+            #jac=True,   # use second return of fun as jacobean
             bounds=bounds["param_limits"],
             constraints = [
                 {

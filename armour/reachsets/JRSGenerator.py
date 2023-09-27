@@ -68,7 +68,7 @@ class JRSGenerator(ReachSetGenerator):
             'n_q': n_q,
             'n_k': n_k,
             'c_k_orig': np.zeros(n_k),
-            'g_k_orig': np.min(np.max(np.pi/24, np.abs(rs.dq/3)), np.pi/3),
+            'g_k_orig': np.minimum(np.maximum(np.pi/24, np.abs(robotState.q_dot/3)), np.pi/3),
             'c_k_bernstein': np.zeros(n_q),
             'g_k_bernstein': np.pi/36 * np.ones(n_q),
         }

@@ -173,7 +173,7 @@ class ArmourSimulation(BaseSimulation):
                 info = fcn(self)
                 # automate logging here
                 stop = True if ("stop" in info and info.stop) else False
-                if stop_on_goal and "goal" in info and info.goal:
+                if stop_on_goal and "goal" in info and info["goal"]:
                     stop = True
                     print("Goal acheived!")
                 # TODO pause on request with keyboard

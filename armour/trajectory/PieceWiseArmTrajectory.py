@@ -47,9 +47,9 @@ class PiecewiseArmTrajectory(Trajectory):
         self.trajectoryParams = trajectoryParams
         if self.trajectoryParams.size > self.jrsInstance.n_q:
             self.trajectoryParams = self.trajectoryParams[:self.jrsInstance.n_q]
-        if startState is None:
+        if startState is not None:
             self.startState = startState
-        if jrsInstance is None:
+        if jrsInstance is not None:
             self.jrsInstance = jrsInstance
         
         # perform internal update
@@ -79,13 +79,13 @@ class PiecewiseArmTrajectory(Trajectory):
         Update internal parameters to reduce long term calculations
         '''
         # rename variables
-        q_0 = self.startState.position
-        q_dot_0 = self.startState.velocity
+        q_0 = self.startState.position[...,np.newaxis]
+        q_dot_0 = self.startState.velocity[...,np.newaxis]
         
         # scale the parameters
         jout = self.jrsInstance.output_range
         jin = self.jrsInstance.input_range
-        self.q_ddot = rescale(self.trajectoryParams, jout[0], jout[1], jin[0], jin[1])
+        self.q_ddot = rescale(self.trajectoryParams, jout[0], jout[1], jin[0], jin[1])[...,np.newaxis]
         
         # compute the peak parameters
         self.q_peak = q_0 + q_dot_0*self.trajOptProps.planTime + 0.5*self.q_ddot*self.trajOptProps.planTime**2
@@ -105,8 +105,8 @@ class PiecewiseArmTrajectory(Trajectory):
         # Do a parameter check and time check, and throw if anything is
         # invalid.
         self.validate(throwOnError=True)
-        t_shifted = time - self.startState.time
-        if t_shifted < 0:
+        t_shifted = np.atleast_1d(np.asarray(time - self.startState.time))
+        if np.any(t_shifted < 0):
             raise InvalidTrajectory("Invalid time provided to PiecewiseArmTrajectory")
 
         # Mask the first and second half of the trajectory
@@ -124,8 +124,8 @@ class PiecewiseArmTrajectory(Trajectory):
         state = np.zeros((n_q*3, t_size))
         
         # Rename variables
-        q_0 = self.startState.position
-        q_dot_0 = self.startState.velocity
+        q_0 = self.startState.position[...,np.newaxis]
+        q_dot_0 = self.startState.velocity[...,np.newaxis]
 
         # Compute the first half of the trajectory
         if np.any(t_plan_mask):

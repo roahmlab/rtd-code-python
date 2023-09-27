@@ -1,6 +1,6 @@
 from rtd.sim.world import WorldEntity
 from rtd.entity.components import GenericEntityState
-from rtd.entity.box_obstacle import BoxObstacleInfo, BoxObstacleVisual, BoxObstacleCollision
+from rtd.entity.box_obstacle import BoxObstacleInfo, BoxObstacleVisual, BoxObstacleCollision, BoxObstacleZonotope
 
 
 
@@ -16,6 +16,7 @@ class BoxObstacle(WorldEntity):
                 "state": GenericEntityState,
                 "visual": BoxObstacleVisual,
                 "collision": BoxObstacleCollision,
+                "representation": BoxObstacleZonotope,
             },
         }
     
@@ -23,7 +24,8 @@ class BoxObstacle(WorldEntity):
     def __init__(self, info: BoxObstacleInfo = BoxObstacleInfo,
                  state: GenericEntityState = GenericEntityState,
                  visual: BoxObstacleVisual = BoxObstacleVisual,
-                 collision: BoxObstacleCollision = BoxObstacleCollision, **options):
+                 collision: BoxObstacleCollision = BoxObstacleCollision, 
+                 representation: BoxObstacleZonotope = BoxObstacleZonotope, **options):
         '''
         Creates a BoxObstacle, taking in an info, state, and visual components.
         The components can either be a class or an instance of a class. If
@@ -37,6 +39,7 @@ class BoxObstacle(WorldEntity):
             "state": state,
             "visual": visual,
             "collision": collision,
+            "representation": representation,
         }
         # Get override options based on provided components
         override_options = self.get_componentOverrideOptions(components)
@@ -49,6 +52,7 @@ class BoxObstacle(WorldEntity):
         self.construct_components("state", self.info)
         self.construct_components("visual", self.info, self.state)
         self.construct_components("collision", self.info, self.state)
+        self.construct_components("representation", self.info, self.state)
         
         # reset
         self.reset()

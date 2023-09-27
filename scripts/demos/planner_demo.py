@@ -6,6 +6,7 @@ if __name__ == '__main__':
     from armour.legacy import StraightLineHLP
     from rtd.planner.trajopt import TrajOptProps
     from rtd.sim.world import WorldState
+    from rtd.sim.sensors import zonotope_sensor
     from zonopy.robots2.robot import ZonoArmRobot
     from urchin import URDF
     import os
@@ -112,7 +113,7 @@ if __name__ == '__main__':
             q_des = HLP.goal
         
         worldState = WorldState()
-        #worldState.obstacles = zonotope_sensor(sim.world, sim.agent, time)
+        worldState.obstacles = zonotope_sensor(sim.world, sim.agent, time)
         trajectory, plan_info = planner.planTrajectory(ref_state, worldState, q_des)
         
         if trajectory is not None:
@@ -124,3 +125,5 @@ if __name__ == '__main__':
     lookahead = 0.4
     cb = lambda s: planner_callback(s, planner, agent_info, world_info, lookahead, HLP)
     sim.run(max_steps=100, pre_step_callback=cb)
+    sim.visual_system.animate()
+    sim.visual_system.waituntilclose()

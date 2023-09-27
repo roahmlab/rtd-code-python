@@ -41,12 +41,8 @@ class FOGenerator(ReachSetGenerator):
         '''
         jrsInstance = self.jrsGenerator.getReachableSet(robotState, ignore_cache=True)
         logger.info("Generating forward occupancy!")
-        forwardocc = list()
-        for t in range(jrsInstance.n_t):
-            fo_at_t = list(FOcc.forward_occupancy(jrsInstance.R[t], self.robot)[0].values())
-            # ignore static base link (hence the 1:)
-            forwardocc.append(fo_at_t[1:])
-        return FOInstance(self.robot.info, forwardocc, jrsInstance, self.obs_frs_combs)
+        forwardocc = list(FOcc.forward_occupancy(jrsInstance[1].R, self.robot)[0].values())[1:jrsInstance[1].n_q+1]
+        return {1: FOInstance(forwardocc, jrsInstance[1], self.obs_frs_combs)}
                     
     
     @staticmethod

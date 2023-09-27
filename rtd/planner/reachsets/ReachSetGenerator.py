@@ -67,7 +67,7 @@ class ReachSetGenerator(metaclass=ABCMeta):
         # if we don't want to use the cache or don't have a cache,
         # return a newly generated reachableset
         if ignore_cache or self.cache_max_size < 1:
-            return self.generateReachableSet(self, robotState, **options)
+            return self.generateReachableSet(robotState, **options)
         
         # create hash of the input argument based on the robotState id
         # and string representation of the keyword arguments
@@ -79,7 +79,7 @@ class ReachSetGenerator(metaclass=ABCMeta):
                 return rs[1]
         
         # otherwise generate a reachableset and add it to the cache
-        reachableset = self.generateReachableSet(self, robotState, **options)
+        reachableset = self.generateReachableSet(robotState, **options)
         self._cache.append((cache_hash, reachableset))
         if len(self._cache) > self.cache_max_size:
             self._cache.pop(0)

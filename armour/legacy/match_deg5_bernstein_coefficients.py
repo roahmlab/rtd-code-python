@@ -16,8 +16,8 @@ def match_deg5_bernstein_coefficients(traj_constraints: list[float], T: float = 
     beta = [
         q0,
         q0 + (T*qd0)/5,
-        q0 + (qdd0*T^2)/20 + (2*qd0*T)/5,
-        q1 + (qdd1*T^2)/20 - (2*qd1*T)/5,
+        q0 + (qdd0*T*T)/20 + (2*qd0*T)/5,
+        q1 + (qdd1*T*T)/20 - (2*qd1*T)/5,
         q1 - (T*qd1)/5,
         q1
     ]

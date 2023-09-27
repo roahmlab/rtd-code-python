@@ -5,7 +5,7 @@ import numpy as np
 from nptyping import NDArray, Shape, Float64
 
 # type hinting
-BoundsVec = NDArray[Shape['N,2'], Float64]
+BoundsVec = NDArray[Shape['2,N'], Float64]
 
 
 
@@ -42,14 +42,14 @@ class JRSInstance(ReachSetInstance):
         
     
     def initialize(self, traj_type: str):
-        if self.traj_type == "piecewise":
+        if traj_type == "piecewise":
             c_k = self.jrs_info["c_k_orig"]
             g_k = self.jrs_info["g_k_orig"]
-        elif self.traj_type == "bernstein":
+        elif traj_type == "bernstein":
             c_k = self.jrs_info["c_k_bernstein"]
             g_k = self.jrs_info["g_k_bernstein"]
-        self.input_range = np.ones((self.jrs_info.n_k, 1)) * self.input_range
-        self.output_range = c_k + (-1, 1) * g_k
+        self.input_range = np.ones((1, self.jrs_info["n_k"])) * np.array([[-1.0],[1.0]])
+        self.output_range = np.array([c_k - g_k, c_k + g_k])
         
         self.n_q = self.jrs_info["n_q"]
         self.num_parameters = self.jrs_info["n_k"]

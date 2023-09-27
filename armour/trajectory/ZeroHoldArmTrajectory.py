@@ -28,7 +28,7 @@ class ZeroHoldArmTrajectory(Trajectory):
         Set the parameters of the trajectory, with a focus on the
         parameters as the state should be set from the constructor
         '''
-        if startState is None:
+        if startState is not None:
             self.startState = startState
         self.trajectoryParams = trajectoryParams
         self.startState = startState

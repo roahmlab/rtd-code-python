@@ -74,9 +74,9 @@ class ArmourAgent(WorldEntity):
         return {
             "success": True,
             "t_check_step": 0.01,
-            "checks": {
-                "joint_limits": self.state.joint_limit_check(0.01),
-                "control_inputs": self.dynamics.controller_input_check(0.01),
-                "ultimate_bound": True,     # self.controller.ultimate_bound_check(0.01, self.dynamics.controller_log) 
-            }
+            #"checks": {
+            #    "joint_limits": self.state.joint_limit_check(0.01),
+            #    "control_inputs": self.dynamics.controller_input_check(0.01),
+            #    "ultimate_bound": True,     # self.controller.ultimate_bound_check(0.01, self.dynamics.controller_log) 
+            #}
         }

@@ -48,7 +48,7 @@ class ArmourIdealAgentDynamics(BaseDynamicsComponent, Options):
         # get the current time and prep measurement time
         state = self.robot_state.get_state()
         tcur = state.time
-        t_meas = np.arange(0, t_move, self.time_discretization)
+        t_meas = np.linspace(0, t_move, int(round(t_move/self.time_discretization))+1)
         
         # prepare the trajectory
         trajectory: Trajectory = self.controller.trajectories[-1]

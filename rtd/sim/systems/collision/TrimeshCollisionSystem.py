@@ -1,8 +1,8 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
 from rtd.sim.systems.collision import CollisionObject, DynamicCollisionObject
-from rtd.functional.sequences import toSequence, arrange_list
-from trimesh.collision import CollisionManager
+from rtd.functional.sequences import toSequence
+import numpy as np
 
 # define top level module logger
 import logging
@@ -86,8 +86,8 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         for `t_update` time
         '''
         start_time = self.time[-1] + self.time_discretization
-        end_time = self.time[-1] + t_update + self.time_discretization
-        t_vec = arrange_list(start_time, end_time, self.time_discretization)
+        end_time = self.time[-1] + t_update
+        t_vec = np.linspace(start_time, end_time, int(round(t_update/self.time_discretization))).tolist()
         logger.debug("Running collision check!")
         
         # accumulate collision result over time

@@ -30,7 +30,8 @@ class ArmourSimulation(BaseSimulation):
     
     
     def add_object(self, object, isentity: bool = False, update_name: bool = False,
-                   collision: DynamicCollisionObject = None, visual: PyvistaVisualObject = None):
+                   collision: CollisionObject | DynamicCollisionObject = None,
+                   visual: PyvistaVisualObject = None):
         # Add the object to the world
         # Create a name for the object based on its classname if it
         # doesn't have a given name.

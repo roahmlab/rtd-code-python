@@ -12,6 +12,7 @@ class BoxObstacleCollision(DynamicCollisionObject):
         # initialize
         self.box_info: BoxObstacleInfo = box_info
         self.box_state: GenericEntityState = box_state
+        self.mesh = Box(extents=self.box_info.dims).to_mesh()
         
         self.reset()
     

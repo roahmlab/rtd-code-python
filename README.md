@@ -55,6 +55,7 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 ## Not Fully Implemented Yet
 - [ ] armour/agent/ArmourController
 - [ ] armour/agent/ArmourMexController
+- [ ] ArmourController ultimate bounds check call in ArmourAgent
 - [ ] armour/agent/ArmourDynamics
 - [ ] armour/reachsets/IRSGenerator
 - [ ] armour/agent/ArmourAgentInfo

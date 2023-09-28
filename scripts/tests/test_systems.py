@@ -45,7 +45,7 @@ if __name__ == '__main__':
     arm_agent.state.commit_state_data(time, state)
 
     # commit more states at time=3, 4
-    time = np.array([0, 2, 3])
+    time = np.array([0, 1, 2])
     state = np.array([
         [1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1],
         [-1, -0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1],
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     box_info = BoxObstacleInfo(dims=[0.1,0.1,0.1], color=[1,0,0])
     box_state = GenericEntityState(box_info)
     box_state.reset(initial_state=[0,0,0.7])
-    box_visual = BoxObstacleVisual(box_info, box_state, face_opacity=1)
+    box_visual = BoxObstacleVisual(box_info, box_state, face_opacity=0.5)
     box_collision = BoxObstacleCollision(box_info, box_state)
     box_obstacle = BoxObstacle(box_info, box_state, box_visual, box_collision)
 
@@ -72,7 +72,8 @@ if __name__ == '__main__':
     cs = TrimeshCollisionSystem(dynamic_objects=[arm_agent.collision, box_obstacle.collision])
     #vs.redraw(0)
     vs.updateVisual(3)
-    vs.animate()
+    dis, p = vs.get_discretization_and_pause(30, 1)
+    vs.animate(time_discretization=dis, pause_time=p)
     vs.waituntilclose()
 
     cs.updateCollision(3)

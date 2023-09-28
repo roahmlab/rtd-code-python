@@ -28,16 +28,17 @@ class ArmourAgentCollision(DynamicCollisionObject):
     def getCollisionObject(self, q: NDArray = None, time: float = None) -> CollisionObject:
         '''
         Generates a CollisionObject for a given time `time` or
-        configuration `q`
+        configuration `q` (only one or none must be provided)
         '''
-        if q is None:
-            q = self.arm_state.position[:,-1]                   # last position
-        if time is not None:
-            q = self.arm_state.get_state(np.array([time])).q    # position at given time
-        config = self.arm_state.get_state(np.array([time])).q
-        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        config = self.arm_state.position[:,-1]  # default to last position
+        if time is None and q is not None:
+            config = q
+        elif time is not None and q is None:
+            config = self.arm_state.get_state(np.array([time])).q   # position at given time
+            
+        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.collision_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
-        return CollisionObject(meshes, id(self.arm_info))       
+        return CollisionObject(meshes, id(self.arm_info))
     
     
     def __str__(self) -> str:

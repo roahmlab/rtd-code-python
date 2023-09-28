@@ -1,9 +1,10 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
 from rtd.sim.systems.visual import PyvistaVisualObject
-from rtd.functional.sequences import toSequence, arrange, arrange_list
+from rtd.functional.sequences import toSequence, arrange
 from pyvista import Plotter
 from datetime import datetime
+import numpy as np
 import time
 
 # define top level module logger
@@ -105,8 +106,8 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         objects on the current figure for `t_update` time
         '''
         start_time = self.time[-1] + self.time_discretization
-        end_time = self.time[-1] + t_update + self.time_discretization
-        t_vec = arrange_list(start_time, end_time, self.time_discretization)
+        end_time = self.time[-1] + t_update
+        t_vec = np.linspace(start_time, end_time, int(round(t_update/self.time_discretization))).tolist()
         logger.debug("Running Visualization!")
         
         # render if plotter is open

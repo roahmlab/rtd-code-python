@@ -89,7 +89,7 @@ if __name__ == '__main__':
         input_constraints_flag=input_constraints_flag,
         use_robust_input=use_robust_input,
         smooth_obs=smooth_obs,
-        traj_type="bernstein"
+        traj_type="piecewise"       # piecewise or bernstein
     )
     #-------------------- high level planner --------------------#
     world_info = {'goal': sim.goal_system.goal_position}

@@ -138,12 +138,12 @@ class ArmourAgentState(BaseStateComponent, Options):
     
     def joint_limit_check(self, t_check_step):
         # create time vector for checking
-        start_idx = self.step_start_idxs[-1]
+        start_idx = int(self.step_start_idxs[-1])
         t_check = np.arange(self.time[start_idx], self.time[-1], t_check_step)
         
         # get agent state trajectories interpolated to time
-        pos_check = [np.interp(t_check, self.time[start_idx:], self.position[n,start_idx:]) for n in range(self.position.shape[0])]
-        vel_check = [np.interp(t_check, self.time[start_idx:], self.velocity[n,start_idx:]) for n in range(self.velocity.shape[0])]
+        pos_check = np.array([np.interp(t_check, self.time[start_idx:], self.position[n,start_idx:]) for n in range(self.position.shape[0])])
+        vel_check = np.array([np.interp(t_check, self.time[start_idx:], self.velocity[n,start_idx:]) for n in range(self.velocity.shape[0])])
         
         logger.info("Running joint limits check!")
         
@@ -152,13 +152,11 @@ class ArmourAgentState(BaseStateComponent, Options):
         vel_exceeded = np.zeros(vel_check.shape, dtype=bool)
         for i in range(self.entityinfo.n_q):
             # pos
-            lb = pos_check[i,:] < self.entityinfo.joints[i].position_limits[0]
-            ub = pos_check[i,:] > self.entityinfo.joints[i].position_limits[1]
+            lb = np.any(pos_check[i,:] < float(self.entityinfo.params.pos_lim[0,i]))
+            ub = np.any(pos_check[i,:] > float(self.entityinfo.params.pos_lim[1,i]))
             pos_exceeded[i,:] = lb | ub
             # vel
-            lb = vel_check[i,:] < self.entityinfo.joints[i].velocity_limits[0]
-            ub = vel_check[i,:] > self.entityinfo.joints[i].velocity_limits[1]
-            vel_exceeded[i,:] = lb | ub
+            vel_exceeded[i,:] = np.any(np.abs(vel_check[i,:]) > float(self.entityinfo.params.vel_lim[i]))
         
         # get out results
         out = np.any(pos_exceeded) | np.any(vel_exceeded)

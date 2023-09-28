@@ -56,7 +56,6 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [ ] armour/agent/ArmourController
 - [ ] armour/agent/ArmourMexController
 - [ ] armour/agent/ArmourDynamics
-- [ ] armour/ArmourSimulation
 - [ ] armour/reachsets/IRSGenerator
 - [ ] armour/agent/ArmourAgentInfo
 - [ ] armour/agent/ArmKinematics
@@ -68,7 +67,14 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [x] rtd/demos
 - [x] rtd/entity
 - [x] rtd/functional
-- [ ] rtd/planner
+- [x] rtd/planner/reachsets
+- [x] rtd/planner/trajectory
+- [ ] rtd/planner/trajopt/GenericArmObjective
+- [ ] rtd/planner/trajopt/Objective
+- [x] rtd/planner/trajopt/OptimizationEngine
+- [x] rtd/planner/trajopt/ScipyOptimizationEngine
+- [x] rtd/planner/trajopt/TrajOptProps
+- [x] rtd/planner/trajopt/RtdTrajOpt
 - [x] rtd/sim/systems/visual
 - [x] rtd/sim/systems/collision
 - [x] rtd/sim/world
@@ -80,10 +86,20 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 - [ ] armour/agent/ArmourIdealAgentDynamics
 - [ ] armour/agent/ArmourController
 - [ ] armour/agent/ArmourMexController
-- [ ] armour/legacy/bernstein_to_poly
-- [ ] armour/legacy/match_deg5_bernstein_coefficients
-- [ ] armour/legacy/StraightLineHLP
-- [ ] armour/reachsets
-- [ ] armour/trajectory
+- [x] armour/legacy/bernstein_to_poly
+- [x] armour/legacy/match_deg5_bernstein_coefficients
+- [x] armour/legacy/StraightLineHLP
+- [ ] armour/reachsets/JRSInstance
+- [ ] armour/reachsets/JRSGenerator
+- [ ] armour/reachsets/FOInstance
+- [ ] armour/reachsets/FOGenerator
+- [ ] armour/reachsets/IRSInstance
+- [ ] armour/reachsets/IRSGenerator
+- [ ] armour/reachsets/JLSInstance
+- [ ] armour/reachsets/JLSGenerator
+- [x] armour/trajectory/ArmTrajectoryFactory
+- [x] armour/trajectory/BernsteinArmTrajectory
+- [x] armour/trajectory/PiecewiseArmTrajectory
+- [x] armour/trajectory/ZeroHoldArmTrajectory
 - [x] armour/ArmourAgent
 - [ ] armour/ArmourPlanner

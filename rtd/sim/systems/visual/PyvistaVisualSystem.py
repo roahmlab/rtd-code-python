@@ -67,6 +67,7 @@ class PyvistaVisualSystem(SimulationSystem, Options):
             self._plotter = Plotter()
             self._plotter.add_title(f'{self.__class__.__name__}')
             self._plotter.set_background('white')
+            self._plotter.add_axes()
     
     
     def addObjects(self,

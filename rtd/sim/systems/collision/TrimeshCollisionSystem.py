@@ -130,7 +130,7 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
                     collided |= c
             
             # check each dynamic object with remaining dynamic objects
-            for dyn2_i in range(dyn1_i, len(resolved)):
+            for dyn2_i in range(dyn1_i+1, len(resolved)):
                 dyn2 = resolved[dyn2_i]
                 if dyn1.parent != dyn2.parent:
                     c, pair = dyn1.inCollision(dyn2)

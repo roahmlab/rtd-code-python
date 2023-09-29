@@ -12,7 +12,7 @@ class CollisionObject:
     A class for storing the mesh of an object to handle its
     collision
     '''
-    def __init__(self, meshes: Trimesh | list[Trimesh], parent=None):
+    def __init__(self, meshes: Trimesh | list[Trimesh], parent: int = None):
         # trimesh.Trimesh object
         self.meshes: list[Trimesh] = toSequence(meshes)
         

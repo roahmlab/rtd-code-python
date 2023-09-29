@@ -22,14 +22,14 @@ class ArmourSimulation(BaseSimulation):
         self.world: dict = dict()
         self.entities: list = list()
         self.agent: ArmourAgent = None
-        self.obstacles = None
+        self.obstacles = list()
         self.collision_system: TrimeshCollisionSystem = None
         self.visual_system: PyvistaVisualSystem = None
         self.goal_system = None
         self.simulation_state = SimulationState.CONSTRUCTED
     
     
-    def add_object(self, object, isentity: bool = False, update_name: bool = False,
+    def add_object(self, object, isentity: bool = False,
                    collision: CollisionObject | DynamicCollisionObject = None,
                    visual: PyvistaVisualObject = None):
         # Add the object to the world
@@ -102,6 +102,7 @@ class ArmourSimulation(BaseSimulation):
             
             # make sure it doesn't collide
             if not self.collision_system.checkCollisionObject(prop_col)["collided"]:
+                self.obstacles.append(prop_obs)
                 self.add_object(prop_obs, collision=prop_col, visual=prop_obs.visual)
         
         # add the goal

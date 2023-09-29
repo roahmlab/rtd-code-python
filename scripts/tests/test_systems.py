@@ -25,7 +25,7 @@ if __name__ == '__main__':
     arm_state = ArmourAgentState(arm_info)
     arm_visual = ArmourAgentVisual(arm_info, arm_state, edge_width=0)
     arm_collision = ArmourAgentCollision(arm_info, arm_state)
-    arm_state.reset()
+    arm_state.reset(initial_position=np.array([0.16731053, -1.40476116, -0.15926623, -0.15682711, -0.15970985, -0.16408944,  0.16711197]).reshape(-1, 1))
     print(f"Info:\n{arm_info}")
     print(f"State:\n{arm_state}")
     print(f"Visual:\n{arm_visual}")
@@ -44,12 +44,20 @@ if __name__ == '__main__':
     ]).T
     arm_agent.state.commit_state_data(time, state)
 
-    # commit more states at time=3, 4
+    # commit more states at time=2, 3
     time = np.array([0, 1, 2])
     state = np.array([
         [1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1],
         [-1, -0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1, -1, 0.1, 1, 0.1],
         [-0.5, 0, -1, 0.1, 0.5, 0.1, -0.5, 0.1, -1, 0.1, -1, 0.1, -1, 0.1],
+    ]).T
+    arm_agent.state.commit_state_data(time, state)
+    
+    # commit more states at time=4
+    time = np.array([0, 1])
+    state = np.array([
+        [-0.5, 0, -1, 0.1, 0.5, 0.1, -0.5, 0.1, -1, 0.1, -1, 0.1, -1, 0.1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]).T
     arm_agent.state.commit_state_data(time, state)
 
@@ -58,9 +66,9 @@ if __name__ == '__main__':
 
 
     # add an obstacles
-    box_info = BoxObstacleInfo(dims=[0.1,0.1,0.1], color=[1,0,0])
+    box_info = BoxObstacleInfo(dims=[0.1760, 0.3089, 0.1013], color=[1,0,0])
     box_state = GenericEntityState(box_info)
-    box_state.reset(initial_state=[0,0,0.7])
+    box_state.reset(initial_state=[-0.3013, -0.2291, 0.3621])
     box_visual = BoxObstacleVisual(box_info, box_state, face_opacity=0.5)
     box_collision = BoxObstacleCollision(box_info, box_state)
     box_obstacle = BoxObstacle(box_info, box_state, box_visual, box_collision)
@@ -70,10 +78,10 @@ if __name__ == '__main__':
     # set up visual system
     vs = PyvistaVisualSystem(dynamic_objects=[arm_agent.visual, box_obstacle.visual], dimension=3)
     cs = TrimeshCollisionSystem(dynamic_objects=[arm_agent.collision, box_obstacle.collision])
-    #vs.redraw(0)
-    vs.updateVisual(3)
-    dis, p = vs.get_discretization_and_pause(30, 1)
+    vs.redraw(0)
+    for i in range(0, 40):
+        vs.updateVisual(0.1)
+        cs.updateCollision(0.1)
+    dis, p = vs.get_discretization_and_pause(15, 0.5)
     vs.animate(time_discretization=dis, pause_time=p)
     vs.waituntilclose()
-
-    cs.updateCollision(3)

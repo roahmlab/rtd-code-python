@@ -71,6 +71,7 @@ class BoxObstacle(WorldEntity):
         '''
         info = BoxObstacleInfo(dims=dims, color=color)
         state = GenericEntityState(info, initial_state=center)
+        state.reset()
         visual = BoxObstacleVisual(info, state)
         collision = BoxObstacleCollision(info, state)
         return BoxObstacle(info, state, visual, collision)

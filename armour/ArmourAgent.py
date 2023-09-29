@@ -21,7 +21,7 @@ class ArmourAgent(WorldEntity):
         }
     
     
-    def __init__(self, info: ArmourAgentInfo = ArmourAgentInfo,
+    def __init__(self, info: ArmourAgentInfo,
                  state: ArmourAgentState = ArmourAgentState,
                  visual: ArmourAgentVisual = ArmourAgentVisual, 
                  collision: ArmourAgentCollision = ArmourAgentCollision,

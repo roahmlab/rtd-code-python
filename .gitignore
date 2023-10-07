@@ -15,4 +15,4 @@ urdfs/
 .vscode/
 
 # sphinx
-build/
+docs/build/

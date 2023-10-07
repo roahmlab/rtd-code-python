@@ -13,3 +13,6 @@ urdfs/
 
 # vscode
 .vscode/
+
+# sphinx
+build/

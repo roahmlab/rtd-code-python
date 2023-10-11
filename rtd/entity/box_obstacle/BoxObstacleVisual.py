@@ -50,7 +50,7 @@ class BoxObstacleVisual(PyvistaVisualObject, Options):
             time = self.box_state.time[-1]
         
         xw, yw, zw = self.box_info.dims
-        mesh = pv.Box([0, xw, 0, yw, 0, zw])
+        mesh = pv.Box([-xw/2, xw/2, -yw/2, yw/2, -zw/2, zw/2])
         mapper = pv.DataSetMapper(mesh)
         self.plot_data = pv.Actor(mapper=mapper)
         

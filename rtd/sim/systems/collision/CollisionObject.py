@@ -31,6 +31,18 @@ class CollisionObject:
         Returns a bool as well as its and its collided pair's
         parent. Note that this should only be used for quick
         collision checks with a single other object
+        
+        Parameters
+        ----------
+        other : CollisionObject
+            the object to check collision against
+        
+        Returns
+        -------
+        collided: bool
+            whether self is in collision with other
+        pair : tuple[int, int]
+            pair of self.parent and other.parent
         '''
         # skip collision check if they share the same parent
         if self.parent == other.parent and self.parent is not None:

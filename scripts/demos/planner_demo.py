@@ -124,6 +124,8 @@ if __name__ == '__main__':
     
     lookahead = 0.4
     cb = lambda s: planner_callback(s, planner, agent_info, world_info, lookahead, HLP)
+    
+    print("Running Simulations!")
     sim.run(max_steps=100, pre_step_callback=cb)
     sim.visual_system.animate()
     sim.visual_system.waituntilclose()

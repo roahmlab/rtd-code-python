@@ -14,6 +14,16 @@ class PyvistaVisualObject(metaclass=ABCMeta):
         '''
         Abstract method which needs to be implemented to generate
         and return the plot data
+        
+        Parameters
+        ----------
+        **options
+            options for creating the plot data
+        
+        Returns
+        -------
+        plot_obj : Actor | list[Actor]
+            Pyvista actor(s) to plot
         '''
         pass
 
@@ -32,8 +42,13 @@ class PyvistaVisualObject(metaclass=ABCMeta):
         self.plot_data: Actor | list[Actor] = None
     
     
-    def isPlotDataValid(self):
+    def isPlotDataValid(self) -> bool:
         '''
         Checks if plot_data is a pyvista actor object
+        
+        Returns
+        -------
+        is_valid : bool
+            whether the plot_data is a valid Pyvista actor
         '''
         return issubclass(type(toSequence(self.plot_data)[0]), Actor)

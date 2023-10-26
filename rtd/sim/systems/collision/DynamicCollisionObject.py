@@ -14,5 +14,15 @@ class DynamicCollisionObject(metaclass=ABCMeta):
         Abstract method which needs to be implemented
         to return a CollisionObject with mesh at a given
         time (and any other options)
+        
+        Parameters
+        ----------
+        **options
+            Usually arguments such as time
+
+        Returns
+        -------
+        resolved : CollisionObject
+            resolved dynamic collision object
         '''
         pass

@@ -56,6 +56,13 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         '''
         Takes in a collision object or a list of collision objects
         and adds them to the corresponding list
+        
+        Parameters
+        ----------
+        static : CollisionObject | list[CollisionObject]
+            static object(s) to add
+        dynamic : DynamicCollisionObject | list[DynamicCollisionObject]
+            dynamic object(s) to add
         '''
         # handle single items
         if static is not None:
@@ -72,6 +79,11 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         Takes in a collision object or a list of collision objects
         and removes them from static and dynamic objects list. 
         Assumes the object is already in either lists
+        
+        Parameters
+        ----------
+        *objects : CollisionObject | DynamicCollisionObject
+            objects to remove from the system
         '''
         for obj in objects:
             if obj in self.static_objects:
@@ -84,6 +96,18 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         '''
         Appends `t_update` to `time` and checks for any collision
         for `t_update` time
+        
+        Parameters
+        ----------
+        t_update : float
+            duration to update for
+        
+        Returns
+        -------
+        collided: bool
+            whether a collision occured
+        pairs : set[tuple[int, int]]
+            set of collided objects pairs
         '''
         start_time = self.time[-1] + self.time_discretization
         end_time = self.time[-1] + t_update
@@ -113,6 +137,24 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         Check for every collision at a given time and return
         a bool if any collision happened, as well as a set of
         collided pair's parents and the number of pairs
+        
+        Parameters
+        ----------
+        time : float
+            time to check collision at
+        
+        Returns
+        -------
+        info : dict
+            with keys:
+        <time> : float
+            input time
+        <collided> : bool
+            whether a collision occured
+        <n_pairs> : int
+            number of collided pairs
+        <pairs> : set[tuple[int, int]]
+            set of collided object pairs
         '''
         collided: bool = False
         pairs: set[CollisionPair] = set()
@@ -156,6 +198,24 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
         '''
         Check for every collision against collision_obj (does not
         check for internal collision) at the most recent time
+        
+        Parameters
+        ----------
+        collision_obj : CollisionObject
+            object to check collision against
+        
+        Returns
+        -------
+        info : dict
+            with keys:
+        <time> : float
+            input time
+        <collided> : bool
+            whether a collision occured
+        <n_pairs> : int
+            number of collided pairs
+        <pairs> : set[tuple[int, int]]
+            set of collided object pairs
         '''
         time = self.time[-1]
         resolved = (obj.getCollisionObject(time=time) for obj in self.dynamic_objects)

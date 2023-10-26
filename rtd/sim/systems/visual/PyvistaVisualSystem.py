@@ -77,6 +77,13 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         '''
         Takes in a visual object or a list of visual objects
         and adds them to the corresponding list
+        
+        Parameters
+        ----------
+        static : PyvistaVisualObject | list[PyvistaVisualObject]
+            static object(s) to add
+        dynamic : PyvistaVisualObject | list[PyvistaVisualObject]
+            dynamic object(s) to add
         '''
         # handle single items
         if static is not None:
@@ -92,6 +99,11 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         '''
         Takes in a visual object or a list of visual objects
         and removes them from static and dynamic objects list
+        
+        Parameters
+        ----------
+        *objects : PyvistaVisualObject
+            objects to remove from the system
         '''
         for obj in objects:
             if obj in self.static_objects:
@@ -104,6 +116,11 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         '''
         Appends `t_update` to `time` and updates the dynamic
         objects on the current figure for `t_update` time
+        
+        Parameters
+        ----------
+        t_update : float
+            duration to update for
         '''
         start_time = self.time[-1] + self.time_discretization
         end_time = self.time[-1] + t_update
@@ -128,6 +145,13 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         Recreates the plotter if necessary and adds the actors
         to the current plotter at the input time. Defaults to
         the most recent `time`
+        
+        Parameters
+        ----------
+        time : float
+            time to redraw from
+        axlim : list
+            list of 4 numbers for the x lim and y lim
         '''
         if time is None:
             time = self.time[-1]
@@ -170,6 +194,17 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         smoother animation, while a `pause_time` lower than
         the discretization will result in a faster animation
         speed. Defaults to 1 second per t
+        
+        Parameters
+        ----------
+        t_span : float
+            range of time to animate
+        time_discretization : float
+            time difference between frames
+        pause_time : float
+            pause time in seconds between frames
+        axlim : list
+            list of 4 numbers for the x lim and y lim
         '''
         if t_span is None:
             t_span = (0, self.time[-1])
@@ -218,6 +253,20 @@ class PyvistaVisualSystem(SimulationSystem, Options):
         Returns the time_discretization and pause_time to
         get the desired framerate and speed. Speed of 2
         means 1 second = 2 time
+        
+        Parameters
+        ----------
+        framerate : float
+            desired framerate
+        speed : float
+            desired animation speed ratio
+        
+        Returns
+        -------
+        time_discretization : float
+            time difference between frames
+        pause_time : float
+            pause time in seconds between frames
         '''
         pause_time = 1 / framerate
         time_discretization = speed / framerate

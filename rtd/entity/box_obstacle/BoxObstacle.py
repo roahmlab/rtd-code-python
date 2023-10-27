@@ -10,6 +10,12 @@ class BoxObstacle(WorldEntity):
     '''
     @staticmethod
     def defaultoptions() -> dict:
+        """
+        Returns
+        -------
+        options : dict
+            default options of BoxObstacle
+        """
         return {
             "components": {
                 "info": BoxObstacleInfo,
@@ -68,6 +74,20 @@ class BoxObstacle(WorldEntity):
                  color: tuple[float] = (1, 0, 1)) -> 'BoxObstacle':
         '''
         Creates a box obstacle with the specified parameters
+        
+        Parameters
+        ----------
+        center : tuple[float]
+            x, y, z coordinate of the box center
+        dims : tuple[float]
+            x, y, z dimensions of the box obstacle
+        color : tuple[float]
+            r, g, b color of box
+        
+        Returns
+        -------
+        box : BoxObstacle
+            BoxObtacle instance with specified parameters
         '''
         info = BoxObstacleInfo(dims=dims, color=color)
         state = GenericEntityState(info, initial_state=center)

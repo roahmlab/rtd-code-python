@@ -17,12 +17,22 @@ class WorldEntity(Options):
         `component_args` and `options["component_options"]` defined
         for that `component_name`
         
-        E.g.,
-        options["components"]["state"] = GenericEntityState
-        options["component_options]["state"] = {"n_states": 5}
+        **Example:**
         
-        construct_components("state", EmptyInfoComponent()) will run:
-        self.state = GenericEntityState(EmptyInfoComponent(), n_states=5)
+        .. code-block:: Python
+        
+            options["components"]["state"] = GenericEntityState
+            options["component_options]["state"] = {"n_states": 5}
+            construct_components("state", BoxObstacleInfo())
+            # results in:
+            # self.state = GenericEntityState(BoxObstacleInfo(), n_states=5)
+        
+        Parameters
+        ----------
+        component_name : str
+            name of component (e.g., 'info')
+        *component_args
+            additional arguments for constructing that component    
         '''
         options = self.getoptions()
         
@@ -46,14 +56,17 @@ class WorldEntity(Options):
         '''
         Resets every component
         
-        E.g.,
-        options["components"] = {"info": EmptyInfoComponent,
-                                "state": GenericEntityState}
-        options["component_options"] = {"state": {"n_states": 5}}
+        **Example:**
         
-        reset_components() will run:
-        self.info.reset()
-        self.state.reset(n_states=5)
+        .. code-block:: Python
+        
+            options["components"] = {"info": BoxObstacleInfo, "state": GenericEntityState}
+            options["component_options"] = {"state": {"n_states": 5}}
+            reset_components()
+            # equivalent to calling:
+            # self.info.reset()
+            # self.state.reset(n_states=5)
+             
         '''
         options = self.getoptions()
         
@@ -72,15 +85,20 @@ class WorldEntity(Options):
         the component type under `options["components"]` and saves
         their options, if provided, under `options["component_options"]
         
-        E.g.,
-        components = {"info": EmptyInfoState,                   # class
-                     "state": GenericEntityState(n_states=5)}   # instance
+        .. code-block:: Python
         
-        get_componentOverrideOptions(components) will result in
-        options["components"] = {"info": EmptyInfoState,
-                                "state": GenericEntityState}
-        options["component_options"] = {"state": {"n_states": 5}}
+            # components can be either a class or an instance
+            components = {"info": EmptyInfoState, "state": GenericEntityState(n_states=5)}
+            get_componentOverrideOptions(components)
+            # results in:
+            # options["components"] = {"info": EmptyInfoState, "state": GenericEntityState}
+            # options["component_options"] = {"state": {"n_states": 5}}
         
+        Parameters
+        ----------
+        components : dict
+            names and class/instance of the corresponding component
+            
         '''
         options = {"components": dict(), "component_options": dict()}
         
@@ -106,6 +124,16 @@ class WorldEntity(Options):
         the defaultoptions of that class or the actual options of
         that instance if the component inherits from options.
         Otherwise returns None
+        
+        Parameters
+        ----------
+        component : Any
+            class or instance of component to pull options from
+        
+        Returns
+        -------
+        component_options : dict | None
+            options of that component
         '''
         # if the input is a component class that inherits Options
         if isinstance(component, type):

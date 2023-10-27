@@ -9,6 +9,12 @@ class ArmourAgent(WorldEntity):
     '''
     @staticmethod
     def defaultoptions() -> dict:
+        """
+        Returns
+        -------
+        options : dict
+            default options of armour agent
+        """
         return {
             "components": {
                 "info": ArmourAgentInfo,
@@ -70,6 +76,25 @@ class ArmourAgent(WorldEntity):
     
     
     def update(self, t_move) -> dict:
+        """
+        Updates the armour agent
+        
+        Parameters
+        ----------
+        t_move : float
+            time to update for
+        
+        Returns
+        -------
+        info : dict
+            with keys:
+        <success> : bool
+            whether the agent moved successfully
+        <t_check_step> : float
+            time steps checked for
+        <checks> : dict[str, bool]
+            with keys <joint_limits>, <control_inputs>, <ultimate_bound>
+        """
         self.dynamics.move(t_move)
         return {
             "success": True,

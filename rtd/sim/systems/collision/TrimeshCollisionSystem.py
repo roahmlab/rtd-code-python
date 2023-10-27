@@ -20,6 +20,12 @@ class TrimeshCollisionSystem(SimulationSystem, Options):
     '''
     @staticmethod
     def defaultoptions() -> dict:
+        """
+        Returns
+        -------
+        options : dict
+            default options of collision system
+        """
         return {
             "time_discretization": 0.1,
         }

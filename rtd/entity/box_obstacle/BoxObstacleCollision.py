@@ -18,12 +18,20 @@ class BoxObstacleCollision(DynamicCollisionObject):
     
     
     def reset(self):
+        """
+        Resets this component
+        """
         self.mesh = Box(extents=self.box_info.dims).to_mesh()
     
     
     def getCollisionObject(self, time: float = None) -> CollisionObject:
         '''
         Generates a CollisionObject for a given time `time`
+        
+        Parameters
+        ----------
+        time : float
+            time to get collision object at
         '''
         transform = self.box_state.get_state(time)["state"]
         mesh = self.mesh.copy().apply_translation(transform)

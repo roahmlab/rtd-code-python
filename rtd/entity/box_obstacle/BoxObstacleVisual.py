@@ -14,6 +14,9 @@ class BoxObstacleVisual(PyvistaVisualObject, Options):
     '''
     @staticmethod
     def defaultoptions() -> dict:
+        """
+        Default options for the BoxObstacleVisual
+        """
         return {
             "face_color": [1.0, 0.0, 1.0],
             "face_opacity": 0.2,
@@ -37,6 +40,9 @@ class BoxObstacleVisual(PyvistaVisualObject, Options):
     
     
     def reset(self, **options):
+        """
+        Resets this component
+        """
         options = self.mergeoptions(options)
         self.face_color = options["face_color"]
         self.face_opacity = options["face_opacity"]
@@ -46,6 +52,19 @@ class BoxObstacleVisual(PyvistaVisualObject, Options):
     
     
     def create_plot_data(self, time: float = None) -> Actor:
+        """
+        Generates the initial plot data
+        
+        Parameters
+        ----------
+        time : float
+            time of initial plot data
+            
+        Returns
+        _______
+        plot_data : Actor
+            pyvista actor object to plot
+        """
         if time is None:
             time = self.box_state.time[-1]
         
@@ -70,6 +89,14 @@ class BoxObstacleVisual(PyvistaVisualObject, Options):
     
     
     def plot(self, time: float = None):
+        """
+        Updates the plotdata of the BoxObstalce
+        
+        Parameters
+        ----------
+        time : float
+            time of plot data
+        """
         if time is None:
             time = self.box_state.time[-1]
 

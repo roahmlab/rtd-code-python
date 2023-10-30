@@ -10,6 +10,9 @@ class BoxObstacleInfo(BaseInfoComponent, Options):
     '''
     @staticmethod
     def defaultoptions() -> dict:
+        """
+        Default options for the BoxObstacleInfo
+        """
         return {
             "dims": [0, 0, 0],
             "color": [1, 0, 1],
@@ -27,6 +30,9 @@ class BoxObstacleInfo(BaseInfoComponent, Options):
     
     
     def reset(self, **options):
+        """
+        Resets this component
+        """
         options = self.mergeoptions(options)
         self.dims: list[float, float, float] = options["dims"]
         self.color: list[float, float, float] = options["color"]

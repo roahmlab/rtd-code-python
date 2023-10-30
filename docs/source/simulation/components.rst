@@ -10,3 +10,41 @@ Entity-component modeled components are behavior or data-behavior components whi
 explicitly called by the entity update functions. Entity-component-system modeled components
 are behavior or data-behavior components which are used by a system which should be explicitly
 updated at any point of the simulation loop.
+
+Base Components
+---------------
+.. automodule:: rtd.entity.components
+   :imported-members:
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+Box Obstacle Components
+-----------------------
+.. autoclass:: rtd.entity.box_obstacle.BoxObstacleInfo
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+.. autoclass:: rtd.entity.box_obstacle.BoxObstacleVisual
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+.. autoclass:: rtd.entity.box_obstacle.BoxObstacleCollision
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+.. autoclass:: rtd.entity.box_obstacle.BoxObstacleZonotope
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+Armour Components
+-----------------
+.. automodule:: armour.agent
+   :imported-members:
+   :show-inheritance:
+   :members:
+   :undoc-members:

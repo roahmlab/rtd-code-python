@@ -1,9 +1,13 @@
+alabaster==0.7.13
+Babel==2.13.0
 certifi==2023.7.22
 charset-normalizer==3.1.0
 cloudpickle==2.2.1
+colorama==0.4.6
 contourpy==1.0.7
 cycler==0.11.0
 Cython==0.29.35
+docutils==0.18.1
 filelock==3.12.2
 fonttools==4.39.4
 freetype-py==2.4.0
@@ -11,6 +15,7 @@ gym==0.26.2
 gym-notices==0.0.8
 idna==3.4
 imageio==2.31.1
+imagesize==1.4.1
 Jinja2==3.1.2
 kiwisolver==1.4.4
 lxml==4.9.3
@@ -28,6 +33,7 @@ platformdirs==3.5.1
 pooch==1.7.0
 pycollada==0.7.2
 pyglet==2.0.7
+Pygments==2.16.1
 PyOpenGL==3.1.0
 pyparsing==3.0.9
 pyrender==0.1.45
@@ -37,10 +43,20 @@ python-fcl==0.7.0.4
 pyvista==0.39.0
 PyYAML==6.0
 requests==2.31.0
--e git+https://github.com/roahmlab/rtd-code-python.git@27c6e0bfaf6671807b5d621bed8ae28e1b411b02#egg=rtd_code_python
+-e git+https://github.com/roahmlab/rtd-code-python.git@8c11653276d0edb203bb39cb490977f429d2a698#egg=rtd_code_python
 scipy==1.10.1
 scooby==0.7.2
 six==1.16.0
+snowballstemmer==2.2.0
+Sphinx==7.2.6
+sphinx-rtd-theme==1.3.0
+sphinxcontrib-applehelp==1.0.7
+sphinxcontrib-devhelp==1.0.5
+sphinxcontrib-htmlhelp==2.0.4
+sphinxcontrib-jquery==4.1
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.6
+sphinxcontrib-serializinghtml==1.1.9
 sympy==1.12
 torch==2.0.1
 trimesh==3.21.7

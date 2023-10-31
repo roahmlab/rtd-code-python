@@ -32,6 +32,21 @@ class ArmourSimulation(BaseSimulation):
     def add_object(self, object, isentity: bool = False,
                    collision: CollisionObject | DynamicCollisionObject = None,
                    visual: PyvistaVisualObject = None):
+        """
+        Add the specified object to the world.
+        If it is an entity, it is treated as dynamic.
+        
+        Parameters
+        ----------
+        object : Any
+            the object to add
+        isentity : bool
+            whether it is a dynamic entity
+        collision : CollisionObject | DynamicCollisionObject
+            collision handler of the object
+        visual : PyvistaVisualObject
+            visual handler of the object
+        """
         # Add the object to the world
         # Create a name for the object based on its classname if it
         # doesn't have a given name.
@@ -63,6 +78,14 @@ class ArmourSimulation(BaseSimulation):
     
     
     def setup(self, agent: ArmourAgent):
+        """
+        Populate the world with the ArmourAgent
+        
+        Parameters
+        ----------
+        agent : ArmourAgent
+            agent to add
+        """
         if self.simulation_state > SimulationState.SETTING_UP:
             self.world = dict()
             self.entities = list()
@@ -156,6 +179,22 @@ class ArmourSimulation(BaseSimulation):
     
     def run(self, max_steps: int = 1e8, pre_step_callback: Callable = None, step_callback: Callable = None,
             post_step_callback: Callable = None, stop_on_goal: bool = True):
+        """
+        Runs the lifecycle of the simulation
+        
+        Parameters
+        ----------
+        max_steps : int
+            maximum number of steps to run for
+        pre_step_callback : Callable
+            function to run before the pre_step
+        step_callback : Callable
+            function to run before the step
+        post_step_callback : Callable
+            function to run before the post_step
+        stop_on_goal : bool
+            whether to stop the simulation once it reaches the goal
+        """
         # build the execution order
         execution_queue = [ArmourSimulation.pre_step]
         if pre_step_callback is not None:

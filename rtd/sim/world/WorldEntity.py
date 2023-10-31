@@ -27,6 +27,7 @@ class WorldEntity(Options):
             # results in:
             # self.state = GenericEntityState(BoxObstacleInfo(), n_states=5)
         
+        
         Parameters
         ----------
         component_name : str
@@ -66,6 +67,7 @@ class WorldEntity(Options):
             # equivalent to calling:
             # self.info.reset()
             # self.state.reset(n_states=5)
+            
              
         '''
         options = self.getoptions()
@@ -93,6 +95,7 @@ class WorldEntity(Options):
             # results in:
             # options["components"] = {"info": EmptyInfoState, "state": GenericEntityState}
             # options["component_options"] = {"state": {"n_states": 5}}
+        
         
         Parameters
         ----------

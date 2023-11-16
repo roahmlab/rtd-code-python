@@ -25,8 +25,8 @@ class Trajectory(metaclass=ABCMeta):
         # The parameters used for this trajectory
         self.trajectoryParams: RowVec = None
         
-        # The initial state for this trajectory
-        self.startState: EntityState = None
+        # The time at which this trajectory is valid
+        self.startTime: float = None
         
         # Set to true if this trajectory supports getting commands for a
         # time vector instead of just a single moment in time

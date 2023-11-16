@@ -46,7 +46,7 @@ class JRSGenerator(ReachSetGenerator):
         logger.info("The following message is from create_jrs_online")
         
         # generate it online
-        zonojrs = self._jrnsgen.gen_JRS(robotState.q, robotState.q_dot, robotState.q_ddot, self.taylor_degree)
+        zonojrs = self._jrnsgen.gen_JRS(robotState.position, robotState.velocity, robotState.acceleration, self.taylor_degree)
         rs.q_des = zonojrs['q_ref']
         rs.dq_des = zonojrs['qd_ref']
         rs.ddq_des = zonojrs['qdd_ref']
@@ -68,7 +68,7 @@ class JRSGenerator(ReachSetGenerator):
             'n_q': n_q,
             'n_k': n_k,
             'c_k_orig': np.zeros(n_k),
-            'g_k_orig': np.minimum(np.maximum(np.pi/24, np.abs(robotState.q_dot/3)), np.pi/3),
+            'g_k_orig': np.minimum(np.maximum(np.pi/24, np.abs(robotState.velocity/3)), np.pi/3),
             'c_k_bernstein': np.zeros(n_q),
             'g_k_bernstein': np.pi/36 * np.ones(n_q),
         }

@@ -40,7 +40,7 @@ class ArmKinematics(Options):
             time = self.arm_state.time[-1]
             logger.warn("Invalid time entered! Using agent''s final time t={t} instead.")
         # interpolate the state for the corresponding time
-        config = self.arm_state.get_state(time).q
+        config = self.arm_state.get_state(time).position
         return self.get_link_transform_from_config(config)
         
     
@@ -58,7 +58,7 @@ class ArmKinematics(Options):
                 t = self.arm_state.time[-1]
                 logger.warn("Invalid time entered! Using agent''s final time t={t} instead.")
             # interpolate the state for the corresponding time
-            j_vals = self.arm_state.get_state(t).q
+            j_vals = self.arm_state.get_state(t).position
         
         # assume config was given
         else:

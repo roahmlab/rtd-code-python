@@ -55,7 +55,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
             time = self.box_state.time[-1]
 
         # generate mesh
-        config = self.arm_state.get_state(np.array([time])).q
+        config = self.arm_state.get_state(np.array([time])).position
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         
@@ -86,7 +86,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
             time = self.box_state.time[-1]
 
         # generate mesh
-        config = self.arm_state.get_state(np.array([time])).q
+        config = self.arm_state.get_state(np.array([time])).position
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
 

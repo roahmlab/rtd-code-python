@@ -51,4 +51,4 @@ class GenericArmObjective(Objective):
         '''
         trajectoryObj.setParameters(trajectoryParams)
         plan = trajectoryObj.getCommand(t_cost)
-        return np.sum(np.power(plan.q_des - q_des, 2))
+        return np.sum(np.power(plan.position - q_des, 2))

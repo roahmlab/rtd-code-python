@@ -58,8 +58,8 @@ class ZeroHoldArmTrajectory(Trajectory):
             raise InvalidTrajectory("Invalid time provided to ZeroHoldArmTrajectory")
 
         # Make the state
-        n_q = self.startState.q.size    # q: (n_q,)
-        state = np.tile(np.reshape(np.append(self.startState.q,0), (n_q+1,1)), time.size)   # state: (n_q+1, n_time)
+        n_q = self.startState.num_joints    # q: (n_q,)
+        state = np.tile(np.reshape(np.append(self.startState.position,0), (n_q+1,1)), time.size)   # state: (n_q+1, n_time)
         pos_idx = np.arange(n_q)
         acc_vel_idx = np.ones(n_q, dtype=int)*n_q
         

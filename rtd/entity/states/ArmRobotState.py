@@ -39,27 +39,10 @@ class ArmRobotState(EntityState):
     def acceleration(self):
         return self.state[self.acceleration_indices,:].squeeze()
     
-    # compat
     @property
-    def q(self):
-        return self.position
+    def num_joints(self):
+        return self.position.size
     
     @property
-    def q_dot(self):
-        return self.velocity
-    
-    @property
-    def q_ddot(self):
-        return self.acceleration
-    
-    @property
-    def q_des(self):
-        return self.position
-    
-    @property
-    def q_dot_des(self):
-        return self.velocity
-    
-    @property
-    def q_ddot_des(self):
-        return self.acceleration
+    def num_states(self):
+        return self.position.size + self.velocity.size + self.acceleration.size

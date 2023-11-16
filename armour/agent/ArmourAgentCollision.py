@@ -34,7 +34,7 @@ class ArmourAgentCollision(DynamicCollisionObject):
         if time is None and q is not None:
             config = q
         elif time is not None and q is None:
-            config = self.arm_state.get_state(np.array([time])).q   # position at given time
+            config = self.arm_state.get_state(np.array([time])).position   # position at given time
             
         fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.collision_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]

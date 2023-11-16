@@ -64,7 +64,7 @@ class ArmourGoal(PyvistaVisualObject, Options):
         self.goal_radius = options["goal_radius"]
         
         if self.start_position is None:
-            self.start_position = self.arm_agent.state.get_state().q
+            self.start_position = self.arm_agent.state.get_state().position
             
         if self.min_dist_start_to_goal is None:
             # TODO calculate max range and set min distance to 0.25 times of that
@@ -129,7 +129,7 @@ class ArmourGoal(PyvistaVisualObject, Options):
         
         # accumulate the return
         goal = False
-        get_pos = lambda t : self.arm_agent.state.get_state(t).q
+        get_pos = lambda t : self.arm_agent.state.get_state(t).position
         for t_check in t_vec:
             goal |= np.all(np.abs(get_pos(t_check) - self.goal_position) <= self.goal_radius, axis=None)
         

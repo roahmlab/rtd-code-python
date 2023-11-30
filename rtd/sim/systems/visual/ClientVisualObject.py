@@ -1,7 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from rtd.functional.sequences import toSequence
+from rtd.sim.websocket import MeshData
 from trimesh import Trimesh
 from nptyping import NDArray
+
+# for type hinting
+MoveMsg = tuple[str, NDArray, NDArray]
 
 
 
@@ -11,10 +15,11 @@ class ClientVisualObject(metaclass=ABCMeta):
     rendering of an entity
     '''
     @abstractmethod
-    def create_plot_data(self, **options) -> Trimesh | list[Trimesh]:
+    def create_plot_data(self, **options) -> MeshData | list[MeshData]:
         '''
-        Abstract method which needs to be implemented to generate
-        and return the plot data
+        Abstract method which needs to be implemented to initialize
+        self.plot_data to a Trimesh mesh (or a list of meshes), and
+        return the corresponding MeshData(s)
         
         Parameters
         ----------
@@ -23,17 +28,24 @@ class ClientVisualObject(metaclass=ABCMeta):
         
         Returns
         -------
-        plot_obj : Trimesh | list[Trimesh]
-            Trimesh mesh(es) to plot
+        plot_obj : MeshData | list[MeshData]
+            Websocket MeshData(s) to plot
         '''
         pass
 
     
     @abstractmethod
-    def plot(self, **options) -> NDArray:
+    def plot(self, **options) -> MoveMsg | list[MoveMsg]:
         '''
         Abstract method which needs to be implemented to return
-        the transformation matrices for the plot_data animation
+        the transformation and rotation matrices for the plot_data
+        animation
+        
+        Returns
+        _______
+        move_msg : MoveMsg | list[MoveMsg]
+            a tuple of mesh guid, transformation matrix,
+            and rotation matrix for every object in plot_data
         '''
         pass
     

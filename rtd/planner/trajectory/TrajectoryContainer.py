@@ -1,5 +1,6 @@
 from rtd.planner.trajectory import Trajectory
 from rtd.entity.states import EntityState
+from rtd.functional.sequences import toSequence
 import numpy as np
 from nptyping import NDArray
 
@@ -13,10 +14,10 @@ class TrajectoryContainer:
     def __init__(self):
         # vector of start times for each trajectory
         # last element is always inf to ensure the last trajectory is always used
-        self._startTimes: NDArray[float] = np.array([np.inf], np.float)
+        self._startTimes: list[float] = np.array([np.inf], np.double)
         
         # list of trajectories corresponding to the start times
-        self._trajectories: NDArray[Trajectory] = np.array([], dtype=Trajectory)
+        self._trajectories: list[Trajectory] = np.array([], dtype=Trajectory)
     
     
     def setInitialTrajectory(self, initialTrajectory: Trajectory):
@@ -29,13 +30,13 @@ class TrajectoryContainer:
         initialTrajectory : Trajectory
             the initial trajectory to add
         '''
-        if initialTrajectory.startState != 0:
+        if initialTrajectory.startTime != 0:
             raise BadTrajectoryException("Provided initial trajectory does not start at 0!")
         if not initialTrajectory.validate():
             raise BadTrajectoryException("Provided initial trajectory is invalid!")
         
         if not self.isValid(False):
-            self._startTimes = np.array([initialTrajectory.startTime, np.inf], dtype=float)
+            self._startTimes = np.array([initialTrajectory.startTime, np.inf], dtype=np.double)
             self._trajectories = np.array([initialTrajectory], dtype=Trajectory)
         else:
             self._startTimes[0] = initialTrajectory.startTime
@@ -49,13 +50,13 @@ class TrajectoryContainer:
         If not, a warning is thrown.
         '''
         if self.isValid():
-            self._startTimes = np.array([0, np.inf], np.float)
+            self._startTimes = np.array([0, np.inf], np.double)
             self._trajectories = np.array([self._trajectories[0]], dtype=Trajectory)
         else:
             print("Warning: clear() for TrajectoryContainer was called before valid initial trajectory was set!")
     
     
-    def isValid(self, errorIfInvalid: bool = False):
+    def isValid(self, errorIfInvalid: bool = False) -> bool:
         '''
         Checks if the container is valid.
         
@@ -101,7 +102,7 @@ class TrajectoryContainer:
             print("Warning: Invalid trajectory provided to TrajectoryContainer")
     
     
-    def getCommand(self, time: float | list[float]) -> EntityState:
+    def getCommand(self, time: float | list[float]) -> list[EntityState]:
         '''
         Generates a command based on the time.
         The command is generated based on the trajectory that is active
@@ -117,18 +118,18 @@ class TrajectoryContainer:
         
         Returns
         -------
-        commands : bool
+        commands : NDArray[EntityState]
             the generated commands
         '''
-        time = np.array(time)
+        time = np.array(toSequence(time))
         self.isValid(True)
         
         # generate an output trajectory based on the provided time
         ncommands = len(time)
         commands = np.empty(ncommands, dtype=EntityState)
-        commands[-1] = self._trajectories[0].getCommand(0)
+        commands[-1] = self._trajectories[0].getCommand(np.array([0]))
         
-        for i in range(ncommands-1):
+        for i in range(self._startTimes.size-1):
             mask = np.logical_and(time>=self._startTimes[i], time<=self._startTimes[i+1])
             if np.sum(mask) == 0:
                 continue

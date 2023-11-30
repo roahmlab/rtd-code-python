@@ -79,12 +79,16 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         if static is not None:
             static = toSequence(static)
             self.static_objects.extend(static)
-            # send mesh data to server here
+            for obj in static:
+                self.client.add_mesh_data(obj)
         
         if dynamic is not None:
             dynamic = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
-            # send mesh data to server here
+            for obj in static:
+                self.client.add_mesh_data(obj)
+        
+        self.client.send_mesh_data_list()
     
     
     def remove(self, *objects: ClientVisualObject):
@@ -102,7 +106,11 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
                 self.static_objects.remove(obj)
             elif obj in self.dynamic_objects:
                 self.dynamic_objects.remove(obj)
-            # remove mesh data from server here
+        
+        # remove mesh data from server
+        self.client.clear_mesh_data_list()
+        for obj in self.static_objects + self.dynamic_objects:
+            self.client.add_mesh_data(obj)
     
     
     def updateVisual(self, t_update: float):
@@ -125,9 +133,9 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
             for t in t_vec:
                 # update the dynamic objects on the plotter
                 for obj in self.dynamic_objects:
-                    # get transformation matrices, and send it to server
-                    # transform = obj.plot(time=t)
-                    pass
+                    move_msgs = toSequence(obj.plot(t))
+                    for move_msg in move_msgs:
+                        self.client.send_move_object_message(*move_msg)
                 time.sleep(self.draw_time)
             
         # append the updated time
@@ -173,9 +181,9 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
 
             # update the dynamic objects on the figure
             for obj in self.dynamic_objects:
-                # get transformation matrices, and send it to server
-                # transform = obj.plot(time=t)
-                pass
+                move_msgs = toSequence(obj.plot(t))
+                for move_msg in move_msgs:
+                    self.client.send_move_object_message(*move_msg)
             
             # get current time and subtract from previous time
             # if delta_time > self.draw_time, print lagging message

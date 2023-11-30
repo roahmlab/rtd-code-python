@@ -1,9 +1,10 @@
+from abc import ABCMeta
 import asyncio
-from simulationclient import PlannerWebSocketClient, MeshData
+from rtd.sim.websocket import PlannerWebSocketClient
 
 
 
-class ClientSimulationSystem():
+class ClientSimulationSystem(metaclass=ABCMeta):
     '''
     Base class for client based visual and collision systems 
     '''
@@ -20,11 +21,12 @@ class ClientSimulationSystem():
         asyncio.run(self.connect())
     
     
-    async def connect(self):
+    async def connect(self) -> bool:
         '''
-        Connects the client to the server
+        Connects the client to the server, returns whether it connected
         '''
         connected = await self.client.connect('localhost', 9001)
+        return connected
     
     
     def disconnect(self):

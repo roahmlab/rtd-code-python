@@ -1,2 +1,3 @@
 from rtd.planner.trajectory.Trajectory import Trajectory, InvalidTrajectory
 from rtd.planner.trajectory.TrajectoryFactory import TrajectoryFactory
+from rtd.planner.trajectory.TrajectoryContainer import TrajectoryContainer, BadTrajectoryException

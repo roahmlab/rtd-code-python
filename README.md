@@ -10,10 +10,11 @@ The original MATLAB RTD Planner and ARMOUR ported into Python
 2. Install *virtualenv* with `py -m pip install virtualenv`
 3. Create a new Virtual Environment with `py -m venv rtd_venv`
 4. Activate the Virtual Environment with `rtd_venv\scripts\activate`
-5. Install *rtd-code-python* and its dependencies with `py -m pip install -r requirements.txt`
-6. Optionally, open a terminal inside `scripts\demos` and run the demo scripts
+5. Install *rtd-code-python* and its dependencies with `py -m pip install -r requirements.txt && py -m pip install -e .`
+6. Separately install [*zonopy*](https://github.com/roahmlab/zonopy) and [*zonopy-robots*](https://github.com/roahmlab/zonopy-robots).
+7. Optionally, open a terminal inside `scripts\demos` and run the demo scripts (the `urdfs` folder can be found from the [*armour* repository](https://github.com/roahmlab/armour))
 
-
+**Note**: You may need to apply the fix in https://github.com/fishbotics/urchin/issues/9 to load some of the armour URDF's
 
 ## Key Features
 - ARMOUR (`armour`)

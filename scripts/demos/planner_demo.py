@@ -7,7 +7,7 @@ if __name__ == '__main__':
     from rtd.planner.trajopt import TrajOptProps
     from rtd.sim.world import WorldState
     from rtd.sim.sensors import zonotope_sensor
-    from zonopy.robots2.robot import ZonoArmRobot
+    from zonopyrobots import ZonoArmRobot
     from urchin import URDF
     import os
     
@@ -18,7 +18,10 @@ if __name__ == '__main__':
     
     
     #-------------------- agent parameters --------------------#
+    import rtd
+    rtd_code_basepath = os.path.dirname(rtd.__file__)
     agent_urdf = "../../urdfs/kinova_arm/kinova_without_gripper.urdf"
+    agent_urdf = os.path.join(rtd_code_basepath, agent_urdf)
     add_uncertainty_to = 'all'  # choose 'all', 'link', 'none'
     links_with_uncertainty = ['dumbell_link']
     uncertain_mass_range = (0.97, 1.03)

@@ -1,6 +1,6 @@
 from rtd.entity.components import BaseInfoComponent
 from rtd.util.mixins import Options
-from zonopy.robots2.robot import ZonoArmRobot
+from zonopyrobots import ZonoArmRobot
 from urchin import URDF
 
 # define top level module logger

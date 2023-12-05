@@ -1,8 +1,9 @@
 from rtd.entity.states import EntityState
 from rtd.planner.reachsets import ReachSetGenerator
 from armour.reachsets import JRSInstance
-from zonopy.joint_reachable_set.gen_jrs import JrsGenerator as ZonoJRSGenerator
-import zonopy.trajectories as zpt
+import zonopyrobots as zpr
+# from zonopy.joint_reachable_set.gen_jrs import JrsGenerator as ZonoJRSGenerator
+# import zonopy.trajectories as zpt
 import numpy as np
 
 # define top level module logger
@@ -28,8 +29,8 @@ class JRSGenerator(ReachSetGenerator):
         self.add_ultimate_bound = add_ultimate_bound
         self.traj_type = traj_type
         # initialize zonopy's JRSGenerator
-        traj_class = zpt.PiecewiseArmTrajectory if traj_type=="piecewise" else zpt.BernsteinArmTrajectory
-        self._jrnsgen = ZonoJRSGenerator(robot, traj_class, k_r=None, # k_r=self.controller.k_r
+        traj_class = zpr.trajectory.PiecewiseArmTrajectory if traj_type=="piecewise" else zpr.trajectory.BernsteinArmTrajectory
+        self._jrnsgen = zpr.JrsGenerator(robot, traj_class, k_r=None, # k_r=self.controller.k_r
                                          ultimate_bound=None, # ultimate_bound=self.controller.ultimate_bound
                                          batched=True, unique_tid=False)
     

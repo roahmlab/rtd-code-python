@@ -6,7 +6,7 @@ from rtd.planner.trajopt import TrajOptProps, RtdTrajOpt, GenericArmObjective, S
 from rtd.sim.world import WorldState
 from armour.reachsets import JRSGenerator, FOGenerator, IRSGenerator, JLSGenerator
 from armour.trajectory import ArmTrajectoryFactory
-from zonopy.robots2.robot import ZonoArmRobot
+from zonopyrobots import ZonoArmRobot
 from urchin import URDF
 
 

@@ -2,10 +2,9 @@ from abc import ABCMeta, abstractmethod
 from rtd.functional.sequences import toSequence
 from rtd.sim.websocket import MeshData
 from trimesh import Trimesh
-from nptyping import NDArray
 
 # for type hinting
-MoveMsg = tuple[str, NDArray, NDArray]
+MoveMsg = tuple[str, dict, dict]
 
 
 

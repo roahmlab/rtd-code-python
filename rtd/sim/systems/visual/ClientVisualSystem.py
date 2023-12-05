@@ -77,16 +77,16 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         '''
         # handle single items
         if static is not None:
-            static = toSequence(static)
+            static: list[ClientVisualObject] = toSequence(static)
             self.static_objects.extend(static)
             for obj in static:
-                self.client.add_mesh_data(obj)
+                self.client.add_mesh_data(obj.plot_data)
         
         if dynamic is not None:
-            dynamic = toSequence(dynamic)
+            dynamic: list[ClientVisualObject] = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
             for obj in static:
-                self.client.add_mesh_data(obj)
+                self.client.add_mesh_data(obj.plot_data)
         
         self.client.send_mesh_data_list()
     
@@ -103,14 +103,14 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         '''
         for obj in objects:
             if obj in self.static_objects:
-                self.static_objects.remove(obj)
+                self.static_objects.remove(obj.plot_data)
             elif obj in self.dynamic_objects:
-                self.dynamic_objects.remove(obj)
+                self.dynamic_objects.remove(obj.plot_data)
         
         # remove mesh data from server
         self.client.clear_mesh_data_list()
         for obj in self.static_objects + self.dynamic_objects:
-            self.client.add_mesh_data(obj)
+            self.client.add_mesh_data(obj.plot_data)
     
     
     def updateVisual(self, t_update: float):

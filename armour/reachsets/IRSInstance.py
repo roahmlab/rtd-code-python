@@ -4,14 +4,11 @@ from rtd.sim.world import WorldState
 from armour.reachsets import JRSInstance
 from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
 import numpy as np
-from nptyping import NDArray, Shape, Float64
+from rtd.util.mixins.Typings import Boundsnp
 
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
-# type hinting
-BoundsVec = NDArray[Shape['N,2'], Float64]
 
 
 
@@ -31,7 +28,7 @@ class IRSInstance(ReachSetInstance):
         self.n_q = jrsInstance.n_q
         self.n_t = jrsInstance.n_t
         self.num_parameters = jrsInstance.n_k
-        self.input_range: BoundsVec = jrsInstance.input_range
+        self.input_range: Boundsnp = jrsInstance.input_range
     
     
     def genNLConstraint(self, worldState: WorldState) -> Callable:

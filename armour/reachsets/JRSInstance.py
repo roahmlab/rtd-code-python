@@ -2,10 +2,7 @@ from typing import Callable
 from rtd.planner.reachsets import ReachSetInstance
 from rtd.sim.world import WorldState
 import numpy as np
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-BoundsVec = NDArray[Shape['2,N'], Float64]
+from rtd.util.mixins.Typings import Boundsnp
 
 
 
@@ -18,9 +15,9 @@ class JRSInstance(ReachSetInstance):
         # initialize base classes
         ReachSetInstance.__init__(self)
         # set properties
-        self.input_range: BoundsVec = (-1.0, 1.0)
-        self.output_range: BoundsVec = (-1.0, 1.0)
-        self.num_parameters = 0
+        self.input_range: Boundsnp = None
+        self.output_range: Boundsnp = None
+        self.num_parameters: int = 0
         
         # properties carried over from the original implementation
         self.q_des = None

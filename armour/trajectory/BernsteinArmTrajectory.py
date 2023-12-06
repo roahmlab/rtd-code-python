@@ -5,10 +5,7 @@ from rtd.functional.vectools import rescale
 from armour.reachsets import JRSInstance
 from armour.legacy import bernstein_to_poly, match_deg5_bernstein_coefficients
 import numpy as np
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -31,7 +28,7 @@ class BernsteinArmTrajectory(Trajectory):
         self.jrsInstance = jrsInstance
     
     
-    def setParameters(self, trajectoryParams: RowVec, startState: ArmRobotState = None,
+    def setParameters(self, trajectoryParams: Vecnp, startState: ArmRobotState = None,
                       jrsInstance: JRSInstance = None):
         '''
         A validated method to set the parameters for the trajectory
@@ -97,7 +94,7 @@ class BernsteinArmTrajectory(Trajectory):
         self.q_end = q_goal
     
     
-    def getCommand(self, time: RowVec) -> EntityState:
+    def getCommand(self, time: Vecnp) -> EntityState:
         # Do a parameter check and time check, and throw if anything is
         # invalid.
         self.validate(throwOnError=True)

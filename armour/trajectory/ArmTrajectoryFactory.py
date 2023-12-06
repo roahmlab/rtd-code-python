@@ -4,10 +4,7 @@ from rtd.planner.trajectory import TrajectoryFactory, InvalidTrajectory
 from rtd.planner.trajopt import TrajOptProps
 from armour.reachsets import JRSInstance
 from armour.trajectory import PiecewiseArmTrajectory, ZeroHoldArmTrajectory, BernsteinArmTrajectory
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -21,7 +18,7 @@ class ArmTrajectoryFactory(TrajectoryFactory):
     
     
     def createTrajectory(self, robotState: EntityState, rsInstances: dict[str, ReachSetInstance] = None,
-                         trajectoryParams: RowVec = None, jrsInstance: JRSInstance = None,
+                         trajectoryParams: Vecnp = None, jrsInstance: JRSInstance = None,
                          traj_type: str = None) -> ZeroHoldArmTrajectory | PiecewiseArmTrajectory | BernsteinArmTrajectory:
         '''
         Create a new trajectory object for the given state

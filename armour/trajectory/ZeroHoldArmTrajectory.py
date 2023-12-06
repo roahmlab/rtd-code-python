@@ -1,10 +1,7 @@
 from rtd.planner.trajectory import Trajectory, InvalidTrajectory
 from rtd.entity.states import ArmRobotState
 import numpy as np
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -23,7 +20,7 @@ class ZeroHoldArmTrajectory(Trajectory):
         self.startState = startState
     
     
-    def setParameters(self, trajectoryParams: RowVec, startState: ArmRobotState = None):
+    def setParameters(self, trajectoryParams: Vecnp, startState: ArmRobotState = None):
         '''
         Set the parameters of the trajectory, with a focus on the
         parameters as the state should be set from the constructor
@@ -46,7 +43,7 @@ class ZeroHoldArmTrajectory(Trajectory):
         return valid
 
     
-    def getCommand(self, time: RowVec) -> ArmRobotState:
+    def getCommand(self, time: Vecnp) -> ArmRobotState:
         '''
         Computes the actual input commands for the given time.
         throws InvalidTrajectory if the trajectory isn't set

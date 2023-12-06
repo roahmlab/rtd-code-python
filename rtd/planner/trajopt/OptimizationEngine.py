@@ -1,9 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import Callable
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -12,8 +9,8 @@ class OptimizationEngine(metaclass=ABCMeta):
     Base class for any sort of nonlinear optimizer used
     '''
     @abstractmethod
-    def performOptimization(self, initialGuess: RowVec, objectiveCallback: Callable,
-            constraintCallback: Callable, bounds: dict) -> tuple[bool, RowVec, float]:
+    def performOptimization(self, initialGuess: Vecnp, objectiveCallback: Callable,
+            constraintCallback: Callable, bounds: dict) -> tuple[bool, Vecnp, float]:
         '''
         Use the given optimizer to perform the optimization
         RowVector

@@ -1,14 +1,14 @@
 from armour.agent import ArmourAgentInfo
-from nptyping import NDArray
 import numpy as np
+from rtd.util.mixins.Typings import Vecnp
 
 
 
 class StraightLineHLP():
     def __init__(self):
         self.default_lookahead_distance: float = 1
-        self.goal: NDArray = None
-        self.joint_state_indices: NDArray = None
+        self.goal: Vecnp = None
+        self.joint_state_indices: Vecnp = None
     
     
     def setup(self, agent_info: ArmourAgentInfo, world_info: dict):
@@ -16,7 +16,7 @@ class StraightLineHLP():
         self.arm_joint_state_indices = agent_info.joint_state_indices
         
     
-    def get_waypoint(self, state: NDArray, lookahead_distance: float = None):
+    def get_waypoint(self, state: Vecnp, lookahead_distance: float = None) -> Vecnp:
         if lookahead_distance is None:
             lookahead_distance = self.default_lookahead_distance
         q_cur = state[self.arm_joint_state_indices]

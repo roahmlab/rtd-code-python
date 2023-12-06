@@ -8,8 +8,8 @@ import pyvista as pv
 import numpy as np
 from trimesh import Trimesh
 from typing import OrderedDict
-from nptyping import NDArray
 from math import pi
+from rtd.util.mixins.Typings import Matnp
 
 # define top level module logger
 import logging
@@ -79,7 +79,7 @@ class ArmourGoal(PyvistaVisualObject, Options):
     def create_plot_data(self, time: float = None) -> list[Actor]:
         # generate mesh
         config = self.goal_position
-        fk: OrderedDict[Trimesh, NDArray] = self.arm_agent.info.robot.visual_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, Matnp] = self.arm_agent.info.robot.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         
         self.plot_data: list[Actor] = list()

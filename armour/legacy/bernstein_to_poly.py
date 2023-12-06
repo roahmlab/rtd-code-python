@@ -1,9 +1,10 @@
 from math import comb
 import numpy as np
+from rtd.util.mixins.Typings import Vec, Vecnp
 
 
 
-def bernstein_to_poly(beta: list[float], n: int):
+def bernstein_to_poly(beta: Vec, n: int) -> Vecnp:
     '''
     converts bernstein polynomial coefficients to
     monomial coefficients

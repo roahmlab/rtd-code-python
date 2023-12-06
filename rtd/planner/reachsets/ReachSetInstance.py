@@ -1,10 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from rtd.sim.world import WorldState
 from typing import Callable
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-BoundsVec = NDArray[Shape['N,2'], Float64]
+from rtd.util.mixins.Typings import Boundsnp
 
 
 
@@ -21,7 +18,7 @@ class ReachSetInstance(metaclass=ABCMeta):
     def __init__(self):
         # A 2-column vector denoting the input minimum and maximums for the
         # reachable set on the left and right, respectively
-        self.input_range: BoundsVec = None
+        self.input_range: Boundsnp = None
 
         # The number of main shared parameters used by this set. Generally,
         # this should match the size of the final trajectory parameters

@@ -4,10 +4,7 @@ from rtd.entity.states import ArmRobotState
 from armour.reachsets import JRSInstance
 from rtd.functional.vectools import rescale
 import numpy as np
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vec, Mat, Vecnp, Matnp, Bound, Bounds, Boundsnp
 
 
 
@@ -38,7 +35,7 @@ class PiecewiseArmTrajectory(Trajectory):
         self.q_end: float = None
     
     
-    def setParameters(self, trajectoryParams: RowVec, startState: ArmRobotState = None,
+    def setParameters(self, trajectoryParams: Vecnp, startState: ArmRobotState = None,
                       jrsInstance: JRSInstance = None):
         '''
         Set the parameters of the trajectory, with a focus on the
@@ -97,7 +94,7 @@ class PiecewiseArmTrajectory(Trajectory):
                       + 0.5*self.q_ddot_to_stop*self.trajOptProps.planTime**2)
     
     
-    def getCommand(self, time: RowVec) -> ArmRobotState:
+    def getCommand(self, time: Vecnp) -> ArmRobotState:
         '''
         Computes the actual input commands for the given time.
         throws InvalidTrajectory if the trajectory isn't set

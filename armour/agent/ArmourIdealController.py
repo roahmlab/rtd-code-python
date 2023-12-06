@@ -5,7 +5,6 @@ from rtd.entity.states import EntityState
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 from armour.trajectory import ZeroHoldArmTrajectory
 import numpy as np
-from nptyping import NDArray
 
 # define top level module logger
 import logging

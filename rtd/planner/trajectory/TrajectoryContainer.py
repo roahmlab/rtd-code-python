@@ -2,7 +2,6 @@ from rtd.planner.trajectory import Trajectory
 from rtd.entity.states import EntityState
 from rtd.functional.sequences import toSequence
 import numpy as np
-from nptyping import NDArray
 
 
 class BadTrajectoryException(Exception):

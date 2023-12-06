@@ -1,10 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from rtd.entity.states import EntityState
 from rtd.planner.trajopt import TrajOptProps
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -23,7 +20,7 @@ class Trajectory(metaclass=ABCMeta):
         self.trajOptProps: TrajOptProps = None
         
         # The parameters used for this trajectory
-        self.trajectoryParams: RowVec = None
+        self.trajectoryParams: Vecnp = None
         
         # The time at which this trajectory is valid
         self.startTime: float = None
@@ -52,7 +49,7 @@ class Trajectory(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def setParameters(self, trajectoryParams: RowVec, **options):
+    def setParameters(self, trajectoryParams: Vecnp, **options):
         '''
         Set the parameters for the trajectory
         
@@ -67,7 +64,7 @@ class Trajectory(metaclass=ABCMeta):
     
     
     @abstractmethod
-    def getCommand(self, time: float | RowVec) -> EntityState:
+    def getCommand(self, time: float | Vecnp) -> EntityState:
         '''
         Computes the actual state to track for the given time
         

@@ -1,4 +1,8 @@
-def match_deg5_bernstein_coefficients(traj_constraints: list[float], T: float = 1):
+from rtd.util.mixins.Typings import Vec
+
+
+
+def match_deg5_bernstein_coefficients(traj_constraints: Vec, T: float = 1) -> Vec:
     '''
     match coefficients to initial position, velocity, acceleration (t=0)
     and final position, velocity, and acceleration (t=1)

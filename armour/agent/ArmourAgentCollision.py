@@ -3,7 +3,7 @@ from rtd.sim.systems.collision import DynamicCollisionObject, CollisionObject
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 import numpy as np
 from collections import OrderedDict
-from nptyping import NDArray
+from rtd.util.mixins.Typings import Matnp
 
 
 
@@ -25,7 +25,7 @@ class ArmourAgentCollision(DynamicCollisionObject):
         pass
     
     
-    def getCollisionObject(self, q: NDArray = None, time: float = None) -> CollisionObject:
+    def getCollisionObject(self, q: Matnp = None, time: float = None) -> CollisionObject:
         '''
         Generates a CollisionObject for a given time `time` or
         configuration `q` (only one or none must be provided)
@@ -36,7 +36,7 @@ class ArmourAgentCollision(DynamicCollisionObject):
         elif time is not None and q is None:
             config = self.arm_state.get_state(np.array([time])).position   # position at given time
             
-        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.collision_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.robot.collision_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         return CollisionObject(meshes, id(self.arm_info))
     

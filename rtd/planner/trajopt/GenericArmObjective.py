@@ -4,10 +4,7 @@ from rtd.planner.reachsets import ReachSetInstance
 from rtd.planner.trajopt import Objective, TrajOptProps
 from rtd.planner.trajectory import TrajectoryFactory, Trajectory
 import numpy as np
-from nptyping import NDArray, Shape, Float64
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
+from rtd.util.mixins.Typings import Vecnp
 
 
 
@@ -43,7 +40,7 @@ class GenericArmObjective(Objective):
     
     
     @staticmethod
-    def evalTrajectory(trajectoryParams: RowVec, trajectoryObj: Trajectory, q_des, t_cost: float | RowVec) -> float:
+    def evalTrajectory(trajectoryParams: Vecnp, trajectoryObj: Trajectory, q_des, t_cost: float | Vecnp) -> float:
         '''
         Helper function purely accessible to this class without any class state
         which a handle can be made to to evaluate the trajectory for the cost.

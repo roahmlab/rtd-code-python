@@ -1,20 +1,17 @@
 from rtd.planner.trajopt import TrajOptProps, Objective, OptimizationEngine
 from rtd.planner.trajectory import TrajectoryFactory
 from rtd.planner.reachsets import ReachSetGenerator
-from rtd.sim.world import WorldEntity, WorldState
+from rtd.sim.world import WorldState
 from rtd.entity.states import EntityState
 from rtd.planner.trajectory import Trajectory
 from rtd.planner.reachsets import ReachSetInstance
 import numpy as np
 from typing import Callable
-from nptyping import NDArray, Shape, Float64
+from rtd.util.mixins.Typings import Vecnp
 
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
-# type hinting
-RowVec = NDArray[Shape['N'], Float64]
 
 
 
@@ -102,7 +99,7 @@ class RtdTrajOpt:
             
         # generate nonlinear constraints
         successes: dict[int, bool] = dict()
-        parameters: dict[int, RowVec] = dict()
+        parameters: dict[int, Vecnp] = dict()
         costs: dict[int, float] = dict()
         
         for (rs_id, rsInstances) in rsInstances_dict.items():

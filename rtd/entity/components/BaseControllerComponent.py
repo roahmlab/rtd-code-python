@@ -6,7 +6,9 @@ from rtd.planner.trajectory import Trajectory
 
 class BaseControllerComponent(metaclass=ABCMeta):
     '''
-    Base class for the controller of the agent
+    Base class for the controller of the agent.
+    Stores a reference to the info and state components, as well
+    as a container for the trajectories, and the number of inputs.
     '''
     def __init__(self):
         self.robot_info: BaseInfoComponent = None

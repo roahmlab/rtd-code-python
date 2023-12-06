@@ -1,15 +1,12 @@
 from rtd.util.mixins import Options
 from rtd.sim import SimulationSystem
-from rtd.sim.systems.collision import CollisionObject, DynamicCollisionObject
+from rtd.sim.systems.collision import CollisionObject, DynamicCollisionObject, CollisionPair
 from rtd.functional.sequences import toSequence
 import numpy as np
 
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
-# type hinting
-CollisionPair = tuple[int, int]
 
 
 

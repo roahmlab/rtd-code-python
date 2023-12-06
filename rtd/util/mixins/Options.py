@@ -34,6 +34,16 @@ class Options(metaclass=ABCMeta):
         '''
         Takes in any number of options and updates the current
         `instanceOptions`. Returns a copy of the updated `instanceOptions`
+        
+        Parameters
+        ----------
+        newOptions : dict
+            option(s) to merge with
+        
+        Returns
+        -------
+        option : dict
+            copy of merged options
         '''
         for options in newOptions:
             merge(self._instanceOptions, options)
@@ -43,5 +53,10 @@ class Options(metaclass=ABCMeta):
     def getoptions(self) -> dict:
         '''
         Returns a copy of the current `instanceOptions`
+        
+        Returns
+        -------
+        option : dict
+            copy of the current option
         '''
         return self._instanceOptions.copy()

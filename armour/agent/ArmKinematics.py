@@ -1,4 +1,4 @@
-from rtd.util.mixins import Options
+"""from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 from rtd.functional.vectools import axang2rotm
 import numpy as np
@@ -151,3 +151,4 @@ class ArmKinematics(Options):
             j_loc_local = j_locs[dim:,idx]
             J[:,idx] = -R_succ*j_loc_local + T_succ
         return (R, T, J)
+"""

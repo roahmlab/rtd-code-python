@@ -1,12 +1,9 @@
-from rtd.sim.systems.visual import ClientVisualObject
+from rtd.sim.systems.visual import ClientVisualObject, MoveMsg
 from rtd.util.mixins import Options
 from rtd.entity.box_obstacle import BoxObstacleInfo
 from rtd.entity.components import GenericEntityState
 from rtd.sim.websocket import MeshData
 import uuid
-
-# for type hinting
-MoveMsg = tuple[str, dict, dict]
 
 
 

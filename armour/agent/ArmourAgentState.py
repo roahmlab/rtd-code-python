@@ -3,14 +3,11 @@ from rtd.entity.states import ArmRobotState
 from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo
 import numpy as np
-from nptyping import NDArray, Shape, Float64
+from rtd.util.mixins.Typings import Vecnp, Matnp, Boundsnp
 
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
-# type hinting
-BoundsVec = NDArray[Shape['N,2'], Float64]
 
 
 
@@ -51,7 +48,7 @@ class ArmourAgentState(BaseStateComponent, Options):
         self.velocity_indices = np.arange(1, self.n_states, 2)
         
         logger.info("Resetting time and states")
-        self.state: NDArray = np.zeros((self.n_states, 1))
+        self.state: Matnp = np.zeros((self.n_states, 1))
         self.time = np.zeros(1)
         self.step_start_idxs = np.zeros(1)
         
@@ -71,7 +68,7 @@ class ArmourAgentState(BaseStateComponent, Options):
         self.mergeoptions(options)
     
     
-    def random_init(self, pos_range: BoundsVec = None, vel_range: BoundsVec = None,
+    def random_init(self, pos_range: Boundsnp = None, vel_range: Boundsnp = None,
                     random_position: bool = True, random_velocity: bool = False,
                     save_to_options: bool = False):
         if pos_range is None:
@@ -85,7 +82,7 @@ class ArmourAgentState(BaseStateComponent, Options):
         pos_range[1, pos_range_infs[1,:]] = np.pi
         
         # reset
-        self.state: NDArray = np.zeros((self.n_states, 1))
+        self.state: Matnp = np.zeros((self.n_states, 1))
         self.time = np.zeros(1)
         self.step_start_idxs = np.zeros(1)
         
@@ -99,7 +96,10 @@ class ArmourAgentState(BaseStateComponent, Options):
             self.mergeoptions({"initial_position": self.position, "initial_velocity": self.velocity})
     
     
-    def get_state(self, time: NDArray = None) -> ArmRobotState:
+    def get_state(self, time: Vecnp = None) -> ArmRobotState:
+        '''
+        Returns the state of the ArmourAgent at a specific time.
+        '''
         # default to the last time and state
         if time is None:
             time = self.time[-1:]
@@ -113,7 +113,7 @@ class ArmourAgentState(BaseStateComponent, Options):
             return state
         
         # otherwise, interpolate
-        timesize = time.size if isinstance(time, NDArray) else 1
+        timesize = time.size if isinstance(time, Vecnp) else 1
         state.state = np.zeros((self.n_states, timesize))
         
         # if we can and need to interpolate the state, do it
@@ -122,13 +122,20 @@ class ArmourAgentState(BaseStateComponent, Options):
         return state
     
     
-    def commit_state_data(self, T_state: float, Z_state: list[float]):
+    def commit_state_data(self, T_state: Vecnp, Z_state: Matnp):
         '''
         method: commit_move_data(T_state,Z_state)
         
         After moving the agent, commit the new state and input
         trajectories, and associated time vectors, to the agent's
-        state, time, input, and input_time properties
+        state, time, input, and input_time properties.
+        
+        Parameters
+        ----------
+        T_state: NpFvec
+            times to commit states to
+        Z_state : NpFmat
+            corresponding states for the times
         '''
         # update the time and state
         self.step_start_idxs = np.append(self.time, self.time.size+1)
@@ -136,7 +143,20 @@ class ArmourAgentState(BaseStateComponent, Options):
         self.state = np.concatenate((self.state, Z_state[:,1:]), 1)
     
     
-    def joint_limit_check(self, t_check_step):
+    def joint_limit_check(self, t_check_step: float) -> bool:
+        '''
+        Checks if joint limits did not exceed at any time. 
+        
+        Parameters
+        ----------
+        t_check_step : float
+            step size to check with
+        
+        Returns
+        -------
+        check : bool
+            whether limit was exceeded or not
+        '''
         # create time vector for checking
         start_idx = int(self.step_start_idxs[-1])
         t_check = np.arange(self.time[start_idx], self.time[-1], t_check_step)

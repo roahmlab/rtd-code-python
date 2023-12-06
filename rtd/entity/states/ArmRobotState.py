@@ -1,5 +1,5 @@
 from rtd.entity.states import EntityState
-from nptyping import NDArray
+from rtd.util.mixins.Typings import Vecnp, Matnp
 
 
 
@@ -9,7 +9,8 @@ class ArmRobotState(EntityState):
     time
     '''
     def __init__(self, position_indices: list[int] = None,
-                 velocity_indices: list[int] = None, acceleration_indices: list[int] = None):
+                 velocity_indices: list[int] = None,
+                 acceleration_indices: list[int] = None):
         # initialize base classes
         EntityState.__init__(self)
         # handle empty data
@@ -23,26 +24,26 @@ class ArmRobotState(EntityState):
         self.position_indices: list[int] = position_indices
         self.velocity_indices: list[int] = velocity_indices
         self.acceleration_indices: list[int] = acceleration_indices
-        self.state: NDArray = None  # 2d array of state at time (n_states, n_time)
-        self.time: NDArray = None   # 1d array of time
+        self.state: Matnp = None  # 2d array of state at time (n_states, n_time)
+        self.time: Vecnp = None   # 1d array of time
     
     
     @property
-    def position(self):
+    def position(self) -> Matnp:
         return self.state[self.position_indices,:].squeeze()
     
     @property
-    def velocity(self):
+    def velocity(self) -> Matnp:
         return self.state[self.velocity_indices,:].squeeze()
     
     @property
-    def acceleration(self):
+    def acceleration(self) -> Matnp:
         return self.state[self.acceleration_indices,:].squeeze()
     
     @property
-    def num_joints(self):
+    def num_joints(self) -> int:
         return self.position.size
     
     @property
-    def num_states(self):
+    def num_states(self) -> int:
         return self.position.size + self.velocity.size + self.acceleration.size

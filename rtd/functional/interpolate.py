@@ -1,8 +1,9 @@
 from bisect import bisect, bisect_left
+from rtd.util.mixins.Typings import Vec, Mat
 
 
 
-def interp1(x: list[float], y: list[float], x_at: float) -> list[float]:
+def interp1(x: Vec, y: Vec, x_at: float) -> Vec:
     '''
     This takes the lists `x` and `y`, and returns the interpolated
     y value at `x_at`. Length of `x` and `y` must be equal, `x` must
@@ -30,7 +31,7 @@ def interp1(x: list[float], y: list[float], x_at: float) -> list[float]:
     return y[i_left] + ratio*(y[i_right] - y[i_left])
 
 
-def interp1_list(x: list[float], y: list[list[float]], x_at: float) -> list[float]:
+def interp1_list(x: Vec, y: Mat, x_at: float) -> Vec:
     '''
     Same as interp1 but broadcasts it to each element in `y`
     

@@ -1,4 +1,5 @@
 from typing import Iterator, Iterable
+from rtd.util.mixins.Typings import Vec
 
 
 
@@ -26,7 +27,7 @@ def arrange(start: float, end: float, step: float) -> Iterator[float]:
 
 
 
-def arrange_list(start: float, end: float, step: float) -> list[float]:
+def arrange_list(start: float, end: float, step: float) -> Vec:
     '''
     Creates a list from `start` (inclusive) to `end`
     (exclusive) with step size `step`

@@ -1,3 +1,3 @@
-from rtd.sim.systems.collision.CollisionObject import CollisionObject
+from rtd.sim.systems.collision.CollisionObject import CollisionObject, CollisionPair
 from rtd.sim.systems.collision.DynamicCollisionObject import DynamicCollisionObject
 from rtd.sim.systems.collision.TrimeshCollisionSystem import TrimeshCollisionSystem

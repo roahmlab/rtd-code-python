@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 class ArmourAgentInfo(BaseInfoComponent, Options):
     @staticmethod
     def defaultoptions() -> dict:
+        '''
+        Sets the default options for the ArmourAgentInfo, such
+        as `M_min_eigenvalue`, `gravity`, `transmission_inertia`,
+        and `buffer_dist`.
+        '''
         return {
             "M_min_eigenvalue": 0.002,
             "gravity": [0, 0, -9,81],
@@ -34,6 +39,9 @@ class ArmourAgentInfo(BaseInfoComponent, Options):
     
     
     def reset(self, **options):
+        '''
+        Resets the ArmourAgentInfo
+        '''
         options = self.mergeoptions(options)        
         # fill in other dependent factors
         #self.n_links_and_joints = self.params.nomianal.num_joints

@@ -1,16 +1,15 @@
-from abc import ABCMeta
-import asyncio
+from rtd.sim import SimulationSystem
 from rtd.sim.websocket import PlannerWebSocketClient
+import asyncio
 
 
 
-class ClientSimulationSystem(metaclass=ABCMeta):
+class ClientSimulationSystem(SimulationSystem):
     '''
     Base class for client based visual and collision systems 
     '''
     def __init__(self):
-        self.time: list[float] = None
-        self.time_discretization: float = None
+        SimulationSystem.__init__(self)
         self.client: PlannerWebSocketClient = PlannerWebSocketClient()
     
     

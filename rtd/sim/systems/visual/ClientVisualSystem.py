@@ -5,6 +5,7 @@ from rtd.functional.sequences import toSequence, arrange
 from datetime import datetime
 import numpy as np
 import time
+from rtd.util.mixins.Typings import Bound
 
 # define top level module logger
 import logging
@@ -142,7 +143,7 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         self.time += t_vec
     
     
-    def animate(self, t_span: list[float, float] = None,
+    def animate(self, t_span: Bound = None,
                 time_discretization: float = None,
                 pause_time: float = None):
         '''
@@ -156,7 +157,7 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         
         Parameters
         ----------
-        t_span : float
+        t_span : Bound
             range of time to animate
         time_discretization : float
             time difference between frames

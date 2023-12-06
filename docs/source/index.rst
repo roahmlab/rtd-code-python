@@ -14,3 +14,4 @@ Rtd-Python Documentation
    setup
    planner/planner
    simulation/simulation
+   utils/utils

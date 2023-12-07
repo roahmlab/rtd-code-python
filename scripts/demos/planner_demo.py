@@ -20,7 +20,7 @@ if __name__ == '__main__':
     #-------------------- agent parameters --------------------#
     import rtd
     rtd_code_basepath = os.path.dirname(rtd.__file__)
-    agent_urdf = "../../urdfs/kinova_arm/kinova_without_gripper.urdf"
+    agent_urdf = "../urdfs/kinova_arm/kinova_without_gripper.urdf"
     agent_urdf = os.path.join(rtd_code_basepath, agent_urdf)
     add_uncertainty_to = 'all'  # choose 'all', 'link', 'none'
     links_with_uncertainty = ['dumbell_link']

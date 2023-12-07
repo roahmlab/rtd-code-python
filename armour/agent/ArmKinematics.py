@@ -46,7 +46,7 @@ class ArmKinematics(Options):
     
     
     def get_link_transform_from_config(self, config):
-        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, NDArray] = self.arm_info.urdf.visual_trimesh_fk(cfg=config)
         return fk.values()[1:]
     
     
@@ -117,6 +117,7 @@ class ArmKinematics(Options):
                     if dim == 3:
                         # rotation matrix of current link
                         axis_pred = self.arm_info.joints[idx].axes
+                        # TODO
                         R_succ = R_pred*self.arm_info.robot.Bodies[idx].Joint.JointToParentTransform[:3, :3]*axang2rotm(axis_pred, joint_rot)
                     else:
                         # rotation matrix of current link
@@ -132,6 +133,7 @@ class ArmKinematics(Options):
                 
                 case 'fixed':
                     if dim == 3:
+                        # TODO
                         R_succ = R_pred*self.arm_info.robot.Bodies[idx].Joint.JointToParentTransform[:3, :3]
                     else:
                         # rotation matrix of current link assumed same as predecessor

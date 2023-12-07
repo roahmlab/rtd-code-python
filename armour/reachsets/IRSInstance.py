@@ -2,7 +2,7 @@ from typing import Callable
 from rtd.planner.reachsets import ReachSetInstance
 from rtd.sim.world import WorldState
 from armour.reachsets import JRSInstance
-from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
+from zonopy import polyZonotope
 import numpy as np
 from rtd.util.mixins.Typings import Boundsnp
 

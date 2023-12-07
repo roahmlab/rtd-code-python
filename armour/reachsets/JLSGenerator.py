@@ -1,7 +1,7 @@
 from rtd.entity.states import EntityState
 from rtd.planner.reachsets import ReachSetGenerator
 from armour.reachsets import JLSInstance, JRSGenerator
-from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
+from zonopy import polyZonotope
 import torch
 import numpy as np
 

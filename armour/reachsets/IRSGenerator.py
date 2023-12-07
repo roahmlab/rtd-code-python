@@ -1,8 +1,8 @@
 from rtd.entity.states import EntityState
 from rtd.planner.reachsets import ReachSetGenerator
 from armour.reachsets import IRSInstance, JRSGenerator
-from zonopy.conSet.polynomial_zonotope.poly_zono import polyZonotope
-from zonopy.dynamics.RNEA import pzrnea
+from zonopy import polyZonotope
+from zonopyrobots.dynamics.RNEA import pzrnea
 import torch
 import numpy as np
 

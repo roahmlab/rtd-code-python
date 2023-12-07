@@ -55,7 +55,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
 
         # generate mesh
         config = self.arm_state.get_state(np.array([time])).position
-        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.urdf.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         
         self.plot_data: list[Actor] = list()
@@ -86,7 +86,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
 
         # generate mesh
         config = self.arm_state.get_state(np.array([time])).position
-        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.robot.visual_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.urdf.visual_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
 
         for actor, mesh in zip(self.plot_data, meshes):

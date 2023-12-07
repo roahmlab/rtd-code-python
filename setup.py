@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.0.4' 
+VERSION = '0.0.0.6' 
 DESCRIPTION = ''
 LONG_DESCRIPTION = ''
 
 # Setting up
 setup(
-       # the name must match the folder name 'verysimplemodule'
         name="rtd-code-python", 
         version=VERSION,
         author="",
@@ -24,5 +23,6 @@ setup(
                 'scipy>=1.10',
                 'urchin>=0.0.27',
                 'pyvista>=0.39.0',
+                'websockets>=12.0',
         ],
 )

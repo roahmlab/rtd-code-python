@@ -30,7 +30,7 @@ class JRSGenerator(ReachSetGenerator):
         self.traj_type = traj_type
         # initialize zonopy's JRSGenerator
         traj_class = zpr.trajectory.PiecewiseArmTrajectory if traj_type=="piecewise" else zpr.trajectory.BernsteinArmTrajectory
-        self._jrnsgen = zpr.JrsGenerator(robot, traj_class, k_r=None, # k_r=self.controller.k_r
+        self._jrnsgen = zpr.JrsGenerator(robot.params, traj_class, k_r=None, # k_r=self.controller.k_r
                                          ultimate_bound=None, # ultimate_bound=self.controller.ultimate_bound
                                          batched=True, unique_tid=False)
     

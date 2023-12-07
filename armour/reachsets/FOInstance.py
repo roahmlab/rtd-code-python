@@ -75,7 +75,7 @@ class FOInstance(ReachSetInstance):
                 grad_obs_constraint_pz_slice = lambda k: obs_constraint_pz.cpu().grad_center_slice_all_dep(k)
                 
                 # save
-                obs_constraints.append(lambda k: self.batch_obs_constraint(obs_constraint_pz_slice, grad_obs_constraint_pz_slice, torch.from_numpy(k).float()))
+                obs_constraints.append(lambda k: self.batch_obs_constraint(obs_constraint_pz_slice, grad_obs_constraint_pz_slice, k))
         
         # create the constraint callback
         return lambda k: self.eval_constraints(k, len(obs_constraints), obs_constraints, batch_size=100)
@@ -98,9 +98,10 @@ class FOInstance(ReachSetInstance):
     def eval_constraints(k, n_c: int, obs_constraints: list[Callable], batch_size: int = 1):
         h = np.zeros(n_c*batch_size)
         grad_h = np.zeros((n_c*batch_size, k.size))
+        k_tensor = torch.as_tensor(k)
         
         for i in range(n_c):
-            h[i*batch_size:(i+1)*batch_size], grad_h[i*batch_size:(i+1)*batch_size,:] = obs_constraints[i](k)
+            h[i*batch_size:(i+1)*batch_size], grad_h[i*batch_size:(i+1)*batch_size,:] = obs_constraints[i](k_tensor)
         
         grad_heq = None
         heq = None

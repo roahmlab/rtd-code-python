@@ -26,7 +26,7 @@ class FOGenerator(ReachSetGenerator):
         if obs_frs_combs is None:
             obs_frs_combs = {'maxcombs': 200, 'combs': None}
         self.cache_max_size = 0 # we don't want to cache any FO
-        self.robot = robot
+        self.robot = robot.params
         self.jrsGenerator: JRSGenerator = jrsGenerator
         self.obs_frs_combs: dict = obs_frs_combs
         if self.obs_frs_combs['combs'] is None:

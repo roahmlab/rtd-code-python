@@ -36,7 +36,7 @@ class ArmourAgentCollision(DynamicCollisionObject):
         elif time is not None and q is None:
             config = self.arm_state.get_state(np.array([time])).position   # position at given time
             
-        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.robot.collision_trimesh_fk(cfg=config)
+        fk: OrderedDict[Trimesh, Matnp] = self.arm_info.urdf.collision_trimesh_fk(cfg=config)
         meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
         return CollisionObject(meshes, id(self.arm_info))
     

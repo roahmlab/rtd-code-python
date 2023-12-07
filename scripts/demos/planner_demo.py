@@ -44,8 +44,7 @@ if __name__ == '__main__':
     
     #-------------------- setup the agent --------------------#
     urdf_path = os.path.join(os.path.dirname(__file__), agent_urdf)
-    robot = URDF.load(urdf_path)
-    params = ZonoArmRobot.load(robot)
+    robot_urdf = URDF.load(urdf_path)
 
     vel_limits = [[-1.3963, -1.3963, -1.3963, -1.3963, -1.2218, -1.2218, -1.2218],
                   [1.3963,  1.3963,  1.3963,  1.3963,  1.2218,  1.2218,  1.2218]]
@@ -54,7 +53,7 @@ if __name__ == '__main__':
     transmision_inertia = [8.02999999999999936, 11.99620246153036440, 9.00254278617515169, 11.58064393167063599, 8.46650409179141228, 8.85370693737424297, 8.85873036646853151]
     M_min_eigenvalue = 5.095620491878957
     
-    agent_info = ArmourAgentInfo(robot, params, joint_velocity_limits=vel_limits, joint_torque_limits=input_limits,
+    agent_info = ArmourAgentInfo(robot_urdf, joint_velocity_limits=vel_limits, joint_torque_limits=input_limits,
                                  transmission_inertia=transmision_inertia, M_min_eigenvalue=M_min_eigenvalue)
     
     armour_controller = ArmourController
@@ -87,8 +86,7 @@ if __name__ == '__main__':
     
     planner = ArmourPlanner(
         trajOptProps=trajOptProp,
-        robot=sim.agent,
-        params=params,
+        robot=agent_info,
         input_constraints_flag=input_constraints_flag,
         use_robust_input=use_robust_input,
         smooth_obs=smooth_obs,

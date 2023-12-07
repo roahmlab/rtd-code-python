@@ -8,7 +8,7 @@ from armour.reachsets import JRSGenerator, FOGenerator, IRSGenerator, JLSGenerat
 from armour.trajectory import ArmTrajectoryFactory
 from zonopyrobots import ZonoArmRobot
 from urchin import URDF
-
+from armour.agent import ArmourAgentInfo
 
 
 class ArmourPlanner(RtdPlanner, Options):
@@ -22,18 +22,18 @@ class ArmourPlanner(RtdPlanner, Options):
         }
         
         
-    def __init__(self, trajOptProps: TrajOptProps, robot: URDF, params: ZonoArmRobot, **options):
+    def __init__(self, trajOptProps: TrajOptProps, robot: ArmourAgentInfo, **options):
         # initialize base classes
         RtdPlanner.__init__(self)
         Options.__init__(self)
         # initialize using given options
         self.mergeoptions(options)
         self.rsGenerators = dict()
-        self.rsGenerators["jrs"] = JRSGenerator(params, traj_type=options["traj_type"])
-        self.rsGenerators["fo"] = FOGenerator(params, self.rsGenerators["jrs"], smooth_obs=options["smooth_obs"])
+        self.rsGenerators["jrs"] = JRSGenerator(robot, traj_type=options["traj_type"])
+        self.rsGenerators["fo"] = FOGenerator(robot, self.rsGenerators["jrs"], smooth_obs=options["smooth_obs"])
         if options["input_constraints_flag"]:
-            self.rsGenerators["irs"] = IRSGenerator(params, self.rsGenerators["jrs"], use_robost_input=options["use_robust_input"])
-            self.rsGenerators["jls"] = JLSGenerator(params, self.rsGenerators["jrs"])
+            self.rsGenerators["irs"] = IRSGenerator(robot, self.rsGenerators["jrs"], use_robost_input=options["use_robust_input"])
+            self.rsGenerators["jls"] = JLSGenerator(robot, self.rsGenerators["jrs"])
         
         # create the trajectory factory
         self.trajectoryFactory = ArmTrajectoryFactory(trajOptProps, options["traj_type"])

@@ -69,7 +69,7 @@ class Trajectory(metaclass=ABCMeta):
         Computes the actual state to track for the given time
         
         Should throw InvalidTrajectory if the trajectory isn't set
-        Should take RowVector as `time` if `vectorized` is True
+        Should take Vecnp as `time` if `vectorized` is True
         
         Arguments:
             time: Time to use to calculate the desired state for this trajectory

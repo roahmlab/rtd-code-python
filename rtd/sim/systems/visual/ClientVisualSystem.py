@@ -10,7 +10,7 @@ from rtd.util.mixins.Typings import Bound
 # define top level module logger
 import logging
 logger = logging.getLogger(__name__)
-
+import asyncio
 
 
 class ClientVisualSystem(ClientSimulationSystem, Options):
@@ -86,10 +86,18 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         if dynamic is not None:
             dynamic: list[ClientVisualObject] = toSequence(dynamic)
             self.dynamic_objects.extend(dynamic)
-            for obj in static:
+            for obj in dynamic:
+                obj.create_plot_data()
                 self.client.add_mesh_data(obj.plot_data)
         
-        self.client.send_mesh_data_list()
+        asyncio.run(self.client.send_mesh_data_list())
+
+    
+    def redraw(self):
+        pass
+
+    def waituntilclose(self):
+        pass
     
     
     def remove(self, *objects: ClientVisualObject):
@@ -130,13 +138,15 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
         logger.debug("Running Visualization!")
         
         # render if client is connected
-        if self.client.ws is None or not self.client.ws.open:
+        if self.client.ws is not None and self.client.ws.open:
             for t in t_vec:
                 # update the dynamic objects on the plotter
                 for obj in self.dynamic_objects:
-                    move_msgs = toSequence(obj.plot(t))
+                    move_msgs = obj.plot(t)
+                    if not isinstance(move_msgs, list):
+                        move_msgs = [move_msgs]
                     for move_msg in move_msgs:
-                        self.client.send_move_object_message(*move_msg)
+                        asyncio.run(self.client.send_move_object_message(*move_msg))
                 time.sleep(self.draw_time)
             
         # append the updated time
@@ -182,9 +192,11 @@ class ClientVisualSystem(ClientSimulationSystem, Options):
 
             # update the dynamic objects on the figure
             for obj in self.dynamic_objects:
-                move_msgs = toSequence(obj.plot(t))
+                move_msgs = obj.plot(t)
+                if not isinstance(move_msgs, list):
+                    move_msgs = [move_msgs]
                 for move_msg in move_msgs:
-                    self.client.send_move_object_message(*move_msg)
+                    asyncio.run(self.client.send_move_object_message(*move_msg))
             
             # get current time and subtract from previous time
             # if delta_time > self.draw_time, print lagging message

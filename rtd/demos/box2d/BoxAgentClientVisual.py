@@ -1,23 +1,19 @@
 from rtd.sim.systems.visual import ClientVisualObject, MoveMsg
 from rtd.util.mixins import Options
-from rtd.entity.box_obstacle import BoxObstacleInfo
+from rtd.demos.box2d import BoxAgentInfo
 from rtd.entity.components import GenericEntityState
 from rtd.sim.websocket import MeshData
-import uuid
 import trimesh
 
 
 
-class BoxObstacleClientVisual(ClientVisualObject, Options):
+class BoxAgentClientVisual(ClientVisualObject, Options):
     '''
     A visual component used to generate the plot data of
-    the box obstacle
+    the box agent
     '''
     @staticmethod
     def defaultoptions() -> dict:
-        """
-        Default options for the BoxObstacleVisual
-        """
         return {
             "face_color": [1.0, 0.0, 1.0],
             "face_opacity": 0.2,
@@ -26,7 +22,7 @@ class BoxObstacleClientVisual(ClientVisualObject, Options):
         }
 
     
-    def __init__(self, box_info: BoxObstacleInfo, box_state: GenericEntityState, **options):
+    def __init__(self, box_info: BoxAgentInfo, box_state: GenericEntityState, **options):
         # initialize base classes
         ClientVisualObject.__init__(self)
         Options.__init__(self)
@@ -34,16 +30,13 @@ class BoxObstacleClientVisual(ClientVisualObject, Options):
         options["face_color"] = box_info.color
         self.mergeoptions(options)
         
-        self.box_info: BoxObstacleInfo = box_info
+        self.box_info: BoxAgentInfo = box_info
         self.box_state: GenericEntityState = box_state
         
         self.reset()
     
     
     def reset(self, **options):
-        """
-        Resets this component
-        """
         options = self.mergeoptions(options)
         self.face_color = options["face_color"]
         self.face_opacity = options["face_opacity"]
@@ -52,44 +45,36 @@ class BoxObstacleClientVisual(ClientVisualObject, Options):
         self.create_plot_data()
     
     
-    def create_plot_data(self, **options) -> MeshData:
-        """
-        Generates the initial plot data
+    def create_plot_data(self, time: float = None) -> MeshData:
+        if time is None:
+            time = self.box_state.time[-1]
+            
+        w = self.box_info.width
+        h = self.box_info.height
         
-        Returns
-        _______
-        plot_data : MeshData
-            MeshData to plot
-        """
-        
-        xw, yw, zw = self.box_info.dims
-        mesh = trimesh.primitives.Box((xw, yw, zw))
+        mesh = trimesh.primitives.Box((w, h, 0.01))
         mesh_data = MeshData.from_trimesh(mesh)
         mesh_data.Color = [self.face_color[0], self.face_color[1], self.face_color[2], self.face_opacity]
+
+        # # set coordinate of rectangle to draw
+        # x, y = self.box_state.get_state(time)["state"]
+        # mesh_data.position['x'] = x
+        # mesh_data.position['y'] = y
+
         self.plot_data = mesh_data
         
         return self.plot_data
     
     
     def plot(self, time: float = None) -> MoveMsg:
-        """
-        Updates the plotdata of the BoxObstalce
-        
-        Parameters
-        ----------
-        time : float
-            time of plot data
-        """
         if time is None:
             time = self.box_state.time[-1]
 
-        x, y, z = self.box_state.get_state(time)["state"]
-        position = (x, y, z)
+        # set coordinate of rectangle to draw
+        x, y = self.box_state.get_state(time)["state"]
+        position = (x, y, 0.0)
         rotation = (0.0, 0.0, 0.0)
-        return (
-            self.plot_data.GUID,
-            position, rotation
-        )
+        return (self.plot_data.GUID, position, rotation)
 
 
     def __str__(self) -> str:

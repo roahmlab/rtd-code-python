@@ -56,7 +56,10 @@ class PlannerWebSocketClient:
         self.mesh_data_list.clear()
 
     def add_mesh_data(self, mesh_data):
-        self.mesh_data_list.append(mesh_data)
+        if isinstance(mesh_data, list):
+            self.mesh_data_list.extend(mesh_data)
+        else:
+            self.mesh_data_list.append(mesh_data)
 
     async def send_mesh_data_list(self):
                 # Check WebSocket status before sending

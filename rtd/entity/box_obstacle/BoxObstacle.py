@@ -71,7 +71,7 @@ class BoxObstacle(WorldEntity):
 
     @staticmethod
     def make_box(center: tuple[float] = (0,0,0), dims: tuple[float] = (0, 0, 0),
-                 color: tuple[float] = (1, 0, 1)) -> 'BoxObstacle':
+                 color: tuple[float] = (1, 0, 1), visual_class=BoxObstacleVisual) -> 'BoxObstacle':
         '''
         Creates a box obstacle with the specified parameters
         
@@ -92,6 +92,6 @@ class BoxObstacle(WorldEntity):
         info = BoxObstacleInfo(dims=dims, color=color)
         state = GenericEntityState(info, initial_state=center)
         state.reset()
-        visual = BoxObstacleVisual(info, state)
+        visual = visual_class(info, state)
         collision = BoxObstacleCollision(info, state)
         return BoxObstacle(info, state, visual, collision)

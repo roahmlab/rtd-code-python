@@ -2,7 +2,7 @@ if __name__ == '__main__':
     #-------------------- imports --------------------#
     print("Loading modules...")
     from armour import ArmourAgent, ArmourSimulation, ArmourPlanner
-    from armour.agent import ArmourAgentInfo, ArmourController
+    from armour.agent import ArmourAgentInfo, ArmourController, ArmourAgentClientVisual, ArmourAgentVisual
     from armour.legacy import StraightLineHLP
     from rtd.planner.trajopt import TrajOptProps
     from rtd.sim.world import WorldState
@@ -40,6 +40,7 @@ if __name__ == '__main__':
         },
     }
     
+    use_unity = True
     
     
     #-------------------- setup the agent --------------------#
@@ -57,13 +58,19 @@ if __name__ == '__main__':
                                  transmission_inertia=transmision_inertia, M_min_eigenvalue=M_min_eigenvalue)
     
     armour_controller = ArmourController
-    
-    agent = ArmourAgent(info=agent_info, controller=armour_controller, component_options=component_options)
+    armour_visual = ArmourAgentVisual if not use_unity else ArmourAgentClientVisual
+
+    agent = ArmourAgent(
+        info=agent_info,
+        controller=armour_controller,
+        visual=armour_visual,
+        component_options=component_options,
+        )
     
     
     
     #-------------------- create the simulation --------------------#
-    sim = ArmourSimulation()
+    sim = ArmourSimulation(use_unity=use_unity)
     sim.setup(agent)
     sim.initialize()
     #sim.visual_system.waituntilclose()

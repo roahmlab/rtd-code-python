@@ -1,4 +1,4 @@
-from rtd.sim.systems.visual import PyvistaVisualObject
+from rtd.sim.systems.visual import ClientVisualObject, MoveMsg
 from rtd.util.mixins import Options
 from armour.agent import ArmourAgentInfo, ArmourAgentState
 from pyvista import Actor
@@ -7,9 +7,11 @@ import numpy as np
 from trimesh import Trimesh
 from typing import OrderedDict
 from rtd.util.mixins.Typings import Matnp
+from rtd.sim.websocket import MeshData
+from scipy.spatial.transform import Rotation as R
 
 
-class ArmourAgentVisual(PyvistaVisualObject, Options):
+class ArmourAgentClientVisual(ClientVisualObject, Options):
     '''
     A visual component used to generate the plot data of
     the Armour agent
@@ -26,7 +28,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
     
     def __init__(self, arm_info: ArmourAgentInfo, arm_state: ArmourAgentState, **options):
         # initialize base classes
-        PyvistaVisualObject.__init__(self)
+        ClientVisualObject.__init__(self)
         Options.__init__(self)
         # initialize using given options
         self.mergeoptions(options)
@@ -45,7 +47,7 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         self.edge_width = options["edge_width"]
     
     
-    def create_plot_data(self, time: float = None) -> list[Actor]:
+    def create_plot_data(self, time: float = None) -> list[MeshData]:
         '''
         Generate the trimesh meshes at the given time and
         converts them into actors
@@ -56,23 +58,13 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         # generate mesh
         config = self.arm_state.get_state(np.array([time])).position
         fk: OrderedDict[Trimesh, Matnp] = self.arm_info.urdf.visual_trimesh_fk(cfg=config)
-        meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
+        # meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
+        self.mesh_datas: dict[Trimesh, MeshData] = {mesh: MeshData.from_trimesh(mesh) for mesh in fk.keys()}
+        # add color
+        for mesh_data in self.mesh_datas.values():
+            mesh_data.Color = [self.face_color[0], self.face_color[1], self.face_color[2], self.face_opacity]
         
-        self.plot_data: list[Actor] = list()
-        
-        # generate actors from mesh
-        for mesh in meshes:
-            mesh = pv.wrap(mesh)
-            mapper = pv.DataSetMapper(mesh)
-            self.plot_data.append(pv.Actor(mapper=mapper))
-            
-            # set properties
-            self.plot_data[-1].prop.SetColor(*self.face_color)
-            self.plot_data[-1].prop.SetOpacity(self.face_opacity)
-            if self.edge_width > 0:
-                self.plot_data[-1].prop.EdgeVisibilityOn()
-                self.plot_data[-1].prop.SetLineWidth(self.edge_width)
-                self.plot_data[-1].prop.SetEdgeColor(*self.edge_color)
+        self.plot_data: list[MeshData] = list(self.mesh_datas.values())
         
         return self.plot_data
     
@@ -87,13 +79,18 @@ class ArmourAgentVisual(PyvistaVisualObject, Options):
         # generate mesh
         config = self.arm_state.get_state(np.array([time])).position
         fk: OrderedDict[Trimesh, Matnp] = self.arm_info.urdf.visual_trimesh_fk(cfg=config)
-        meshes = [mesh.copy().apply_transform(transform) for mesh, transform in fk.items()]
 
-        for actor, mesh in zip(self.plot_data, meshes):
-            # replace mesh of actor with new mesh
-            mesh = pv.wrap(mesh)
-            mapper = pv.DataSetMapper(mesh)
-            actor.SetMapper(mapper)
+        # Generate the position and rotation of the meshs
+        msg_list = []
+        for mesh, transform in fk.items():
+            # Get the position and rotation of the mesh
+            position = transform[:3, 3]
+            rotation = R.from_matrix(transform[:3, :3]).as_euler('xyz', degrees=True)
+            # Get the mesh data
+            guid = self.mesh_datas[mesh].GUID
+            # Update the plot data
+            msg_list.append((guid, tuple(position), tuple(rotation)))
+        return msg_list
             
 
     def __str__(self) -> str:

@@ -176,6 +176,21 @@ class MeshData:
     @staticmethod
     def generate_random_uuid():
         return str(uuid.uuid4())
+    
+    @staticmethod
+    def from_trimesh(tm, name=""):
+        n_verts = len(tm.vertices)
+        n_faces = len(tm.faces)
+        mesh_data = MeshData()
+        mesh_data.GUID = MeshData.generate_random_uuid()
+        mesh_data.Vertices = tm.vertices.flatten().tolist()
+        mesh_data.VerticesCount = n_verts
+        mesh_data.IndicesData = tm.faces.flatten().tolist()
+        mesh_data.IndicesCount = n_faces
+        mesh_data.UV0 = [0.0, 0.0]*n_verts
+        mesh_data.UV1 = [0.0, 0.0]*n_verts
+        mesh_data.Name = name
+        return mesh_data
 
     # Additional utility and conversion methods as needed
 

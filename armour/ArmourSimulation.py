@@ -1,8 +1,8 @@
 from rtd.sim import BaseSimulation
 from rtd.sim.types import SimulationState
 from rtd.sim.systems.collision import TrimeshCollisionSystem, DynamicCollisionObject, CollisionObject
-from rtd.sim.systems.visual import PyvistaVisualSystem, PyvistaVisualObject
-from rtd.entity.box_obstacle import BoxObstacle
+from rtd.sim.systems.visual import PyvistaVisualSystem, PyvistaVisualObject, ClientVisualObject, ClientVisualSystem
+from rtd.entity.box_obstacle import BoxObstacle, BoxObstacleClientVisual, BoxObstacleVisual
 from armour import ArmourAgent, ArmourGoal
 import numpy as np
 from typing import Callable
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ArmourSimulation(BaseSimulation):
-    def __init__(self, simulate_timestep: float = 0.5):
+    def __init__(self, simulate_timestep: float = 0.5, use_unity: bool = False):
         # initialize base classes
         BaseSimulation.__init__(self)
         # initialize rest
@@ -27,6 +27,7 @@ class ArmourSimulation(BaseSimulation):
         self.visual_system: PyvistaVisualSystem = None
         self.goal_system = None
         self.simulation_state = SimulationState.CONSTRUCTED
+        self.use_unity = use_unity
     
     
     def add_object(self, object, isentity: bool = False,
@@ -93,7 +94,10 @@ class ArmourSimulation(BaseSimulation):
         
         self.agent = agent
         # initialize visual and collision
-        self.visual_system = PyvistaVisualSystem()
+        if not self.use_unity:
+            self.visual_system = PyvistaVisualSystem()
+        else:
+            self.visual_system = ClientVisualSystem()
         self.collision_system = TrimeshCollisionSystem()
         
         # add the agent
@@ -120,7 +124,7 @@ class ArmourSimulation(BaseSimulation):
         
         # place obstacles
         for obs_i in range(n_obstacles):
-            prop_obs = BoxObstacle.make_box(centers[obs_i], side_lengths[obs_i])
+            prop_obs = BoxObstacle.make_box(centers[obs_i], side_lengths[obs_i], visual_class=BoxObstacleClientVisual if self.use_unity else BoxObstacleVisual)
             prop_col: CollisionObject = prop_obs.collision.getCollisionObject(0)
             
             # make sure it doesn't collide
@@ -131,7 +135,7 @@ class ArmourSimulation(BaseSimulation):
         # add the goal
         goal_position = [2.19112372555967,0.393795848789382,-2.08886547149797,-1.94078143810946,-1.82357815033695,-1.80997964933365,2.12483409695310]
         self.goal_system = ArmourGoal(self.collision_system, self.agent, goal_position=goal_position)
-        self.visual_system.addObjects(static=self.goal_system)
+        # self.visual_system.addObjects(static=self.goal_system)
         
         override_options = self.agent.get_componentOverrideOptions({'state': self.agent.state})
         self.agent.reset(**override_options)
@@ -153,7 +157,8 @@ class ArmourSimulation(BaseSimulation):
         collided, contactedPairs = self.collision_system.updateCollision(self.simulation_timestep)
         
         if collided:
-            logger.error("Collision Detected, Breakpoint!")
+            logger.error("Collision Detected, Breakpoint! Use debugger to inspect breakpoint...")
+            breakpoint()
             input("Press Enter to Unpause")
         
         return {

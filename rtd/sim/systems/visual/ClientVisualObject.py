@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from rtd.functional.sequences import toSequence
 from rtd.sim.websocket import MeshData
-from trimesh import Trimesh
 
 # for type hinting
 MoveMsg = tuple[str, dict, dict]
@@ -51,7 +50,7 @@ class ClientVisualObject(metaclass=ABCMeta):
     
     def __init__(self):
         # trimesh mesh(es)
-        self.plot_data: Trimesh | list[Trimesh] = None
+        self.plot_data: MeshData | list[MeshData] = None
     
     
     def isPlotDataValid(self) -> bool:
@@ -63,4 +62,4 @@ class ClientVisualObject(metaclass=ABCMeta):
         is_valid : bool
             whether the plot_data is a valid Trimesh mesh
         '''
-        return issubclass(type(toSequence(self.plot_data)[0]), Trimesh)
+        return issubclass(type(toSequence(self.plot_data)[0]), MeshData)

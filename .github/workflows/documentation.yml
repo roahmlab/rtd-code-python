@@ -14,28 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
-
-      - name: Install Zonopy
-        with:
-          ssh-private-key: ${{ secrets.ZONOPY_KEY }}
-        run:
-          git clone https://github.com/roahmlab/zonopy.git && cd zonopy && pip install -e . && cd ..
-
-      - name: Install Zonopy-Robots
-        with:
-          ssh-private-key: ${{ secrets.ZONOPYROB_KEY }}
-        run:
-          git clone https://github.com/roahmlab/zonopy-robots && cd zonopy-robots && pip install -e . && cd ..
-
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser
+          ssh-add - <<< '${{ secrets.ZONOPY_KEY }}'
+          git clone https://github.com/roahmlab/zonopy.git && cd zonopy && pip install -e . && cd ..
+          ssh-add - <<< '${{ secrets.ZONOPYROB_KEY }}'
+          git clone https://github.com/roahmlab/zonopy-robots && cd zonopy-robots && pip install -e . && cd ..
           pip install -e .
-
       - name: Sphinx build
         run: |
           sphinx-build docs/source docs/build
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}

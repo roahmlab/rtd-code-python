@@ -20,7 +20,7 @@ jobs:
           ssh-agent sh -c 'echo "${{ secrets.ZONOPY_KEY }}" | ssh-add - && git clone git@github.com:roahmlab/zonopy.git'
           cd zonopy && pip install -e . && cd ..
           ssh-agent sh -c 'echo "${{ secrets.ZONOPYROB_KEY }}" | ssh-add - && git clone git@github.com:roahmlab/zonopy-robots.git'
-          cd zonopy-robots && pip install -e . && cd ..
+          cd zonopy-robots && pip install -e . && cd .. 
           pip install -e .
       - name: Sphinx build
         run: |

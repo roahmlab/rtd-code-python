@@ -18,10 +18,10 @@ jobs:
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser
           ssh-agent sh -c 'echo "${{ secrets.ZONOPY_KEY }}" | ssh-add - && git clone git@github.com:roahmlab/zonopy.git'
-          cd zonopy && pip install -e . && cd ..
+          cd zonopy && pip install -e . --no-dependencies && cd ..
           ssh-agent sh -c 'echo "${{ secrets.ZONOPYROB_KEY }}" | ssh-add - && git clone git@github.com:roahmlab/zonopy-robots.git'
           cd zonopy-robots && pip install -e . --no-dependencies && cd .. 
-          pip install -e . --no-dependencies && cd ..
+          pip install -e .
       - name: Sphinx build
         run: |
           sphinx-build docs/source docs/build

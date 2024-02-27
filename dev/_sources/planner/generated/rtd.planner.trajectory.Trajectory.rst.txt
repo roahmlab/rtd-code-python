@@ -1,0 +1,29 @@
+﻿rtd.planner.trajectory.Trajectory
+=================================
+
+.. currentmodule:: rtd.planner.trajectory
+
+.. autoclass:: Trajectory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Trajectory.__init__
+      ~Trajectory.getCommand
+      ~Trajectory.setParameters
+      ~Trajectory.validate
+   
+   
+
+   
+   
+   

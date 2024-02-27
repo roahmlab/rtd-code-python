@@ -1,0 +1,28 @@
+﻿armour.reachsets.JRSInstance
+============================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: JRSInstance
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~JRSInstance.__init__
+      ~JRSInstance.genNLConstraint
+      ~JRSInstance.initialize
+   
+   
+
+   
+   
+   

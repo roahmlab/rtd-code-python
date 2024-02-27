@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>armour.ArmourPlanner &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">armour.ArmourPlanner</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for armour.ArmourPlanner</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rtd.util.mixins</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">rtd.planner</span> <span class="kn">import</span> <span class="n">RtdPlanner</span>
+<span class="kn">from</span> <span class="nn">rtd.entity.states</span> <span class="kn">import</span> <span class="n">EntityState</span>
+<span class="kn">from</span> <span class="nn">rtd.planner.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">rtd.planner.trajopt</span> <span class="kn">import</span> <span class="n">TrajOptProps</span><span class="p">,</span> <span class="n">RtdTrajOpt</span><span class="p">,</span> <span class="n">GenericArmObjective</span><span class="p">,</span> <span class="n">ScipyOptimizationEngine</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.world</span> <span class="kn">import</span> <span class="n">WorldState</span>
+<span class="kn">from</span> <span class="nn">armour.reachsets</span> <span class="kn">import</span> <span class="n">JRSGenerator</span><span class="p">,</span> <span class="n">FOGenerator</span><span class="p">,</span> <span class="n">IRSGenerator</span><span class="p">,</span> <span class="n">JLSGenerator</span>
+<span class="kn">from</span> <span class="nn">armour.trajectory</span> <span class="kn">import</span> <span class="n">ArmTrajectoryFactory</span>
+<span class="kn">from</span> <span class="nn">zonopyrobots</span> <span class="kn">import</span> <span class="n">ZonoArmRobot</span>
+<span class="kn">from</span> <span class="nn">urchin</span> <span class="kn">import</span> <span class="n">URDF</span>
+<span class="kn">from</span> <span class="nn">armour.agent</span> <span class="kn">import</span> <span class="n">ArmourAgentInfo</span>
+
+
+<div class="viewcode-block" id="ArmourPlanner"><a class="viewcode-back" href="../../planner/armour.html#armour.ArmourPlanner.ArmourPlanner">[docs]</a><span class="k">class</span> <span class="nc">ArmourPlanner</span><span class="p">(</span><span class="n">RtdPlanner</span><span class="p">,</span> <span class="n">Options</span><span class="p">):</span>
+<div class="viewcode-block" id="ArmourPlanner.defaultoptions"><a class="viewcode-back" href="../../planner/armour.html#armour.ArmourPlanner.ArmourPlanner.defaultoptions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">defaultoptions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;input_constraints_flag&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;use_robust_input&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;smooth_obs&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;traj_type&quot;</span><span class="p">:</span> <span class="s2">&quot;piecewise&quot;</span><span class="p">,</span>
+        <span class="p">}</span></div>
+        
+        
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trajOptProps</span><span class="p">:</span> <span class="n">TrajOptProps</span><span class="p">,</span> <span class="n">robot</span><span class="p">:</span> <span class="n">ArmourAgentInfo</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="c1"># initialize base classes</span>
+        <span class="n">RtdPlanner</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Options</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># initialize using given options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergeoptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;jrs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JRSGenerator</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">traj_type</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;traj_type&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;fo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FOGenerator</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;jrs&quot;</span><span class="p">],</span> <span class="n">smooth_obs</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;smooth_obs&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;input_constraints_flag&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;irs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">IRSGenerator</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;jrs&quot;</span><span class="p">],</span> <span class="n">use_robost_input</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;use_robust_input&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;jls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JLSGenerator</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">[</span><span class="s2">&quot;jrs&quot;</span><span class="p">])</span>
+        
+        <span class="c1"># create the trajectory factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trajectoryFactory</span> <span class="o">=</span> <span class="n">ArmTrajectoryFactory</span><span class="p">(</span><span class="n">trajOptProps</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;traj_type&quot;</span><span class="p">])</span>
+        
+        <span class="c1"># create the objective</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">GenericArmObjective</span><span class="p">(</span><span class="n">trajOptProps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectoryFactory</span><span class="p">)</span>
+        
+        <span class="c1"># selection of optimization engine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizationEngine</span> <span class="o">=</span> <span class="n">ScipyOptimizationEngine</span><span class="p">(</span><span class="n">trajOptProps</span><span class="p">)</span>
+        
+        <span class="c1"># create the trajopt object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trajopt</span> <span class="o">=</span> <span class="n">RtdTrajOpt</span><span class="p">(</span><span class="n">trajOptProps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsGenerators</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">optimizationEngine</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectoryFactory</span><span class="p">)</span>
+    
+    
+<div class="viewcode-block" id="ArmourPlanner.planTrajectory"><a class="viewcode-back" href="../../planner/armour.html#armour.ArmourPlanner.ArmourPlanner.planTrajectory">[docs]</a>    <span class="k">def</span> <span class="nf">planTrajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robotState</span><span class="p">:</span> <span class="n">EntityState</span><span class="p">,</span> <span class="n">worldState</span><span class="p">:</span> <span class="n">WorldState</span><span class="p">,</span> <span class="n">waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Trajectory</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Then on each waypoint, we call for a trajectory plan:</span>
+<span class="sd">        Use RTD to solve for a trajectory and return either</span>
+<span class="sd">        the parameters or invalid signal (continue).</span>
+<span class="sd">        </span>
+<span class="sd">        Loops over each RtdTrajOpt instance (thus, each trajectory</span>
+<span class="sd">        type) with the given RobotState, WorldState, Waypoint, and</span>
+<span class="sd">        initial guess. </span>
+<span class="sd">        </span>
+<span class="sd">        From the results, selects the best valid Trajectory,</span>
+<span class="sd">        otherwise return an invalid trajectory which will throw when</span>
+<span class="sd">        attempting to set the new trajectory, ensuring the old one</span>
+<span class="sd">        continues</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        
+        <span class="n">traj</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajopt</span><span class="o">.</span><span class="n">solveTrajOpt</span><span class="p">(</span><span class="n">robotState</span><span class="p">,</span> <span class="n">worldState</span><span class="p">,</span> <span class="n">waypoint</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">traj</span><span class="p">,</span> <span class="n">info</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

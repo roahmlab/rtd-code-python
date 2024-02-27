@@ -1,0 +1,31 @@
+﻿rtd.planner.trajectory.TrajectoryContainer
+==========================================
+
+.. currentmodule:: rtd.planner.trajectory
+
+.. autoclass:: TrajectoryContainer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TrajectoryContainer.__init__
+      ~TrajectoryContainer.clear
+      ~TrajectoryContainer.getCommand
+      ~TrajectoryContainer.isValid
+      ~TrajectoryContainer.setInitialTrajectory
+      ~TrajectoryContainer.setTrajectory
+   
+   
+
+   
+   
+   

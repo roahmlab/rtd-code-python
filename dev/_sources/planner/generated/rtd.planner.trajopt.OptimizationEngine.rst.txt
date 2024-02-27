@@ -1,0 +1,27 @@
+﻿rtd.planner.trajopt.OptimizationEngine
+======================================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: OptimizationEngine
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OptimizationEngine.__init__
+      ~OptimizationEngine.performOptimization
+   
+   
+
+   
+   
+   

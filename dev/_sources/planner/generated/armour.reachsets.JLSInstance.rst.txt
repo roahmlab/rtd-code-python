@@ -1,0 +1,28 @@
+﻿armour.reachsets.JLSInstance
+============================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: JLSInstance
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~JLSInstance.__init__
+      ~JLSInstance.eval_constraints
+      ~JLSInstance.genNLConstraint
+   
+   
+
+   
+   
+   

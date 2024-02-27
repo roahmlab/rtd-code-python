@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rtd.planner.reachsets.ReachSetGenerator &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rtd.planner.reachsets.ReachSetInstance" href="rtd.planner.reachsets.ReachSetInstance.html" />
+    <link rel="prev" title="RTD Planner Interfaces and Base Classes" href="../rtd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../planner.html">Planner Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../rtd.html">RTD Planner Interfaces and Base Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../rtd.html#the-rtd-planner">The RTD Planner</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../rtd.html#module-rtd.planner.reachsets">Reachable Sets Generation Interfaces</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rtd.planner.reachsets.ReachSetGenerator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rtd.planner.reachsets.ReachSetInstance.html">rtd.planner.reachsets.ReachSetInstance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../rtd.html#module-rtd.planner.trajectory">Trajectory Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtd.html#module-rtd.planner.trajopt">Trajectory Optimization Interfaces &amp; Components</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../armour.html">Example RTD Planner Implementation of ARMOUR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../planner.html">Planner Reference</a></li>
+          <li class="breadcrumb-item"><a href="../rtd.html">RTD Planner Interfaces and Base Classes</a></li>
+      <li class="breadcrumb-item active">rtd.planner.reachsets.ReachSetGenerator</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/planner/generated/rtd.planner.reachsets.ReachSetGenerator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtd-planner-reachsets-reachsetgenerator">
+<h1>rtd.planner.reachsets.ReachSetGenerator<a class="headerlink" href="#rtd-planner-reachsets-reachsetgenerator" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.planner.reachsets.ReachSetGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.planner.reachsets.</span></span><span class="sig-name descname"><span class="pre">ReachSetGenerator</span></span><a class="reference internal" href="../../_modules/rtd/planner/reachsets/ReachSetGenerator.html#ReachSetGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.planner.reachsets.ReachSetGenerator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for the generation of reacheable sets for the planner</p>
+<p>The ReachSetGenerator class interfaces out the generation of reachable
+sets for the RTD planner. It contains a built-in cache which is enabled
+if <cite>cache_max_size &gt; 0</cite>. Caching is based on the id of the robot’s state
+and any extra arguments passed through the <cite>getReachableSet</cite> method. This
+class can be used to encapsulate reachable sets generated offline, or the
+online computation of reachable sets. It acts as a generator for a single
+instance of ReachableSet</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.planner.reachsets.ReachSetGenerator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rtd/planner/reachsets/ReachSetGenerator.html#ReachSetGenerator.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.planner.reachsets.ReachSetGenerator.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateReachableSet</span></code>(robotState, **options)</p></td>
+<td><p>Generate a new reachable set given a robot state and extra arguments if desired</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getReachableSet</span></code>(robotState[, ignore_cache])</p></td>
+<td><p>Get a reachable set instance for the given robot state and passthrough arguments</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.planner.reachsets.ReachSetGenerator.generateReachableSet">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generateReachableSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robotState</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EntityState</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="rtd.planner.reachsets.ReachSetInstance.html#rtd.planner.reachsets.ReachSetInstance" title="rtd.planner.reachsets.ReachSetInstance.ReachSetInstance"><span class="pre">rtd.planner.reachsets.ReachSetInstance.ReachSetInstance</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/rtd/planner/reachsets/ReachSetGenerator.html#ReachSetGenerator.generateReachableSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.planner.reachsets.ReachSetGenerator.generateReachableSet" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a new reachable set given a robot state and extra arguments if desired</p>
+<p>This method generates the relevant reachable set for the
+<cite>robotState</cite> provided and outputs the singular instance of some
+reachable set. It should always create a new instance of a
+ReachableSetInstance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>robotState</strong> – EntityState: Some entity state which the ReachableSetInstance is generated for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict of problem id to <cite>ReachSetInstance</cite> pairs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.planner.reachsets.ReachSetGenerator.getReachableSet">
+<span class="sig-name descname"><span class="pre">getReachableSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robotState</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EntityState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="rtd.planner.reachsets.ReachSetInstance.html#rtd.planner.reachsets.ReachSetInstance" title="rtd.planner.reachsets.ReachSetInstance.ReachSetInstance"><span class="pre">rtd.planner.reachsets.ReachSetInstance.ReachSetInstance</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/rtd/planner/reachsets/ReachSetGenerator.html#ReachSetGenerator.getReachableSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.planner.reachsets.ReachSetGenerator.getReachableSet" title="Permalink to this definition"></a></dt>
+<dd><p>Get a reachable set instance for the given robot state and passthrough arguments</p>
+<p>This function handles how to actually get the reachable set
+with built in caching of already generated instances. It will
+call <cite>generateReachableSet</cite> as needed. This is useful if we
+need to use one reachable set in another reachable set and we
+don’t want to regenerate it online. It performs caching based
+on the id of the provided robotState and and the string cast
+of any additional arguments. If we don’t want to use the cache
+on one call, setting <cite>ignore_cache</cite> to true will bypass caching
+altogether</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robotState</strong> – EntityState: Some state of used for generation / keying</p></li>
+<li><p><strong>ignore_cache</strong> – bool: If set true, the cache is completely ignored</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict of problem id to <cite>ReachSetInstance</cite> pairs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rtd.html" class="btn btn-neutral float-left" title="RTD Planner Interfaces and Base Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rtd.planner.reachsets.ReachSetInstance.html" class="btn btn-neutral float-right" title="rtd.planner.reachsets.ReachSetInstance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

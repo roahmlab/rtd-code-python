@@ -1,0 +1,27 @@
+﻿rtd.planner.trajopt.ScipyOptimizationEngine
+===========================================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: ScipyOptimizationEngine
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ScipyOptimizationEngine.__init__
+      ~ScipyOptimizationEngine.performOptimization
+   
+   
+
+   
+   
+   

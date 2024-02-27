@@ -1,0 +1,27 @@
+﻿rtd.planner.trajopt.Objective
+=============================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: Objective
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Objective.__init__
+      ~Objective.genObjective
+   
+   
+
+   
+   
+   

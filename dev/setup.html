@@ -58,7 +58,12 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-setup">General Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-conda-quickstart">(Alternative) Conda Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-urdfs">Obtaining URDFs</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="planner/planner.html">Planner Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation/simulation.html">Simulation Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils/utils.html">RTD Code Utilities Reference</a></li>
@@ -91,14 +96,39 @@
   <section id="setup-guide">
 <h1>Setup Guide<a class="headerlink" href="#setup-guide" title="Permalink to this heading"></a></h1>
 <p><em>rtd-code-python requires Python 3 or higher. For best results, use Python 3.11.3</em></p>
+<section id="general-setup">
+<h2>General Setup<a class="headerlink" href="#general-setup" title="Permalink to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Clone the repository and open a terminal in the root directory</p></li>
-<li><p>Install <em>virtualenv</em> with <cite>py -m pip install virtualenv</cite></p></li>
-<li><p>Create a new Virtual Environment with <cite>py -m venv rtd_venv</cite></p></li>
-<li><p>Activate the Virtual Environment with <cite>rtd_venvscriptsactivate</cite></p></li>
-<li><p>Install <em>rtd-code-python</em> and its dependencies with <cite>py -m pip install -r requirements.txt</cite></p></li>
-<li><p>Optionally, open a terminal inside <cite>scriptsdemos</cite> and run the demo scripts</p></li>
+<li><p>Install <em>virtualenv</em> with <code class="docutils literal notranslate"><span class="pre">py</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">virtualenv</span></code></p></li>
+<li><p>Create a new Virtual Environment with <code class="docutils literal notranslate"><span class="pre">py</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">rtd_venv</span></code></p></li>
+<li><p>Activate the Virtual Environment with <code class="docutils literal notranslate"><span class="pre">rtd_venv\scripts\activate</span></code></p></li>
+<li><p>Install <em>rtd-code-python</em> and its dependencies with <code class="docutils literal notranslate"><span class="pre">py</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
+<li><p>Optionally, open a terminal inside <code class="docutils literal notranslate"><span class="pre">scripts\demos</span></code> and run the demo scripts</p></li>
 </ol>
+</section>
+<section id="alternative-conda-quickstart">
+<h2>(Alternative) Conda Quickstart<a class="headerlink" href="#alternative-conda-quickstart" title="Permalink to this heading"></a></h2>
+<p>Another way to setup rtd-code-python is through the creation and use of a conda environment.
+In your desired folder, run the following commands to get a conda environment called <code class="docutils literal notranslate"><span class="pre">rtd-code</span></code> setup</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create conda environment and install python 3.11.3 &amp; pytorch 2.0.1</span>
+<span class="c1"># Adjust the torch packages according to your system</span>
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>rtd-code<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.11.3<span class="w"> </span><span class="nv">pytorch</span><span class="o">==</span><span class="m">2</span>.0.1<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.15.2<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.0.2<span class="w"> </span>pytorch-cuda<span class="o">=</span><span class="m">11</span>.8<span class="w"> </span>-c<span class="w"> </span>pytorch<span class="w"> </span>-c<span class="w"> </span>nvidia
+conda<span class="w"> </span>activate<span class="w"> </span>rtd-code
+
+<span class="c1"># Clone zonopy dependencies and RTD-Code, and install</span>
+git<span class="w"> </span>clone<span class="w"> </span>git@github.com:roahmlab/zonopy.git
+git<span class="w"> </span>clone<span class="w"> </span>git@github.com:roahmlab/zonopy-robots.git
+git<span class="w"> </span>clone<span class="w"> </span>git@github.com:roahmlab/rtd-code-python.git
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>rtd-code-python/requirements.txt<span class="w"> </span>-e<span class="w"> </span>zonopy/<span class="w"> </span>-e<span class="w"> </span>zonopy-robots/<span class="w"> </span>-e<span class="w"> </span>rtd-code-python/
+</pre></div>
+</div>
+</section>
+<section id="obtaining-urdfs">
+<h2>Obtaining URDFs<a class="headerlink" href="#obtaining-urdfs" title="Permalink to this heading"></a></h2>
+<p>To obtain the URDFs used in the demos, please visit the <a class="reference external" href="https://github.com/roahmlab/armour">ARMOUR</a> repository and download the <code class="docutils literal notranslate"><span class="pre">urdfs</span></code> folder.
+Place the <code class="docutils literal notranslate"><span class="pre">urdfs</span></code> folder in the parent directory of the rtd-code-python repository in order to run <code class="docutils literal notranslate"><span class="pre">scripts\demos\planner_demo.py</span></code>.</p>
+</section>
 </section>
 
 

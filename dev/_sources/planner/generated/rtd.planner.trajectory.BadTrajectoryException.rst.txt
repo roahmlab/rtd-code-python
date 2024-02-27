@@ -1,0 +1,6 @@
+﻿rtd.planner.trajectory.BadTrajectoryException
+=============================================
+
+.. currentmodule:: rtd.planner.trajectory
+
+.. autoexception:: BadTrajectoryException

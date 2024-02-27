@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rtd.planner.trajectory.Trajectory &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rtd.planner.trajectory.Trajectory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rtd.planner.trajectory.Trajectory</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">rtd.entity.states</span> <span class="kn">import</span> <span class="n">EntityState</span>
+<span class="kn">from</span> <span class="nn">rtd.planner.trajopt</span> <span class="kn">import</span> <span class="n">TrajOptProps</span>
+<span class="kn">from</span> <span class="nn">rtd.util.mixins.Typings</span> <span class="kn">import</span> <span class="n">Vecnp</span>
+
+
+
+<div class="viewcode-block" id="Trajectory"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.Trajectory.html#rtd.planner.trajectory.Trajectory">[docs]</a><span class="k">class</span> <span class="nc">Trajectory</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base class for a parameterized trajectory</span>
+<span class="sd">    </span>
+<span class="sd">    This encapsulates the conversion of parameters used in optimization to</span>
+<span class="sd">    the actual trajectory generated from those parameters. This can also be</span>
+<span class="sd">    used by an `Objective` object as part of the objective function call.</span>
+<span class="sd">    It should be generated with some `TrajectoryFactory`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Trajectory.__init__"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.Trajectory.html#rtd.planner.trajectory.Trajectory.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Properties from the trajectory optimization, which also describes</span>
+        <span class="c1"># the properties for the trajectory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trajOptProps</span><span class="p">:</span> <span class="n">TrajOptProps</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># The parameters used for this trajectory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trajectoryParams</span><span class="p">:</span> <span class="n">Vecnp</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># The time at which this trajectory is valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startTime</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Set to true if this trajectory supports getting commands for a</span>
+        <span class="c1"># time vector instead of just a single moment in time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectorized</span> <span class="o">=</span> <span class="kc">False</span></div>
+    
+    
+<div class="viewcode-block" id="Trajectory.validate"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.Trajectory.html#rtd.planner.trajectory.Trajectory.validate">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">throwOnError</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Validates if the trajectory is parameterized right</span>
+<span class="sd">        </span>
+<span class="sd">        A validation method to ensure that the trajectory this object</span>
+<span class="sd">        describes is fully set. Has an additional argument to allow</span>
+<span class="sd">        throwing an error if incorrect</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            throwOnError: bool: whether or not to throw InvalidTrajectory if invalid</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: whether or not the trajectory is valid</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+    
+<div class="viewcode-block" id="Trajectory.setParameters"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.Trajectory.html#rtd.planner.trajectory.Trajectory.setParameters">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">setParameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trajectoryParams</span><span class="p">:</span> <span class="n">Vecnp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the parameters for the trajectory</span>
+<span class="sd">        </span>
+<span class="sd">        This allows for the entire trajectory described to be changed,</span>
+<span class="sd">        but it should focus on this trajectory params while the</span>
+<span class="sd">        constructor should focus on the start state</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            trajectoryParams: the parameters of the trajectory to set</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+    
+<div class="viewcode-block" id="Trajectory.getCommand"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.Trajectory.html#rtd.planner.trajectory.Trajectory.getCommand">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Vecnp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntityState</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Computes the actual state to track for the given time</span>
+<span class="sd">        </span>
+<span class="sd">        Should throw InvalidTrajectory if the trajectory isn&#39;t set</span>
+<span class="sd">        Should take Vecnp as `time` if `vectorized` is True</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            time: Time to use to calculate the desired state for this trajectory</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            EntityState: Desired state at the given time</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="InvalidTrajectory"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.InvalidTrajectory.html#rtd.planner.trajectory.InvalidTrajectory">[docs]</a><span class="k">class</span> <span class="nc">InvalidTrajectory</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    An exception thrown when `validate()` of a trajectory fails</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿rtd.planner.reachsets.ReachSetGenerator
+=======================================
+
+.. currentmodule:: rtd.planner.reachsets
+
+.. autoclass:: ReachSetGenerator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ReachSetGenerator.__init__
+      ~ReachSetGenerator.generateReachableSet
+      ~ReachSetGenerator.getReachableSet
+   
+   
+
+   
+   
+   

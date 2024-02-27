@@ -1,0 +1,28 @@
+﻿rtd.planner.trajopt.GenericArmObjective
+=======================================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: GenericArmObjective
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GenericArmObjective.__init__
+      ~GenericArmObjective.evalTrajectory
+      ~GenericArmObjective.genObjective
+   
+   
+
+   
+   
+   

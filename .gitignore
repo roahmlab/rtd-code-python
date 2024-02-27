@@ -16,3 +16,16 @@ urdfs/
 
 # sphinx
 docs/build/
+
+# Generated documentation
+_build/
+docs/build/
+docs/source/**/generated/
+docs/_site
+_site
+docs/dev
+
+# MACOS
+.ds_store
+.DS_Store
+.DS_STORE

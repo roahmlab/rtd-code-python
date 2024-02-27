@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulation Systems &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Simulation Files and World Container" href="simulations.html" />
+    <link rel="prev" title="Components for Entities and Agents" href="components.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Simulation Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entities.html">Entities and Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components for Entities and Agents</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simulation Systems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-rtd.sim.systems.collision">TrimeshCollisionSystem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject"><code class="docutils literal notranslate"><span class="pre">CollisionObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject"><code class="docutils literal notranslate"><span class="pre">DynamicCollisionObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.collision.TrimeshCollisionSystem"><code class="docutils literal notranslate"><span class="pre">TrimeshCollisionSystem</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rtd.sim.systems.visual">PyvistaVisualSystem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject"><code class="docutils literal notranslate"><span class="pre">ClientVisualObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualSystem"><code class="docutils literal notranslate"><span class="pre">ClientVisualSystem</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject"><code class="docutils literal notranslate"><span class="pre">PyvistaVisualObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualSystem"><code class="docutils literal notranslate"><span class="pre">PyvistaVisualSystem</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simulations.html">Simulation Files and World Container</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="simulation.html">Simulation Reference</a></li>
+      <li class="breadcrumb-item active">Simulation Systems</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/simulation/systems.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simulation-systems">
+<h1>Simulation Systems<a class="headerlink" href="#simulation-systems" title="Permalink to this heading"></a></h1>
+<p>Components that are more tailored to the ECS architecture adapt data for
+simulation systems that run during the simulation loop, separate of each
+entity. These systems are all expected to track time as well to ensure
+the simulation retains time synchronization while enabling flexibility
+to call systems whenever relevant.</p>
+<section id="module-rtd.sim.systems.collision">
+<span id="trimeshcollisionsystem"></span><h2>TrimeshCollisionSystem<a class="headerlink" href="#module-rtd.sim.systems.collision" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.CollisionObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.collision.</span></span><span class="sig-name descname"><span class="pre">CollisionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Trimesh</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Trimesh</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/CollisionObject.html#CollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.CollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A class for storing the mesh of an object to handle its
+collision</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.CollisionObject.inCollision">
+<span class="sig-name descname"><span class="pre">inCollision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/CollisionObject.html#CollisionObject.inCollision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.CollisionObject.inCollision" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if this object is in collision with another object.
+Returns a bool as well as its and its collided pair’s
+parent. Note that this should only be used for quick
+collision checks with a single other object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><em>CollisionObject</em></a>) – the object to check collision against</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>collided</strong> (<em>bool</em>) – whether self is in collision with other</p></li>
+<li><p><strong>pair</strong> (<em>tuple[int, int]</em>) – pair of self.parent and other.parent</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.DynamicCollisionObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.collision.</span></span><span class="sig-name descname"><span class="pre">DynamicCollisionObject</span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/DynamicCollisionObject.html#DynamicCollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for generating a CollisionObject of
+a dynamic object at a specified time</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.DynamicCollisionObject.getCollisionObject">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getCollisionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/DynamicCollisionObject.html#DynamicCollisionObject.getCollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.DynamicCollisionObject.getCollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to return a CollisionObject with mesh at a given
+time (and any other options)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**options</strong> – Usually arguments such as time</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>resolved</strong> – resolved dynamic collision object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject">CollisionObject</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.collision.</span></span><span class="sig-name descname"><span class="pre">TrimeshCollisionSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">rtd.sim.systems.collision.CollisionObject.CollisionObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">DynamicCollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationSystem</span></code>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>Takes in a list of CollisionObjects and DynamicCollisionObjects
+and handles their collision detection</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.addObjects">
+<span class="sig-name descname"><span class="pre">addObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">rtd.sim.systems.collision.CollisionObject.CollisionObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">DynamicCollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.addObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.addObjects" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a collision object or a list of collision objects
+and adds them to the corresponding list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>static</strong> (<a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject"><em>CollisionObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject"><em>CollisionObject</em></a><em>]</em>) – static object(s) to add</p></li>
+<li><p><strong>dynamic</strong> (<a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject"><em>DynamicCollisionObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject"><em>DynamicCollisionObject</em></a><em>]</em>) – dynamic object(s) to add</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.checkCollisionAtTime">
+<span class="sig-name descname"><span class="pre">checkCollisionAtTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.checkCollisionAtTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.checkCollisionAtTime" title="Permalink to this definition"></a></dt>
+<dd><p>Check for every collision at a given time and return
+a bool if any collision happened, as well as a set of
+collided pair’s parents and the number of pairs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to check collision at</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>info</strong> (<em>dict</em>) – with keys:</p></li>
+<li><p><strong>&lt;time&gt;</strong> (<em>float</em>) – input time</p></li>
+<li><p><strong>&lt;collided&gt;</strong> (<em>bool</em>) – whether a collision occured</p></li>
+<li><p><strong>&lt;n_pairs&gt;</strong> (<em>int</em>) – number of collided pairs</p></li>
+<li><p><strong>&lt;pairs&gt;</strong> (<em>set[tuple[int, int]]</em>) – set of collided object pairs</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.checkCollisionObject">
+<span class="sig-name descname"><span class="pre">checkCollisionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collision_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.checkCollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.checkCollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Check for every collision against collision_obj (does not
+check for internal collision) at the most recent time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collision_obj</strong> (<a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject"><em>CollisionObject</em></a>) – object to check collision against</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>info</strong> (<em>dict</em>) – with keys:</p></li>
+<li><p><strong>&lt;time&gt;</strong> (<em>float</em>) – input time</p></li>
+<li><p><strong>&lt;collided&gt;</strong> (<em>bool</em>) – whether a collision occured</p></li>
+<li><p><strong>&lt;n_pairs&gt;</strong> (<em>int</em>) – number of collided pairs</p></li>
+<li><p><strong>&lt;pairs&gt;</strong> (<em>set[tuple[int, int]]</em>) – set of collided object pairs</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> – default options of collision system</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">DynamicCollisionObject</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a collision object or a list of collision objects
+and removes them from static and dynamic objects list.
+Assumes the object is already in either lists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*objects</strong> (<a class="reference internal" href="#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject"><em>CollisionObject</em></a><em> | </em><a class="reference internal" href="#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject"><em>DynamicCollisionObject</em></a>) – objects to remove from the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset the system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.collision.TrimeshCollisionSystem.updateCollision">
+<span class="sig-name descname"><span class="pre">updateCollision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/collision/TrimeshCollisionSystem.html#TrimeshCollisionSystem.updateCollision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.collision.TrimeshCollisionSystem.updateCollision" title="Permalink to this definition"></a></dt>
+<dd><p>Appends <cite>t_update</cite> to <cite>time</cite> and checks for any collision
+for <cite>t_update</cite> time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_update</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – duration to update for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>collided</strong> (<em>bool</em>) – whether a collision occured</p></li>
+<li><p><strong>pairs</strong> (<em>set[tuple[int, int]]</em>) – set of collided objects pairs</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rtd.sim.systems.visual">
+<span id="pyvistavisualsystem"></span><h2>PyvistaVisualSystem<a class="headerlink" href="#module-rtd.sim.systems.visual" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.visual.</span></span><span class="sig-name descname"><span class="pre">ClientVisualObject</span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualObject.html#ClientVisualObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualObject" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>An object that can be extended to control the
+rendering of an entity</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualObject.create_plot_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MeshData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">rtd.sim.websocket.meshdata.MeshData</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualObject.html#ClientVisualObject.create_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualObject.create_plot_data" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented to initialize
+self.plot_data to a Trimesh mesh (or a list of meshes), and
+return the corresponding MeshData(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**options</strong> – options for creating the plot data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>plot_obj</strong> – Websocket MeshData(s) to plot</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MeshData | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[MeshData]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualObject.isPlotDataValid">
+<span class="sig-name descname"><span class="pre">isPlotDataValid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualObject.html#ClientVisualObject.isPlotDataValid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualObject.isPlotDataValid" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if plot_data is a Trimesh mesh</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_valid</strong> – whether the plot_data is a valid Trimesh mesh</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualObject.plot">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualObject.html#ClientVisualObject.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualObject.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented to return
+the transformation and rotation matrices for the plot_data
+animation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>move_msg</strong> – a tuple of mesh guid, transformation matrix,
+and rotation matrix for every object in plot_data</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>MoveMsg | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[MoveMsg]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.visual.</span></span><span class="sig-name descname"><span class="pre">ClientVisualSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">ClientVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">ClientVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSimulationSystem</span></code>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>Takes in a list of static and dynamic objects and handles
+their rendering</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.addObjects">
+<span class="sig-name descname"><span class="pre">addObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">ClientVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">ClientVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.addObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.addObjects" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a visual object or a list of visual objects
+and adds them to the corresponding list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>static</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject"><em>ClientVisualObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject"><em>ClientVisualObject</em></a><em>]</em>) – static object(s) to add</p></li>
+<li><p><strong>dynamic</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject"><em>ClientVisualObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject"><em>ClientVisualObject</em></a><em>]</em>) – dynamic object(s) to add</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.animate">
+<span class="sig-name descname"><span class="pre">animate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_discretization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.animate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.animate" title="Permalink to this definition"></a></dt>
+<dd><p>Animates from <cite>time</cite> = <cite>t_span[0]</cite> to <cite>t_span[1]</cite>,
+dividing it into frames of length <cite>time_discretization</cite>
+and waiting <cite>pause_time</cite> seconds before rendering the
+next frame. A lower discretization will result in a
+smoother animation, while a <cite>pause_time</cite> lower than
+the discretization will result in a faster animation
+speed. Defaults to 1 second per t</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_span</strong> (<em>Bound</em>) – range of time to animate</p></li>
+<li><p><strong>time_discretization</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time difference between frames</p></li>
+<li><p><strong>pause_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – pause time in seconds between frames</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> – default options of visual system</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.get_discretization_and_pause">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_discretization_and_pause</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framerate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.get_discretization_and_pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.get_discretization_and_pause" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the time_discretization and pause_time to
+get the desired framerate and speed. Speed of 2
+means 1 second = 2 time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>framerate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – desired framerate</p></li>
+<li><p><strong>speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – desired animation speed ratio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>time_discretization</strong> (<em>float</em>) – time difference between frames</p></li>
+<li><p><strong>pause_time</strong> (<em>float</em>) – pause time in seconds between frames</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject.ClientVisualObject"><span class="pre">ClientVisualObject</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a visual object or a list of visual objects
+and removes them from static and dynamic objects list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*objects</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.ClientVisualObject" title="rtd.sim.systems.visual.ClientVisualObject"><em>ClientVisualObject</em></a>) – objects to remove from the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Connects to the server and resets the system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.ClientVisualSystem.updateVisual">
+<span class="sig-name descname"><span class="pre">updateVisual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/ClientVisualSystem.html#ClientVisualSystem.updateVisual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.ClientVisualSystem.updateVisual" title="Permalink to this definition"></a></dt>
+<dd><p>Appends <cite>t_update</cite> to <cite>time</cite> and updates the dynamic
+objects on the current figure for <cite>t_update</cite> time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_update</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – duration to update for</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.visual.</span></span><span class="sig-name descname"><span class="pre">PyvistaVisualObject</span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualObject.html#PyvistaVisualObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>An object that can be extended to control the
+rendering of an entity</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualObject.create_plot_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Actor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Actor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualObject.html#PyvistaVisualObject.create_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualObject.create_plot_data" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented to generate
+and return the plot data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**options</strong> – options for creating the plot data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>plot_obj</strong> – Pyvista actor(s) to plot</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Actor | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[Actor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualObject.isPlotDataValid">
+<span class="sig-name descname"><span class="pre">isPlotDataValid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualObject.html#PyvistaVisualObject.isPlotDataValid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualObject.isPlotDataValid" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if plot_data is a pyvista actor object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_valid</strong> – whether the plot_data is a valid Pyvista actor</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualObject.plot">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualObject.html#PyvistaVisualObject.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualObject.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented to update
+the generated plot data</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.systems.visual.</span></span><span class="sig-name descname"><span class="pre">PyvistaVisualSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationSystem</span></code>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>Takes in a list of static and dynamic objects and handles
+their rendering</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.addObjects">
+<span class="sig-name descname"><span class="pre">addObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.addObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.addObjects" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a visual object or a list of visual objects
+and adds them to the corresponding list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>static</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a><em>]</em>) – static object(s) to add</p></li>
+<li><p><strong>dynamic</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a><em>]</em>) – dynamic object(s) to add</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.animate">
+<span class="sig-name descname"><span class="pre">animate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_discretization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.animate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.animate" title="Permalink to this definition"></a></dt>
+<dd><p>Animates from <cite>time</cite> = <cite>t_span[0]</cite> to <cite>t_span[1]</cite>,
+dividing it into frames of length <cite>time_discretization</cite>
+and waiting <cite>pause_time</cite> seconds before rendering the
+next frame. A lower discretization will result in a
+smoother animation, while a <cite>pause_time</cite> lower than
+the discretization will result in a faster animation
+speed. Defaults to 1 second per t</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_span</strong> (<em>Bound</em>) – range of time to animate</p></li>
+<li><p><strong>time_discretization</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time difference between frames</p></li>
+<li><p><strong>pause_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – pause time in seconds between frames</p></li>
+<li><p><strong>axlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – list of 4 numbers for the x lim and y lim</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> – default options of visual system</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.get_discretization_and_pause">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_discretization_and_pause</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framerate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.get_discretization_and_pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.get_discretization_and_pause" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the time_discretization and pause_time to
+get the desired framerate and speed. Speed of 2
+means 1 second = 2 time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>framerate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – desired framerate</p></li>
+<li><p><strong>speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – desired animation speed ratio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>time_discretization</strong> (<em>float</em>) – time difference between frames</p></li>
+<li><p><strong>pause_time</strong> (<em>float</em>) – pause time in seconds between frames</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.redraw">
+<span class="sig-name descname"><span class="pre">redraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.redraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.redraw" title="Permalink to this definition"></a></dt>
+<dd><p>Recreates the plotter if necessary and adds the actors
+to the current plotter at the input time. Defaults to
+the most recent <cite>time</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to redraw from</p></li>
+<li><p><strong>axlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – list of 4 numbers for the x lim and y lim</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a visual object or a list of visual objects
+and removes them from static and dynamic objects list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*objects</strong> (<a class="reference internal" href="#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a>) – objects to remove from the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset the system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.updateVisual">
+<span class="sig-name descname"><span class="pre">updateVisual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.updateVisual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.updateVisual" title="Permalink to this definition"></a></dt>
+<dd><p>Appends <cite>t_update</cite> to <cite>time</cite> and updates the dynamic
+objects on the current figure for <cite>t_update</cite> time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_update</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – duration to update for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.validateOrCreateFigure">
+<span class="sig-name descname"><span class="pre">validateOrCreateFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.validateOrCreateFigure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.validateOrCreateFigure" title="Permalink to this definition"></a></dt>
+<dd><p>If plotter does not exists or is no longer valid,
+create a new figure and save its reference to
+<cite>self._plotter</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.systems.visual.PyvistaVisualSystem.waituntilclose">
+<span class="sig-name descname"><span class="pre">waituntilclose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/systems/visual/PyvistaVisualSystem.html#PyvistaVisualSystem.waituntilclose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.systems.visual.PyvistaVisualSystem.waituntilclose" title="Permalink to this definition"></a></dt>
+<dd><p>Waits until plotter is closed before proceeding</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="components.html" class="btn btn-neutral float-left" title="Components for Entities and Agents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="simulations.html" class="btn btn-neutral float-right" title="Simulation Files and World Container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

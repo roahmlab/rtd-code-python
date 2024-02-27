@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Components for Entities and Agents &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Simulation Systems" href="systems.html" />
+    <link rel="prev" title="Entities and Agents" href="entities.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Simulation Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entities.html">Entities and Agents</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Components for Entities and Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-rtd.entity.components">Base Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.components.BaseControllerComponent"><code class="docutils literal notranslate"><span class="pre">BaseControllerComponent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.components.BaseDynamicsComponent"><code class="docutils literal notranslate"><span class="pre">BaseDynamicsComponent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.components.BaseInfoComponent"><code class="docutils literal notranslate"><span class="pre">BaseInfoComponent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.components.BaseStateComponent"><code class="docutils literal notranslate"><span class="pre">BaseStateComponent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.components.GenericEntityState"><code class="docutils literal notranslate"><span class="pre">GenericEntityState</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#box-obstacle-components">Box Obstacle Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleInfo"><code class="docutils literal notranslate"><span class="pre">BoxObstacleInfo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleVisual"><code class="docutils literal notranslate"><span class="pre">BoxObstacleVisual</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleCollision"><code class="docutils literal notranslate"><span class="pre">BoxObstacleCollision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleZonotope"><code class="docutils literal notranslate"><span class="pre">BoxObstacleZonotope</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-armour.agent">Armour Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourAgentCollision"><code class="docutils literal notranslate"><span class="pre">ArmourAgentCollision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourAgentInfo"><code class="docutils literal notranslate"><span class="pre">ArmourAgentInfo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourAgentState"><code class="docutils literal notranslate"><span class="pre">ArmourAgentState</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourAgentVisual"><code class="docutils literal notranslate"><span class="pre">ArmourAgentVisual</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourController"><code class="docutils literal notranslate"><span class="pre">ArmourController</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourIdealAgentDynamics"><code class="docutils literal notranslate"><span class="pre">ArmourIdealAgentDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#armour.agent.ArmourMexController"><code class="docutils literal notranslate"><span class="pre">ArmourMexController</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="systems.html">Simulation Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulations.html">Simulation Files and World Container</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="simulation.html">Simulation Reference</a></li>
+      <li class="breadcrumb-item active">Components for Entities and Agents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/simulation/components.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="components-for-entities-and-agents">
+<h1>Components for Entities and Agents<a class="headerlink" href="#components-for-entities-and-agents" title="Permalink to this heading"></a></h1>
+<p>Components can be categorized as Data Components, Data + Behavior Components, and Behavior
+Components. Components should have specific purposes such as holding intrinsic data, or
+defining entity dynamics. All behavior components transform entity data for use by either
+another component or system and may or may not update entity data at the same time.</p>
+<p>Entity-component modeled components are behavior or data-behavior components which should be
+explicitly called by the entity update functions. Entity-component-system modeled components
+are behavior or data-behavior components which are used by a system which should be explicitly
+updated at any point of the simulation loop.</p>
+<section id="module-rtd.entity.components">
+<span id="base-components"></span><h2>Base Components<a class="headerlink" href="#module-rtd.entity.components" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseControllerComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.components.</span></span><span class="sig-name descname"><span class="pre">BaseControllerComponent</span></span><a class="reference internal" href="../_modules/rtd/entity/components/BaseControllerComponent.html#BaseControllerComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseControllerComponent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for the controller of the agent.
+Stores a reference to the info and state components, as well
+as a container for the trajectories, and the number of inputs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseControllerComponent.getControlInputs">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getControlInputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseControllerComponent.html#BaseControllerComponent.getControlInputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseControllerComponent.getControlInputs" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to get the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseControllerComponent.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseControllerComponent.html#BaseControllerComponent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseControllerComponent.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset each property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseControllerComponent.setTrajectory">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setTrajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Trajectory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseControllerComponent.html#BaseControllerComponent.setTrajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseControllerComponent.setTrajectory" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to set the trajectory of the controller</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseDynamicsComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.components.</span></span><span class="sig-name descname"><span class="pre">BaseDynamicsComponent</span></span><a class="reference internal" href="../_modules/rtd/entity/components/BaseDynamicsComponent.html#BaseDynamicsComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseDynamicsComponent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for controlling the dynamics of an agent.
+Stores a reference to the info, state, and controller components.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseDynamicsComponent.move">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseDynamicsComponent.html#BaseDynamicsComponent.move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseDynamicsComponent.move" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to control the dynamics</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseDynamicsComponent.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseDynamicsComponent.html#BaseDynamicsComponent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseDynamicsComponent.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset each property</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseInfoComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.components.</span></span><span class="sig-name descname"><span class="pre">BaseInfoComponent</span></span><a class="reference internal" href="../_modules/rtd/entity/components/BaseInfoComponent.html#BaseInfoComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseInfoComponent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for storing immutable parameters tied to an entity.
+Should be extended along with the <cite>Options</cite> mixin to add specific
+properties.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseInfoComponent.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseInfoComponent.html#BaseInfoComponent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseInfoComponent.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset each property.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseStateComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.components.</span></span><span class="sig-name descname"><span class="pre">BaseStateComponent</span></span><a class="reference internal" href="../_modules/rtd/entity/components/BaseStateComponent.html#BaseStateComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseStateComponent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for storing dynamic parameters tied to an entity.
+Should be extended along with the <cite>Options</cite> mixin to implement
+specific behaviors.
+Stores a refernce to the info component, as well as the number
+of states, and the internal state and time storage.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseStateComponent.commit_state_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">commit_state_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseStateComponent.html#BaseStateComponent.commit_state_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseStateComponent.commit_state_data" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to append a state and time to the <cite>state</cite> and
+<cite>time</cite> lists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time after last time to commit from</p></li>
+<li><p><strong>state</strong> (<em>Vec</em>) – state to commit at corresponding time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseStateComponent.get_state">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/components/BaseStateComponent.html#BaseStateComponent.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseStateComponent.get_state" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented.
+Returns a dict with the state at a certain time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to get the state at</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> – dict with keys time and state, with the time the state
+was requested at, and its corresponding state</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseStateComponent.random_init">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">random_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseStateComponent.html#BaseStateComponent.random_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseStateComponent.random_init" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to initialize the starting <cite>state</cite> randomly</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.BaseStateComponent.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/BaseStateComponent.html#BaseStateComponent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.BaseStateComponent.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset the <cite>state</cite> and <cite>time</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.components.</span></span><span class="sig-name descname"><span class="pre">GenericEntityState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.components.BaseInfoComponent" title="rtd.entity.components.BaseInfoComponent.BaseInfoComponent"><span class="pre">BaseInfoComponent</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseStateComponent" title="rtd.entity.components.BaseStateComponent.BaseStateComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseStateComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>A generic entity state that stores an (n_states, :) matrix to keep track
+of the state at each point in time. New states can be appended by calling
+<cite>commit_state_data</cite> with the time interval and new state. A state at any
+moment can be retrieved by calling <cite>get_state</cite>. It will default to the most
+recent state.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState.commit_state_data">
+<span class="sig-name descname"><span class="pre">commit_state_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState.commit_state_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState.commit_state_data" title="Permalink to this definition"></a></dt>
+<dd><p>Takes in a state and appends it to the current state at time
+<cite>time</cite> + the most recent time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time after last time to commit from</p></li>
+<li><p><strong>state</strong> (<em>Vec</em>) – state to commit at corresponding time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>No default options, though common options for the
+state components are ‘n_states’ and ‘initial_state’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState.get_state" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the state at a specific time (defaults to most recent
+time), interpolating the values if needed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to get the state at</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> – dict with keys time and state, with the time the state
+was requested at, and its corresponding state</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState.random_init">
+<span class="sig-name descname"><span class="pre">random_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_to_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState.random_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState.random_init" title="Permalink to this definition"></a></dt>
+<dd><p>Randomly initializes the first state from the given range
+<cite>start_range[0]:start_range[1]</cite> (inclusive). Will save
+the initial state to options so that it will revert to this
+state when <cite>reset</cite> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state_range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – min and max values the state can take</p></li>
+<li><p><strong>save_to_options</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – whether to save the random state as initial_state</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.components.GenericEntityState.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/components/GenericEntityState.html#GenericEntityState.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.components.GenericEntityState.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the generic state component.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="box-obstacle-components">
+<h2>Box Obstacle Components<a class="headerlink" href="#box-obstacle-components" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.box_obstacle.</span></span><span class="sig-name descname"><span class="pre">BoxObstacleInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleInfo.html#BoxObstacleInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleInfo" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseInfoComponent" title="rtd.entity.components.BaseInfoComponent.BaseInfoComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInfoComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>An info component that stores the agent’s dimensions
+and color</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleInfo.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleInfo.html#BoxObstacleInfo.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleInfo.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Default options for the BoxObstacleInfo</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleInfo.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleInfo.html#BoxObstacleInfo.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleInfo.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets this component</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleVisual">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.box_obstacle.</span></span><span class="sig-name descname"><span class="pre">BoxObstacleVisual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleInfo" title="rtd.entity.box_obstacle.BoxObstacleInfo.BoxObstacleInfo"><span class="pre">BoxObstacleInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.components.GenericEntityState" title="rtd.entity.components.GenericEntityState.GenericEntityState"><span class="pre">GenericEntityState</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleVisual.html#BoxObstacleVisual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleVisual" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="systems.html#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyvistaVisualObject</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>A visual component used to generate the plot data of
+the box obstacle</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleVisual.create_plot_data">
+<span class="sig-name descname"><span class="pre">create_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.pyvista.org/version/stable/api/plotting/_autosummary/pyvista.Actor.html#pyvista.Actor" title="(in PyVista v0.43.1)"><span class="pre">pyvista.Actor</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleVisual.html#BoxObstacleVisual.create_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleVisual.create_plot_data" title="Permalink to this definition"></a></dt>
+<dd><p>Generates the initial plot data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time of initial plot data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>plot_data</strong> – pyvista actor object to plot</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Actor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleVisual.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleVisual.html#BoxObstacleVisual.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleVisual.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Default options for the BoxObstacleVisual</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleVisual.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleVisual.html#BoxObstacleVisual.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleVisual.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the plotdata of the BoxObstalce</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time of plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleVisual.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleVisual.html#BoxObstacleVisual.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleVisual.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets this component</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleCollision">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.box_obstacle.</span></span><span class="sig-name descname"><span class="pre">BoxObstacleCollision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleInfo" title="rtd.entity.box_obstacle.BoxObstacleInfo.BoxObstacleInfo"><span class="pre">BoxObstacleInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.components.GenericEntityState" title="rtd.entity.components.GenericEntityState.GenericEntityState"><span class="pre">GenericEntityState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleCollision.html#BoxObstacleCollision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleCollision" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="systems.html#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicCollisionObject</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleCollision.getCollisionObject">
+<span class="sig-name descname"><span class="pre">getCollisionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="systems.html#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleCollision.html#BoxObstacleCollision.getCollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleCollision.getCollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a CollisionObject for a given time <cite>time</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to get collision object at</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleCollision.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleCollision.html#BoxObstacleCollision.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleCollision.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets this component</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleZonotope">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.entity.box_obstacle.</span></span><span class="sig-name descname"><span class="pre">BoxObstacleZonotope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.box_obstacle.BoxObstacleInfo" title="rtd.entity.box_obstacle.BoxObstacleInfo.BoxObstacleInfo"><span class="pre">BoxObstacleInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rtd.entity.components.GenericEntityState" title="rtd.entity.components.GenericEntityState.GenericEntityState"><span class="pre">GenericEntityState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleZonotope.html#BoxObstacleZonotope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleZonotope" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleZonotope.get_zonotope">
+<span class="sig-name descname"><span class="pre">get_zonotope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://roahmlab.github.io/zonopy/latest/generated/zonopy.zonotope.html#zonopy.zonotope" title="(in zonopy v0.1.0)"><span class="pre">zonopy.zonotope</span></a></span></span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleZonotope.html#BoxObstacleZonotope.get_zonotope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleZonotope.get_zonotope" title="Permalink to this definition"></a></dt>
+<dd><p>Returns zonotope of the BoxObstacle. Takes in either a
+state or time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – state to generate zonotope with</p></li>
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time to generate zonotope with</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.entity.box_obstacle.BoxObstacleZonotope.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/entity/box_obstacle/BoxObstacleZonotope.html#BoxObstacleZonotope.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.entity.box_obstacle.BoxObstacleZonotope.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets this component</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-armour.agent">
+<span id="armour-components"></span><h2>Armour Components<a class="headerlink" href="#module-armour.agent" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentCollision">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourAgentCollision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentState" title="armour.agent.ArmourAgentState.ArmourAgentState"><span class="pre">ArmourAgentState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentCollision.html#ArmourAgentCollision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentCollision" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="systems.html#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicCollisionObject</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentCollision.getCollisionObject">
+<span class="sig-name descname"><span class="pre">getCollisionObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">M</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="systems.html#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentCollision.html#ArmourAgentCollision.getCollisionObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentCollision.getCollisionObject" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a CollisionObject for a given time <cite>time</cite> or
+configuration <cite>q</cite> (only one or none must be provided)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentCollision.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentCollision.html#ArmourAgentCollision.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentCollision.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Not needed as collision objects are created on demand</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourAgentInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">urchin.URDF</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentInfo.html#ArmourAgentInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentInfo" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseInfoComponent" title="rtd.entity.components.BaseInfoComponent.BaseInfoComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInfoComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentInfo.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentInfo.html#ArmourAgentInfo.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentInfo.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the default options for the ArmourAgentInfo, such
+as <cite>M_min_eigenvalue</cite>, <cite>gravity</cite>, <cite>transmission_inertia</cite>,
+and <cite>buffer_dist</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentInfo.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentInfo.html#ArmourAgentInfo.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentInfo.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the ArmourAgentInfo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourAgentState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseStateComponent" title="rtd.entity.components.BaseStateComponent.BaseStateComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseStateComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.commit_state_data">
+<span class="sig-name descname"><span class="pre">commit_state_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">M</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.commit_state_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.commit_state_data" title="Permalink to this definition"></a></dt>
+<dd><p>method: commit_move_data(T_state,Z_state)</p>
+<p>After moving the agent, commit the new state and input
+trajectories, and associated time vectors, to the agent’s
+state, time, input, and input_time properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T_state</strong> (<em>NpFvec</em>) – times to commit states to</p></li>
+<li><p><strong>Z_state</strong> (<em>NpFmat</em>) – corresponding states for the times</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract static method which needs to be implemented to provide
+the default options for any given class. Should return a dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ArmRobotState</span></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.get_state" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the state of the ArmourAgent at a specific time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.joint_limit_check">
+<span class="sig-name descname"><span class="pre">joint_limit_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_check_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.joint_limit_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.joint_limit_check" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if joint limits did not exceed at any time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_check_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – step size to check with</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>check</strong> – whether limit was exceeded or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#armour.agent.ArmourAgentState.position" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.random_init">
+<span class="sig-name descname"><span class="pre">random_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Shape</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">N</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://trimesh.org/trimesh.typed.html#trimesh.typed.float64" title="(in trimesh)"><span class="pre">float64</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_to_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.random_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.random_init" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to initialize the starting <cite>state</cite> randomly</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentState.html#ArmourAgentState.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentState.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset the <cite>state</cite> and <cite>time</cite></p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentState.velocity">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">velocity</span></span><a class="headerlink" href="#armour.agent.ArmourAgentState.velocity" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentVisual">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourAgentVisual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentState" title="armour.agent.ArmourAgentState.ArmourAgentState"><span class="pre">ArmourAgentState</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentVisual.html#ArmourAgentVisual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentVisual" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="systems.html#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyvistaVisualObject</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>A visual component used to generate the plot data of
+the Armour agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentVisual.create_plot_data">
+<span class="sig-name descname"><span class="pre">create_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pyvista.org/version/stable/api/plotting/_autosummary/pyvista.Actor.html#pyvista.Actor" title="(in PyVista v0.43.1)"><span class="pre">pyvista.Actor</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentVisual.html#ArmourAgentVisual.create_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentVisual.create_plot_data" title="Permalink to this definition"></a></dt>
+<dd><p>Generate the trimesh meshes at the given time and
+converts them into actors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentVisual.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentVisual.html#ArmourAgentVisual.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentVisual.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract static method which needs to be implemented to provide
+the default options for any given class. Should return a dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentVisual.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentVisual.html#ArmourAgentVisual.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentVisual.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Replaces the mesh of the actors to update their pose</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourAgentVisual.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourAgentVisual.html#ArmourAgentVisual.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourAgentVisual.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourController">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentState" title="armour.agent.ArmourAgentState.ArmourAgentState"><span class="pre">ArmourAgentState</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourController.html#ArmourController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourController" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseControllerComponent" title="rtd.entity.components.BaseControllerComponent.BaseControllerComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseControllerComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourController.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourController.html#ArmourController.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourController.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract static method which needs to be implemented to provide
+the default options for any given class. Should return a dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourController.getControlInputs">
+<span class="sig-name descname"><span class="pre">getControlInputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourController.html#ArmourController.getControlInputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourController.getControlInputs" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to get the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourController.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourController.html#ArmourController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourController.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset each property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourController.setTrajectory">
+<span class="sig-name descname"><span class="pre">setTrajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Trajectory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourController.html#ArmourController.setTrajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourController.setTrajectory" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to set the trajectory of the controller</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourIdealAgentDynamics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourIdealAgentDynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentState" title="armour.agent.ArmourAgentState.ArmourAgentState"><span class="pre">ArmourAgentState</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourController" title="armour.agent.ArmourController.ArmourController"><span class="pre">ArmourController</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourIdealAgentDynamics.html#ArmourIdealAgentDynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourIdealAgentDynamics" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.entity.components.BaseDynamicsComponent" title="rtd.entity.components.BaseDynamicsComponent.BaseDynamicsComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDynamicsComponent</span></code></a>, <a class="reference internal" href="../utils/options.html#rtd.util.mixins.Options.Options" title="rtd.util.mixins.Options.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a></p>
+<p>Dynamics component that assumes the agent perfectly
+executes the reference trajectory</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourIdealAgentDynamics.controller_input_check">
+<span class="sig-name descname"><span class="pre">controller_input_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_check_step</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourIdealAgentDynamics.html#ArmourIdealAgentDynamics.controller_input_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourIdealAgentDynamics.controller_input_check" title="Permalink to this definition"></a></dt>
+<dd><p>Check that the controller wasn’t giving bad torques</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourIdealAgentDynamics.defaultoptions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultoptions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/agent/ArmourIdealAgentDynamics.html#ArmourIdealAgentDynamics.defaultoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourIdealAgentDynamics.defaultoptions" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract static method which needs to be implemented to provide
+the default options for any given class. Should return a dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourIdealAgentDynamics.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourIdealAgentDynamics.html#ArmourIdealAgentDynamics.move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourIdealAgentDynamics.move" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to control the dynamics</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.agent.ArmourIdealAgentDynamics.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourIdealAgentDynamics.html#ArmourIdealAgentDynamics.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourIdealAgentDynamics.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method which needs to be implemented
+to reset each property</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.agent.ArmourMexController">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.agent.</span></span><span class="sig-name descname"><span class="pre">ArmourMexController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arm_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentInfo" title="armour.agent.ArmourAgentInfo.ArmourAgentInfo"><span class="pre">ArmourAgentInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#armour.agent.ArmourAgentState" title="armour.agent.ArmourAgentState.ArmourAgentState"><span class="pre">ArmourAgentState</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/agent/ArmourMexController.html#ArmourMexController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.agent.ArmourMexController" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#armour.agent.ArmourController" title="armour.agent.ArmourController.ArmourController"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArmourController</span></code></a></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="entities.html" class="btn btn-neutral float-left" title="Entities and Agents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="systems.html" class="btn btn-neutral float-right" title="Simulation Systems" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

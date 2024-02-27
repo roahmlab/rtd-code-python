@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulation Files and World Container &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RTD Code Utilities Reference" href="../utils/utils.html" />
+    <link rel="prev" title="Simulation Systems" href="systems.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Simulation Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entities.html">Entities and Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components for Entities and Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systems.html">Simulation Systems</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simulation Files and World Container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#world-model-container">World Model Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#base-simulation">Base Simulation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtd.sim.BaseSimulation"><code class="docutils literal notranslate"><span class="pre">BaseSimulation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#armour-simulation">Armour Simulation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#armour.ArmourSimulation"><code class="docutils literal notranslate"><span class="pre">ArmourSimulation</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="simulation.html">Simulation Reference</a></li>
+      <li class="breadcrumb-item active">Simulation Files and World Container</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/simulation/simulations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simulation-files-and-world-container">
+<h1>Simulation Files and World Container<a class="headerlink" href="#simulation-files-and-world-container" title="Permalink to this heading"></a></h1>
+<p>In this version of the simulator, we explicitly isolate world as just a container.
+It holds what should exist in a single simulation instance and can be exported to/from a file.</p>
+<section id="world-model-container">
+<h2>World Model Container<a class="headerlink" href="#world-model-container" title="Permalink to this heading"></a></h2>
+<p>Will be implemented soon</p>
+</section>
+<section id="base-simulation">
+<h2>Base Simulation<a class="headerlink" href="#base-simulation" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rtd.sim.</span></span><span class="sig-name descname"><span class="pre">BaseSimulation</span></span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.add_object">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.add_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.add_object" title="Permalink to this definition"></a></dt>
+<dd><p>Add some object to the simulation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.initialize">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize everything to start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.post_step">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.post_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.post_step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute after each step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.pre_step">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pre_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.pre_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.pre_step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute before the overall step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.run">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run the lifecycle.
+Max iterations or max length is embedded in this</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.setup">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Setup all the world</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.step">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute all the updates needed for each step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rtd.sim.BaseSimulation.summary">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rtd/sim/BaseSimulation.html#BaseSimulation.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rtd.sim.BaseSimulation.summary" title="Permalink to this definition"></a></dt>
+<dd><p>Generate the summary</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="armour-simulation">
+<h2>Armour Simulation<a class="headerlink" href="#armour-simulation" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.ArmourSimulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.</span></span><span class="sig-name descname"><span class="pre">ArmourSimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulate_timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rtd.sim.BaseSimulation" title="rtd.sim.BaseSimulation.BaseSimulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSimulation</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.add_object">
+<span class="sig-name descname"><span class="pre">add_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isentity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="systems.html#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject.CollisionObject"><span class="pre">CollisionObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="systems.html#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject.DynamicCollisionObject"><span class="pre">DynamicCollisionObject</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="systems.html#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject.PyvistaVisualObject"><span class="pre">PyvistaVisualObject</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.add_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.add_object" title="Permalink to this definition"></a></dt>
+<dd><p>Add the specified object to the world.
+If it is an entity, it is treated as dynamic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object</strong> (<em>Any</em>) – the object to add</p></li>
+<li><p><strong>isentity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – whether it is a dynamic entity</p></li>
+<li><p><strong>collision</strong> (<a class="reference internal" href="systems.html#rtd.sim.systems.collision.CollisionObject" title="rtd.sim.systems.collision.CollisionObject"><em>CollisionObject</em></a><em> | </em><a class="reference internal" href="systems.html#rtd.sim.systems.collision.DynamicCollisionObject" title="rtd.sim.systems.collision.DynamicCollisionObject"><em>DynamicCollisionObject</em></a>) – collision handler of the object</p></li>
+<li><p><strong>visual</strong> (<a class="reference internal" href="systems.html#rtd.sim.systems.visual.PyvistaVisualObject" title="rtd.sim.systems.visual.PyvistaVisualObject"><em>PyvistaVisualObject</em></a>) – visual handler of the object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the agent, goal, and obstacles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.post_step">
+<span class="sig-name descname"><span class="pre">post_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.post_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.post_step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute after each step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.pre_step">
+<span class="sig-name descname"><span class="pre">pre_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.pre_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.pre_step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute before the overall step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_step_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_step_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_on_goal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the lifecycle of the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – maximum number of steps to run for</p></li>
+<li><p><strong>pre_step_callback</strong> (<em>Callable</em>) – function to run before the pre_step</p></li>
+<li><p><strong>step_callback</strong> (<em>Callable</em>) – function to run before the step</p></li>
+<li><p><strong>post_step_callback</strong> (<em>Callable</em>) – function to run before the post_step</p></li>
+<li><p><strong>stop_on_goal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – whether to stop the simulation once it reaches the goal</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="entities.html#armour.ArmourAgent" title="armour.ArmourAgent.ArmourAgent"><span class="pre">ArmourAgent</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Populate the world with the ArmourAgent</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>agent</strong> (<a class="reference internal" href="entities.html#armour.ArmourAgent" title="armour.ArmourAgent"><em>ArmourAgent</em></a>) – agent to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute all the updates needed for each step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.ArmourSimulation.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/armour/ArmourSimulation.html#ArmourSimulation.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.ArmourSimulation.summary" title="Permalink to this definition"></a></dt>
+<dd><p>Generate the summary</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="systems.html" class="btn btn-neutral float-left" title="Simulation Systems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utils/utils.html" class="btn btn-neutral float-right" title="RTD Code Utilities Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

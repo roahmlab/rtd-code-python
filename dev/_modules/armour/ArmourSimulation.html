@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>armour.ArmourSimulation &mdash; RTD-code Python (development) v0.0.1-dev</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d40ce7ee"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTD-code Python (development)
+          </a>
+              <div class="version">
+                0.0.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTD-code Python (development)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">armour.ArmourSimulation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for armour.ArmourSimulation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rtd.sim</span> <span class="kn">import</span> <span class="n">BaseSimulation</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.types</span> <span class="kn">import</span> <span class="n">SimulationState</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.systems.collision</span> <span class="kn">import</span> <span class="n">TrimeshCollisionSystem</span><span class="p">,</span> <span class="n">DynamicCollisionObject</span><span class="p">,</span> <span class="n">CollisionObject</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.systems.visual</span> <span class="kn">import</span> <span class="n">PyvistaVisualSystem</span><span class="p">,</span> <span class="n">PyvistaVisualObject</span>
+<span class="kn">from</span> <span class="nn">rtd.entity.box_obstacle</span> <span class="kn">import</span> <span class="n">BoxObstacle</span>
+<span class="kn">from</span> <span class="nn">armour</span> <span class="kn">import</span> <span class="n">ArmourAgent</span><span class="p">,</span> <span class="n">ArmourGoal</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="c1"># define top level module logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="ArmourSimulation"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation">[docs]</a><span class="k">class</span> <span class="nc">ArmourSimulation</span><span class="p">(</span><span class="n">BaseSimulation</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulate_timestep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+        <span class="c1"># initialize base classes</span>
+        <span class="n">BaseSimulation</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># initialize rest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_timestep</span> <span class="o">=</span> <span class="n">simulate_timestep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">:</span> <span class="n">ArmourAgent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="p">:</span> <span class="n">TrimeshCollisionSystem</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="p">:</span> <span class="n">PyvistaVisualSystem</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_system</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">CONSTRUCTED</span>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.add_object"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.add_object">[docs]</a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">isentity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                   <span class="n">collision</span><span class="p">:</span> <span class="n">CollisionObject</span> <span class="o">|</span> <span class="n">DynamicCollisionObject</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">visual</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the specified object to the world.</span>
+<span class="sd">        If it is an entity, it is treated as dynamic.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        object : Any</span>
+<span class="sd">            the object to add</span>
+<span class="sd">        isentity : bool</span>
+<span class="sd">            whether it is a dynamic entity</span>
+<span class="sd">        collision : CollisionObject | DynamicCollisionObject</span>
+<span class="sd">            collision handler of the object</span>
+<span class="sd">        visual : PyvistaVisualObject</span>
+<span class="sd">            visual handler of the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Add the object to the world</span>
+        <span class="c1"># Create a name for the object based on its classname if it</span>
+        <span class="c1"># doesn&#39;t have a given name.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="nb">object</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">object</span>
+        
+        <span class="c1"># Add to the entity list if it&#39;s an entity</span>
+        <span class="k">if</span> <span class="n">isentity</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+            <span class="c1"># Add the collision component provided to the collision system</span>
+            <span class="k">if</span> <span class="n">collision</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">dynamic</span><span class="o">=</span><span class="n">collision</span><span class="p">)</span>
+
+            <span class="c1"># Add the visualization component provided to the visual</span>
+            <span class="c1"># system</span>
+            <span class="k">if</span> <span class="n">visual</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">dynamic</span><span class="o">=</span><span class="n">visual</span><span class="p">)</span>
+        
+        <span class="c1"># if it&#39;s not, check for and add to collision or visual</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">collision</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="n">collision</span><span class="p">)</span>
+
+            <span class="c1"># Add the visualization component provided to the visual</span>
+            <span class="c1"># system</span>
+            <span class="k">if</span> <span class="n">visual</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="n">visual</span><span class="p">)</span></div>
+
+        <span class="c1"># TODO setup custom event data to return the object added</span>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.setup"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">:</span> <span class="n">ArmourAgent</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populate the world with the ArmourAgent</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        agent : ArmourAgent</span>
+<span class="sd">            agent to add</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">&gt;</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">SETTING_UP</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">SETTING_UP</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">agent</span>
+        <span class="c1"># initialize visual and collision</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span> <span class="o">=</span> <span class="n">PyvistaVisualSystem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span> <span class="o">=</span> <span class="n">TrimeshCollisionSystem</span><span class="p">()</span>
+        
+        <span class="c1"># add the agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">isentity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">collision</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">collision</span><span class="p">,</span> <span class="n">visual</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">visual</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">SETUP_READY</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.initialize"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Initializes the agent, goal, and obstacles</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">&gt;</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">INITIALIZING</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">INITIALIZING</span>
+        
+        <span class="c1"># initialize agent state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">initial_position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        
+        <span class="c1"># create obstacles</span>
+        <span class="n">n_obstacles</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">centers</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.0584</span><span class="p">,</span> <span class="mf">0.2333</span><span class="p">,</span> <span class="mf">0.2826</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.4013</span><span class="p">,</span> <span class="mf">0.1591</span><span class="p">,</span> <span class="mf">0.4021</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2391</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1884</span><span class="p">,</span> <span class="mf">0.2953</span><span class="p">)]</span>
+        <span class="n">side_lengths</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.3915</span><span class="p">,</span> <span class="mf">0.0572</span><span class="p">,</span> <span class="mf">0.1350</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.1760</span><span class="p">,</span> <span class="mf">0.3089</span><span class="p">,</span> <span class="mf">0.1013</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.1545</span><span class="p">,</span> <span class="mf">0.2983</span><span class="p">,</span> <span class="mf">0.0352</span><span class="p">)]</span>
+        
+        <span class="c1"># place obstacles</span>
+        <span class="k">for</span> <span class="n">obs_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_obstacles</span><span class="p">):</span>
+            <span class="n">prop_obs</span> <span class="o">=</span> <span class="n">BoxObstacle</span><span class="o">.</span><span class="n">make_box</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="n">obs_i</span><span class="p">],</span> <span class="n">side_lengths</span><span class="p">[</span><span class="n">obs_i</span><span class="p">])</span>
+            <span class="n">prop_col</span><span class="p">:</span> <span class="n">CollisionObject</span> <span class="o">=</span> <span class="n">prop_obs</span><span class="o">.</span><span class="n">collision</span><span class="o">.</span><span class="n">getCollisionObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            
+            <span class="c1"># make sure it doesn&#39;t collide</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="o">.</span><span class="n">checkCollisionObject</span><span class="p">(</span><span class="n">prop_col</span><span class="p">)[</span><span class="s2">&quot;collided&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_obs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">prop_obs</span><span class="p">,</span> <span class="n">collision</span><span class="o">=</span><span class="n">prop_col</span><span class="p">,</span> <span class="n">visual</span><span class="o">=</span><span class="n">prop_obs</span><span class="o">.</span><span class="n">visual</span><span class="p">)</span>
+        
+        <span class="c1"># add the goal</span>
+        <span class="n">goal_position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.19112372555967</span><span class="p">,</span><span class="mf">0.393795848789382</span><span class="p">,</span><span class="o">-</span><span class="mf">2.08886547149797</span><span class="p">,</span><span class="o">-</span><span class="mf">1.94078143810946</span><span class="p">,</span><span class="o">-</span><span class="mf">1.82357815033695</span><span class="p">,</span><span class="o">-</span><span class="mf">1.80997964933365</span><span class="p">,</span><span class="mf">2.12483409695310</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_system</span> <span class="o">=</span> <span class="n">ArmourGoal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="n">goal_position</span><span class="o">=</span><span class="n">goal_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">goal_system</span><span class="p">)</span>
+        
+        <span class="n">override_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">get_componentOverrideOptions</span><span class="p">({</span><span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">state</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">override_options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">READY</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.pre_step"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.pre_step">[docs]</a>    <span class="k">def</span> <span class="nf">pre_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">PRE_STEP</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.step"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span> <span class="o">=</span> <span class="n">SimulationState</span><span class="o">.</span><span class="n">STEP</span>
+        
+        <span class="c1"># update entries</span>
+        <span class="n">agent_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_timestep</span><span class="p">)</span>
+        
+        <span class="n">collided</span><span class="p">,</span> <span class="n">contactedPairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collision_system</span><span class="o">.</span><span class="n">updateCollision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_timestep</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">collided</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Collision Detected, Breakpoint!&quot;</span><span class="p">)</span>
+            <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press Enter to Unpause&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;agent_results&quot;</span><span class="p">:</span> <span class="n">agent_results</span><span class="p">,</span>
+            <span class="s2">&quot;collided&quot;</span><span class="p">:</span> <span class="n">collided</span><span class="p">,</span>
+            <span class="s2">&quot;contactPairs&quot;</span><span class="p">:</span> <span class="n">contactedPairs</span><span class="p">,</span>
+        <span class="p">}</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.post_step"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.post_step">[docs]</a>    <span class="k">def</span> <span class="nf">post_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_state</span>
+        <span class="n">goal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal_system</span><span class="o">.</span><span class="n">updateGoal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_timestep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_system</span><span class="o">.</span><span class="n">updateVisual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_timestep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;goal&quot;</span><span class="p">:</span> <span class="n">goal</span><span class="p">,</span>
+        <span class="p">}</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.summary"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="c1"># does nothing</span>
+        <span class="k">return</span></div>
+    
+    
+<div class="viewcode-block" id="ArmourSimulation.run"><a class="viewcode-back" href="../../simulation/simulations.html#armour.ArmourSimulation.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">1e8</span><span class="p">,</span> <span class="n">pre_step_callback</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">step_callback</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">post_step_callback</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stop_on_goal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs the lifecycle of the simulation</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_steps : int</span>
+<span class="sd">            maximum number of steps to run for</span>
+<span class="sd">        pre_step_callback : Callable</span>
+<span class="sd">            function to run before the pre_step</span>
+<span class="sd">        step_callback : Callable</span>
+<span class="sd">            function to run before the step</span>
+<span class="sd">        post_step_callback : Callable</span>
+<span class="sd">            function to run before the post_step</span>
+<span class="sd">        stop_on_goal : bool</span>
+<span class="sd">            whether to stop the simulation once it reaches the goal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># build the execution order</span>
+        <span class="n">execution_queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">ArmourSimulation</span><span class="o">.</span><span class="n">pre_step</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">pre_step_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">execution_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_step_callback</span><span class="p">)</span>
+        <span class="n">execution_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ArmourSimulation</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">step_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">execution_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_callback</span><span class="p">)</span>
+        <span class="n">execution_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ArmourSimulation</span><span class="o">.</span><span class="n">post_step</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">post_step_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">execution_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">post_step_callback</span><span class="p">)</span>
+        
+        <span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">while</span> <span class="n">steps</span><span class="o">&lt;</span><span class="n">max_steps</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fcn</span> <span class="ow">in</span> <span class="n">execution_queue</span><span class="p">:</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">fcn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="c1"># automate logging here</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;stop&quot;</span> <span class="ow">in</span> <span class="n">info</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">stop_on_goal</span> <span class="ow">and</span> <span class="s2">&quot;goal&quot;</span> <span class="ow">in</span> <span class="n">info</span> <span class="ow">and</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;goal&quot;</span><span class="p">]:</span>
+                    <span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Goal acheived!&quot;</span><span class="p">)</span>
+                <span class="c1"># TODO pause on request with keyboard</span>
+                
+            <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

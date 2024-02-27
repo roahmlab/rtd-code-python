@@ -1,6 +1,12 @@
 from setuptools import setup, find_packages
+from distutils.util import convert_path
 
-VERSION = '0.0.0.6' 
+main_ns = {}
+ver_path = convert_path('rtd/properties.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), main_ns)
+
+VERSION = main_ns['__version__']
 DESCRIPTION = ''
 LONG_DESCRIPTION = ''
 

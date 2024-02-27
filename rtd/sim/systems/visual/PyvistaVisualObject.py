@@ -1,6 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from abc import ABCMeta, abstractmethod
 from rtd.functional.sequences import toSequence
-from pyvista import Actor
+
+if TYPE_CHECKING:
+    from pyvista import Actor
 
 
 

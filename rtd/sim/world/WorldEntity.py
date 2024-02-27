@@ -85,7 +85,7 @@ class WorldEntity(Options):
         '''
         Takes in a dict of components classes or instances. It saves
         the component type under `options["components"]` and saves
-        their options, if provided, under `options["component_options"]
+        their options, if provided, under `options["component_options"]`
         
         .. code-block:: Python
         

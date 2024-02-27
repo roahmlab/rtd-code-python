@@ -1,6 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from rtd.functional.sequences import toSequence
-from trimesh import Trimesh
 from trimesh.collision import CollisionManager
+
+if TYPE_CHECKING:
+    from trimesh import Trimesh
 
 # type hinting
 CollisionPair = tuple[int, int]

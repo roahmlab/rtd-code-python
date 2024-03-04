@@ -1,0 +1,29 @@
+﻿armour.reachsets.FOInstance
+===========================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: FOInstance
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FOInstance.__init__
+      ~FOInstance.batch_obs_constraint
+      ~FOInstance.eval_constraints
+      ~FOInstance.genNLConstraint
+   
+   
+
+   
+   
+   

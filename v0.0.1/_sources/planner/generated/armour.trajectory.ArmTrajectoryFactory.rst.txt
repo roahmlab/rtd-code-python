@@ -1,0 +1,27 @@
+﻿armour.trajectory.ArmTrajectoryFactory
+======================================
+
+.. currentmodule:: armour.trajectory
+
+.. autoclass:: ArmTrajectoryFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ArmTrajectoryFactory.__init__
+      ~ArmTrajectoryFactory.createTrajectory
+   
+   
+
+   
+   
+   

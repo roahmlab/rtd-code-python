@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rtd.planner.trajectory.TrajectoryContainer &mdash; RTD-code Python v0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=f6245a2f"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RTD-code Python
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RTD-code Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rtd.planner.trajectory.TrajectoryContainer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rtd.planner.trajectory.TrajectoryContainer</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rtd.planner.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">rtd.entity.states</span> <span class="kn">import</span> <span class="n">EntityState</span>
+<span class="kn">from</span> <span class="nn">rtd.functional.sequences</span> <span class="kn">import</span> <span class="n">toSequence</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="BadTrajectoryException"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.BadTrajectoryException.html#rtd.planner.trajectory.BadTrajectoryException">[docs]</a><span class="k">class</span> <span class="nc">BadTrajectoryException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryContainer"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer">[docs]</a><span class="k">class</span> <span class="nc">TrajectoryContainer</span><span class="p">:</span>
+<div class="viewcode-block" id="TrajectoryContainer.__init__"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># vector of start times for each trajectory</span>
+        <span class="c1"># last element is always inf to ensure the last trajectory is always used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+        
+        <span class="c1"># list of trajectories corresponding to the start times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trajectory</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">Trajectory</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="TrajectoryContainer.setInitialTrajectory"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.setInitialTrajectory">[docs]</a>    <span class="k">def</span> <span class="nf">setInitialTrajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initialTrajectory</span><span class="p">:</span> <span class="n">Trajectory</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the initial trajectory for the container.</span>
+<span class="sd">        This method must be called before any other method is called.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        initialTrajectory : Trajectory</span>
+<span class="sd">            the initial trajectory to add</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">initialTrajectory</span><span class="o">.</span><span class="n">startTime</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadTrajectoryException</span><span class="p">(</span><span class="s2">&quot;Provided initial trajectory does not start at 0!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">initialTrajectory</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">BadTrajectoryException</span><span class="p">(</span><span class="s2">&quot;Provided initial trajectory is invalid!&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isValid</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">initialTrajectory</span><span class="o">.</span><span class="n">startTime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">initialTrajectory</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">Trajectory</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">initialTrajectory</span><span class="o">.</span><span class="n">startTime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">initialTrajectory</span></div>
+    
+    
+<div class="viewcode-block" id="TrajectoryContainer.clear"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Clears the container and resets it to the initial state</span>
+<span class="sd">        It&#39;s expected that there&#39;s already some initial trajectory set.</span>
+<span class="sd">        If not, a warning is thrown.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">Trajectory</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: clear() for TrajectoryContainer was called before valid initial trajectory was set!&quot;</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="TrajectoryContainer.isValid"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.isValid">[docs]</a>    <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errorIfInvalid</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Checks if the container is valid.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        errorIfInvalid : bool</span>
+<span class="sd">            whether to raise an error when the container is invalid</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        valid : bool</span>
+<span class="sd">            whether the container is valid or not</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span> <span class="ow">and</span> <span class="n">errorIfInvalid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadTrajectoryException</span><span class="p">(</span><span class="s2">&quot;Initial trajectory for the container has not been set!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">valid</span></div>
+
+    
+<div class="viewcode-block" id="TrajectoryContainer.setTrajectory"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.setTrajectory">[docs]</a>    <span class="k">def</span> <span class="nf">setTrajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">:</span> <span class="n">Trajectory</span><span class="p">,</span> <span class="n">errorIfInvalid</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets a new trajectory for the container to the end.</span>
+<span class="sd">        The new trajectory must start at a time greater than equal to</span>
+<span class="sd">        the end of the last trajectory.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        trajectory : Trajectory</span>
+<span class="sd">            the trajectory to add</span>
+<span class="sd">        errorIfInvalid : bool</span>
+<span class="sd">            whether to raise an error when the trajectory is invalid</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isValid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># add the trajectory if it is valid</span>
+        <span class="k">if</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span> <span class="ow">and</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">startTime</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">startTime</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">errorIfInvalid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadTrajectoryException</span><span class="p">(</span><span class="s2">&quot;Provided trajectory starts before the end of the last trajectory!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Invalid trajectory provided to TrajectoryContainer&quot;</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="TrajectoryContainer.getCommand"><a class="viewcode-back" href="../../../../planner/generated/rtd.planner.trajectory.TrajectoryContainer.html#rtd.planner.trajectory.TrajectoryContainer.getCommand">[docs]</a>    <span class="k">def</span> <span class="nf">getCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntityState</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generates a command based on the time.</span>
+<span class="sd">        The command is generated based on the trajectory that is active</span>
+<span class="sd">        at the time. If the time is before the start of the first trajectory,</span>
+<span class="sd">        then the command is generated based on the initial trajectory. If the</span>
+<span class="sd">        time is after the last trajectory, then the command is generated based</span>
+<span class="sd">        on the last trajectory. </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time : float | list[float]</span>
+<span class="sd">            the time(s) to generate the command for</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        commands : NDArray[EntityState]</span>
+<span class="sd">            the generated commands</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">toSequence</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isValid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># generate an output trajectory based on the provided time</span>
+        <span class="n">ncommands</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">commands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">ncommands</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">EntityState</span><span class="p">)</span>
+        <span class="n">commands</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCommand</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="o">.</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">time</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">time</span><span class="o">&lt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">_startTimes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">vectorized</span><span class="p">:</span>
+                <span class="n">commands</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getCommand</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">commands</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trajectories</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">getCommand</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="k">return</span> <span class="n">commands</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

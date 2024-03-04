@@ -1,0 +1,29 @@
+﻿armour.trajectory.ZeroHoldArmTrajectory
+=======================================
+
+.. currentmodule:: armour.trajectory
+
+.. autoclass:: ZeroHoldArmTrajectory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ZeroHoldArmTrajectory.__init__
+      ~ZeroHoldArmTrajectory.getCommand
+      ~ZeroHoldArmTrajectory.setParameters
+      ~ZeroHoldArmTrajectory.validate
+   
+   
+
+   
+   
+   

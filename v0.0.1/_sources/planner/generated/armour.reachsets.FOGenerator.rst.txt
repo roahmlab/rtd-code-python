@@ -1,0 +1,29 @@
+﻿armour.reachsets.FOGenerator
+============================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: FOGenerator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FOGenerator.__init__
+      ~FOGenerator.generateReachableSet
+      ~FOGenerator.generate_combinations_upto
+      ~FOGenerator.getReachableSet
+   
+   
+
+   
+   
+   

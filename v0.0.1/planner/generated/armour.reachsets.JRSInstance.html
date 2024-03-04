@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>armour.reachsets.JRSInstance &mdash; RTD-code Python v0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=f6245a2f"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="armour.reachsets.JLSInstance" href="armour.reachsets.JLSInstance.html" />
+    <link rel="prev" title="armour.reachsets.IRSGenerator" href="armour.reachsets.IRSGenerator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTD-code Python
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../planner.html">Planner Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../rtd.html">RTD Planner Interfaces and Base Classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../armour.html">Example RTD Planner Implementation of ARMOUR</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../armour.html#the-base-armour-planner">The Base ARMOUR Planner</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../armour.html#module-armour.reachsets">Reachable Set Generation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.JRSGenerator.html">armour.reachsets.JRSGenerator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.JLSGenerator.html">armour.reachsets.JLSGenerator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.FOGenerator.html">armour.reachsets.FOGenerator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.IRSGenerator.html">armour.reachsets.IRSGenerator</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">armour.reachsets.JRSInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.JLSInstance.html">armour.reachsets.JLSInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.FOInstance.html">armour.reachsets.FOInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="armour.reachsets.IRSInstance.html">armour.reachsets.IRSInstance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../armour.html#module-armour.trajectory">Trajectory Types and Factory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTD-code Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../planner.html">Planner Reference</a></li>
+          <li class="breadcrumb-item"><a href="../armour.html">Example RTD Planner Implementation of ARMOUR</a></li>
+      <li class="breadcrumb-item active">armour.reachsets.JRSInstance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/planner/generated/armour.reachsets.JRSInstance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="armour-reachsets-jrsinstance">
+<h1>armour.reachsets.JRSInstance<a class="headerlink" href="#armour-reachsets-jrsinstance" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="armour.reachsets.JRSInstance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">armour.reachsets.</span></span><span class="sig-name descname"><span class="pre">JRSInstance</span></span><a class="reference internal" href="../../_modules/armour/reachsets/JRSInstance.html#JRSInstance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.reachsets.JRSInstance" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rtd.planner.reachsets.ReachSetInstance.html#rtd.planner.reachsets.ReachSetInstance" title="rtd.planner.reachsets.ReachSetInstance.ReachSetInstance"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReachSetInstance</span></code></a></p>
+<p>This is just an individual instance of an original ARMTD JRS</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.reachsets.JRSInstance.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/armour/reachsets/JRSInstance.html#JRSInstance.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.reachsets.JRSInstance.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">genNLConstraint</span></code>(worldState)</p></td>
+<td><p>Handles the obstacle-frs pair or similar to generate the nlconstraint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize</span></code>(traj_type)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.reachsets.JRSInstance.genNLConstraint">
+<span class="sig-name descname"><span class="pre">genNLConstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worldState</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WorldState</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a></span></span><a class="reference internal" href="../../_modules/armour/reachsets/JRSInstance.html#JRSInstance.genNLConstraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.reachsets.JRSInstance.genNLConstraint" title="Permalink to this definition"></a></dt>
+<dd><p>Handles the obstacle-frs pair or similar to generate the
+nlconstraint.
+Returns a function handle for the nlconstraint generated
+where the function’s return type is [c, ceq, gc, gceq]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="armour.reachsets.JRSInstance.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/armour/reachsets/JRSInstance.html#JRSInstance.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#armour.reachsets.JRSInstance.initialize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="armour.reachsets.IRSGenerator.html" class="btn btn-neutral float-left" title="armour.reachsets.IRSGenerator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="armour.reachsets.JLSInstance.html" class="btn btn-neutral float-right" title="armour.reachsets.JLSInstance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

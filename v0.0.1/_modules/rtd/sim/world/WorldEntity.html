@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rtd.sim.world.WorldEntity &mdash; RTD-code Python v0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=f6245a2f"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RTD-code Python
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RTD-code Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rtd.sim.world.WorldEntity</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rtd.sim.world.WorldEntity</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rtd.util.mixins</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">mergedeep</span> <span class="kn">import</span> <span class="n">merge</span>
+
+
+
+<div class="viewcode-block" id="WorldEntity"><a class="viewcode-back" href="../../../../simulation/entities.html#rtd.sim.world.WorldEntity">[docs]</a><span class="k">class</span> <span class="nc">WorldEntity</span><span class="p">(</span><span class="n">Options</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A base class for entities. Allows for the management of components.</span>
+<span class="sd">    Abstract methods such as `defaultoptions` must still be implemented.</span>
+<span class="sd">    Requires `options` to be set up in a specific way to function (more</span>
+<span class="sd">    details in the function comments below)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="WorldEntity.construct_components"><a class="viewcode-back" href="../../../../simulation/entities.html#rtd.sim.world.WorldEntity.construct_components">[docs]</a>    <span class="k">def</span> <span class="nf">construct_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">component_args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes in a `component_name` and constructs that component as</span>
+<span class="sd">        `self.component_name` of type `options[&quot;components&quot;]`, using</span>
+<span class="sd">        `component_args` and `options[&quot;component_options&quot;]` defined</span>
+<span class="sd">        for that `component_name`</span>
+<span class="sd">        </span>
+<span class="sd">        **Example:**</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block:: Python</span>
+<span class="sd">        </span>
+<span class="sd">            options[&quot;components&quot;][&quot;state&quot;] = GenericEntityState</span>
+<span class="sd">            options[&quot;component_options][&quot;state&quot;] = {&quot;n_states&quot;: 5}</span>
+<span class="sd">            construct_components(&quot;state&quot;, BoxObstacleInfo())</span>
+<span class="sd">            # results in:</span>
+<span class="sd">            # self.state = GenericEntityState(BoxObstacleInfo(), n_states=5)</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component_name : str</span>
+<span class="sd">            name of component (e.g., &#39;info&#39;)</span>
+<span class="sd">        *component_args</span>
+<span class="sd">            additional arguments for constructing that component    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getoptions</span><span class="p">()</span>
+        
+        <span class="c1"># create component with provided args</span>
+        <span class="n">component</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">](</span><span class="o">*</span><span class="n">component_args</span><span class="p">)</span>
+        
+        <span class="c1"># if component option is defined for that component, use it</span>
+        <span class="k">if</span> <span class="s2">&quot;component_options&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="ow">and</span> <span class="n">component_name</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;component_options&quot;</span><span class="p">]:</span>
+            <span class="n">component</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">](</span>
+                <span class="o">*</span><span class="n">component_args</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;component_options&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">component</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">](</span><span class="o">*</span><span class="n">component_args</span><span class="p">)</span>
+        
+        <span class="c1"># save under self.component_name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="WorldEntity.reset_components"><a class="viewcode-back" href="../../../../simulation/entities.html#rtd.sim.world.WorldEntity.reset_components">[docs]</a>    <span class="k">def</span> <span class="nf">reset_components</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Resets every component</span>
+<span class="sd">        </span>
+<span class="sd">        **Example:**</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block:: Python</span>
+<span class="sd">        </span>
+<span class="sd">            options[&quot;components&quot;] = {&quot;info&quot;: BoxObstacleInfo, &quot;state&quot;: GenericEntityState}</span>
+<span class="sd">            options[&quot;component_options&quot;] = {&quot;state&quot;: {&quot;n_states&quot;: 5}}</span>
+<span class="sd">            reset_components()</span>
+<span class="sd">            # equivalent to calling:</span>
+<span class="sd">            # self.info.reset()</span>
+<span class="sd">            # self.state.reset(n_states=5)</span>
+<span class="sd">            </span>
+<span class="sd">             </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getoptions</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">component_name</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">]:</span>
+            <span class="c1"># if component option is defined for that component, reset using that</span>
+            <span class="k">if</span> <span class="s2">&quot;component_options&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="ow">and</span> <span class="n">component_name</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;component_options&quot;</span><span class="p">]:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">)</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;component_options&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">)</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="WorldEntity.get_componentOverrideOptions"><a class="viewcode-back" href="../../../../simulation/entities.html#rtd.sim.world.WorldEntity.get_componentOverrideOptions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_componentOverrideOptions</span><span class="p">(</span><span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes in a dict of components classes or instances. It saves</span>
+<span class="sd">        the component type under `options[&quot;components&quot;]` and saves</span>
+<span class="sd">        their options, if provided, under `options[&quot;component_options&quot;]`</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block:: Python</span>
+<span class="sd">        </span>
+<span class="sd">            # components can be either a class or an instance</span>
+<span class="sd">            components = {&quot;info&quot;: EmptyInfoState, &quot;state&quot;: GenericEntityState(n_states=5)}</span>
+<span class="sd">            get_componentOverrideOptions(components)</span>
+<span class="sd">            # results in:</span>
+<span class="sd">            # options[&quot;components&quot;] = {&quot;info&quot;: EmptyInfoState, &quot;state&quot;: GenericEntityState}</span>
+<span class="sd">            # options[&quot;component_options&quot;] = {&quot;state&quot;: {&quot;n_states&quot;: 5}}</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        components : dict</span>
+<span class="sd">            names and class/instance of the corresponding component</span>
+<span class="sd">            </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;components&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span> <span class="s2">&quot;component_options&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()}</span>
+        
+        <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># save component type under `options[&quot;components&quot;]`</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+            
+            <span class="c1"># if the component inherits Options, copy all of its</span>
+            <span class="c1"># options and store them under `options[&quot;component_options&quot;]`</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">component_options</span> <span class="o">:=</span> <span class="n">WorldEntity</span><span class="o">.</span><span class="n">get_componentOptions</span><span class="p">(</span><span class="n">component</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;component_options&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component_options</span>
+        
+        <span class="k">return</span> <span class="n">options</span></div>
+    
+    
+<div class="viewcode-block" id="WorldEntity.get_componentOptions"><a class="viewcode-back" href="../../../../simulation/entities.html#rtd.sim.world.WorldEntity.get_componentOptions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_componentOptions</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes in a component class or instance and returns either</span>
+<span class="sd">        the defaultoptions of that class or the actual options of</span>
+<span class="sd">        that instance if the component inherits from options.</span>
+<span class="sd">        Otherwise returns None</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component : Any</span>
+<span class="sd">            class or instance of component to pull options from</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        component_options : dict | None</span>
+<span class="sd">            options of that component</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># if the input is a component class that inherits Options</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">Options</span><span class="p">):</span> 
+                <span class="k">return</span> <span class="n">component</span><span class="o">.</span><span class="n">defaultoptions</span><span class="p">()</span>
+        
+        <span class="c1"># if the input is a component instance that inherits Options</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">Options</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">component</span><span class="o">.</span><span class="n">getoptions</span><span class="p">()</span>
+        
+        <span class="c1"># component does not inherit Options</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

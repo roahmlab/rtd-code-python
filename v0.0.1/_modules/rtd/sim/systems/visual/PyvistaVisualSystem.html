@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rtd.sim.systems.visual.PyvistaVisualSystem &mdash; RTD-code Python v0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=f6245a2f"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RTD-code Python
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RTD-code Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rtd.sim.systems.visual.PyvistaVisualSystem</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rtd.sim.systems.visual.PyvistaVisualSystem</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rtd.util.mixins</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">rtd.sim</span> <span class="kn">import</span> <span class="n">SimulationSystem</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.systems.visual</span> <span class="kn">import</span> <span class="n">PyvistaVisualObject</span>
+<span class="kn">from</span> <span class="nn">rtd.functional.sequences</span> <span class="kn">import</span> <span class="n">toSequence</span><span class="p">,</span> <span class="n">arrange</span>
+<span class="kn">from</span> <span class="nn">pyvista</span> <span class="kn">import</span> <span class="n">Plotter</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">rtd.util.mixins.Typings</span> <span class="kn">import</span> <span class="n">Bound</span>
+
+<span class="c1"># define top level module logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="PyvistaVisualSystem"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem">[docs]</a><span class="k">class</span> <span class="nc">PyvistaVisualSystem</span><span class="p">(</span><span class="n">SimulationSystem</span><span class="p">,</span> <span class="n">Options</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Takes in a list of static and dynamic objects and handles</span>
+<span class="sd">    their rendering</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="PyvistaVisualSystem.defaultoptions"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.defaultoptions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">defaultoptions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        options : dict</span>
+<span class="sd">            default options of visual system</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;time_discretization&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;draw_time&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s2">&quot;dimension&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="p">}</span></div>
+    
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">static_objects</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">dynamic_objects</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="c1"># initialize base classes</span>
+        <span class="n">SimulationSystem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Options</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># initialize using given options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergeoptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addObjects</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="n">static_objects</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="n">dynamic_objects</span><span class="p">)</span>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.reset"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergeoptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+        
+        <span class="c1"># animation options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_discretization</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;time_discretization&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_time</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;draw_time&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;dimension&quot;</span><span class="p">]</span>
+        
+        <span class="c1"># reset time and clear all stored objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_objects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># Create a new plotter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="p">:</span> <span class="n">Plotter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validateOrCreateFigure</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.validateOrCreateFigure"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.validateOrCreateFigure">[docs]</a>    <span class="k">def</span> <span class="nf">validateOrCreateFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        If plotter does not exists or is no longer valid,</span>
+<span class="sd">        create a new figure and save its reference to </span>
+<span class="sd">        `self._plotter`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">add_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">add_axes</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.addObjects"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.addObjects">[docs]</a>    <span class="k">def</span> <span class="nf">addObjects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                   <span class="n">static</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">dynamic</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">PyvistaVisualObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes in a visual object or a list of visual objects</span>
+<span class="sd">        and adds them to the corresponding list</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : PyvistaVisualObject | list[PyvistaVisualObject]</span>
+<span class="sd">            static object(s) to add</span>
+<span class="sd">        dynamic : PyvistaVisualObject | list[PyvistaVisualObject]</span>
+<span class="sd">            dynamic object(s) to add</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># handle single items</span>
+        <span class="k">if</span> <span class="n">static</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">static</span> <span class="o">=</span> <span class="n">toSequence</span><span class="p">(</span><span class="n">static</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">static_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">static</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">dynamic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dynamic</span> <span class="o">=</span> <span class="n">toSequence</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.remove"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objects</span><span class="p">:</span> <span class="n">PyvistaVisualObject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes in a visual object or a list of visual objects</span>
+<span class="sd">        and removes them from static and dynamic objects list</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *objects : PyvistaVisualObject</span>
+<span class="sd">            objects to remove from the system</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_objects</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.updateVisual"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.updateVisual">[docs]</a>    <span class="k">def</span> <span class="nf">updateVisual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_update</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Appends `t_update` to `time` and updates the dynamic</span>
+<span class="sd">        objects on the current figure for `t_update` time</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t_update : float</span>
+<span class="sd">            duration to update for</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_discretization</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">t_update</span>
+        <span class="n">t_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t_update</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">time_discretization</span><span class="p">)))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running Visualization!&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># render if plotter is open</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">iren</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_vec</span><span class="p">:</span>
+                <span class="c1"># update the dynamic objects on the plotter</span>
+                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_time</span><span class="p">)</span>
+            
+        <span class="c1"># append the updated time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+=</span> <span class="n">t_vec</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.redraw"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.redraw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">axlim</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Recreates the plotter if necessary and adds the actors</span>
+<span class="sd">        to the current plotter at the input time. Defaults to</span>
+<span class="sd">        the most recent `time`</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        time : float</span>
+<span class="sd">            time to redraw from</span>
+<span class="sd">        axlim : list</span>
+<span class="sd">            list of 4 numbers for the x lim and y lim</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># if the plotter is closed or invalid, recreate it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validateOrCreateFigure</span><span class="p">()</span>
+        
+        <span class="c1"># set view based on dimensions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dimension must be 2 or 3!&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># axes bounds</span>
+        <span class="k">if</span> <span class="n">axlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axlim</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span> <span class="c1"># auto fit z-axis</span>
+                <span class="n">axlim</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">axlim</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">reset_camera</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">axlim</span><span class="p">)</span>
+        
+        <span class="c1"># clear figure content</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">clear_actors</span><span class="p">()</span>
+        
+        <span class="c1"># add objects to the figure</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_objects</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span>
+            <span class="n">actors</span> <span class="o">=</span> <span class="n">toSequence</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">create_plot_data</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="n">actors</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">add_actor</span><span class="p">(</span><span class="n">actor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">interactive_update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.animate"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.animate">[docs]</a>    <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_span</span><span class="p">:</span> <span class="n">Bound</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">time_discretization</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">pause_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">axlim</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Animates from `time` = `t_span[0]` to `t_span[1]`,</span>
+<span class="sd">        dividing it into frames of length `time_discretization`</span>
+<span class="sd">        and waiting `pause_time` seconds before rendering the</span>
+<span class="sd">        next frame. A lower discretization will result in a</span>
+<span class="sd">        smoother animation, while a `pause_time` lower than</span>
+<span class="sd">        the discretization will result in a faster animation</span>
+<span class="sd">        speed. Defaults to 1 second per t</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t_span : Bound</span>
+<span class="sd">            range of time to animate</span>
+<span class="sd">        time_discretization : float</span>
+<span class="sd">            time difference between frames</span>
+<span class="sd">        pause_time : float</span>
+<span class="sd">            pause time in seconds between frames</span>
+<span class="sd">        axlim : list</span>
+<span class="sd">            list of 4 numbers for the x lim and y lim</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">t_span</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">t_span</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">time_discretization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time_discretization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_discretization</span>
+        <span class="k">if</span> <span class="n">pause_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pause_time</span> <span class="o">=</span> <span class="n">time_discretization</span>
+        
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">t_span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">t_span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">time_discretization</span>
+        <span class="n">t_vec</span> <span class="o">=</span> <span class="n">arrange</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">time_discretization</span><span class="p">)</span>
+        
+        <span class="c1"># redraw everything</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axlim</span><span class="p">)</span>
+        
+        <span class="c1"># animate the dynamic stuff for next `t_update`</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_vec</span><span class="p">:</span>
+            <span class="c1"># get current time</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+            <span class="c1"># update the dynamic objects on the figure</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            
+            <span class="c1"># get current time and subtract from previous time</span>
+            <span class="c1"># if delta_time &gt; self.draw_time, print lagging message</span>
+            <span class="n">draw_time</span> <span class="o">=</span> <span class="n">pause_time</span> <span class="o">-</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">draw_time</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning, animation lagging by </span><span class="si">{</span><span class="o">-</span><span class="n">draw_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">s!&quot;</span><span class="p">)</span>
+            
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">draw_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.waituntilclose"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.waituntilclose">[docs]</a>    <span class="k">def</span> <span class="nf">waituntilclose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Waits until plotter is closed before proceeding</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="PyvistaVisualSystem.get_discretization_and_pause"><a class="viewcode-back" href="../../../../../simulation/systems.html#rtd.sim.systems.visual.PyvistaVisualSystem.get_discretization_and_pause">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_discretization_and_pause</span><span class="p">(</span>
+        <span class="n">framerate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">speed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the time_discretization and pause_time to</span>
+<span class="sd">        get the desired framerate and speed. Speed of 2</span>
+<span class="sd">        means 1 second = 2 time</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        framerate : float</span>
+<span class="sd">            desired framerate</span>
+<span class="sd">        speed : float</span>
+<span class="sd">            desired animation speed ratio</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time_discretization : float</span>
+<span class="sd">            time difference between frames</span>
+<span class="sd">        pause_time : float</span>
+<span class="sd">            pause time in seconds between frames</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">pause_time</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">framerate</span>
+        <span class="n">time_discretization</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">/</span> <span class="n">framerate</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">time_discretization</span><span class="p">,</span> <span class="n">pause_time</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

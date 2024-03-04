@@ -1,0 +1,28 @@
+﻿armour.reachsets.JLSGenerator
+=============================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: JLSGenerator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~JLSGenerator.__init__
+      ~JLSGenerator.generateReachableSet
+      ~JLSGenerator.getReachableSet
+   
+   
+
+   
+   
+   

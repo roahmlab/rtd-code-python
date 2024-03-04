@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>armour.reachsets.FOInstance &mdash; RTD-code Python v0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/katex-math.css?v=91adb8b6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f6245a2f"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTD-code Python
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner/planner.html">Planner Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../simulation/simulation.html">Simulation Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/utils.html">RTD Code Utilities Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTD-code Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">armour.reachsets.FOInstance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for armour.reachsets.FOInstance</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">rtd.planner.reachsets</span> <span class="kn">import</span> <span class="n">ReachSetInstance</span>
+<span class="kn">from</span> <span class="nn">rtd.sim.world</span> <span class="kn">import</span> <span class="n">WorldState</span>
+<span class="kn">from</span> <span class="nn">armour.reachsets</span> <span class="kn">import</span> <span class="n">JRSInstance</span>
+<span class="kn">from</span> <span class="nn">zonopy</span> <span class="kn">import</span> <span class="n">batchZonotope</span><span class="p">,</span> <span class="n">batchPolyZonotope</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">nptyping</span> <span class="kn">import</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Float64</span>
+
+<span class="c1"># define top level module logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># type hinting</span>
+<span class="n">BoundsVec</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Shape</span><span class="p">[</span><span class="s1">&#39;N,2&#39;</span><span class="p">],</span> <span class="n">Float64</span><span class="p">]</span>
+
+
+
+<div class="viewcode-block" id="FOInstance"><a class="viewcode-back" href="../../../planner/generated/armour.reachsets.FOInstance.html#armour.reachsets.FOInstance">[docs]</a><span class="k">class</span> <span class="nc">FOInstance</span><span class="p">(</span><span class="n">ReachSetInstance</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    JLSInstance</span>
+<span class="sd">    This is just an individual instance of joint limit set set from</span>
+<span class="sd">    armour</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="FOInstance.__init__"><a class="viewcode-back" href="../../../planner/generated/armour.reachsets.FOInstance.html#armour.reachsets.FOInstance.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">FO</span><span class="p">,</span> <span class="n">jrsInstance</span><span class="p">:</span> <span class="n">JRSInstance</span><span class="p">,</span> <span class="n">obs_frs_combs</span><span class="p">):</span>
+        <span class="c1"># initialize base classes</span>
+        <span class="n">ReachSetInstance</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="c1"># properties carried over from the original implementation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">batchPolyZonotope</span><span class="p">]</span> <span class="o">=</span> <span class="n">FO</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jrsInstance</span> <span class="o">=</span> <span class="n">jrsInstance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_parameters</span> <span class="o">=</span> <span class="n">jrsInstance</span><span class="o">.</span><span class="n">n_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_range</span><span class="p">:</span> <span class="n">BoundsVec</span> <span class="o">=</span> <span class="n">jrsInstance</span><span class="o">.</span><span class="n">input_range</span>
+        <span class="c1"># initialize combinations (for obstacle avoidance constraints)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_frs_combs</span> <span class="o">=</span> <span class="n">obs_frs_combs</span></div>
+    
+    
+<div class="viewcode-block" id="FOInstance.genNLConstraint"><a class="viewcode-back" href="../../../planner/generated/armour.reachsets.FOInstance.html#armour.reachsets.FOInstance.genNLConstraint">[docs]</a>    <span class="k">def</span> <span class="nf">genNLConstraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worldState</span><span class="p">:</span> <span class="n">WorldState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles the obstacle-frs pair or similar to generate the</span>
+<span class="sd">        nlconstraint.</span>
+<span class="sd">        Returns a function handle for the nlconstraint generated</span>
+<span class="sd">        where the function&#39;s return type is [c, ceq, gc, gceq]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obs_constraints</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        
+        <span class="c1"># obstacle avoidance constraints</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jrsInstance</span><span class="o">.</span><span class="n">n_q</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">worldState</span><span class="o">.</span><span class="n">obstacles</span><span class="p">:</span>    <span class="c1"># for each obstacle</span>
+                
+                <span class="c1"># first, check if constraints in necessary</span>
+                <span class="n">O_buf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">obs</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">Grest</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">A_obs</span><span class="p">,</span> <span class="n">b_obs</span> <span class="o">=</span> <span class="n">batchZonotope</span><span class="p">(</span><span class="n">O_buf</span><span class="p">)</span><span class="o">.</span><span class="n">polytope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_frs_combs</span><span class="p">)</span>   <span class="c1"># get polytope form</span>
+                <span class="n">h_overapprox</span> <span class="o">=</span> <span class="p">(</span><span class="n">A_obs</span><span class="nd">@self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">b_obs</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">h_overapprox</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>     <span class="c1"># no collision</span>
+                    <span class="k">continue</span>
+                    
+                <span class="c1"># reduce FO so that polytope has fewer directions to consider</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reduce_indep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+                
+                <span class="c1"># now create constraints</span>
+                <span class="n">FO_buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">Grest</span>       <span class="c1"># will buffer by non-sliceable gens</span>
+                <span class="n">O_buf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">obs</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">FO_buf</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>       <span class="c1"># describes buffered obstacle zonotope</span>
+                <span class="n">A_obs</span><span class="p">,</span> <span class="n">b_obs</span> <span class="o">=</span> <span class="n">batchZonotope</span><span class="p">(</span><span class="n">O_buf</span><span class="p">)</span><span class="o">.</span><span class="n">polytope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_frs_combs</span><span class="p">)</span>    <span class="c1"># get polytope form</span>
+                
+                <span class="c1"># constraint pz</span>
+                <span class="n">FO_tmp</span> <span class="o">=</span> <span class="n">batchPolyZonotope</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">Z</span><span class="p">[</span><span class="o">...</span><span class="p">,:</span><span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">n_dep_gens</span><span class="o">+</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">n_dep_gens</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">n_dep_gens</span><span class="p">,</span> 
+                                           <span class="n">expMat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">expMat</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">FO</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">obs_constraint_pz</span> <span class="o">=</span> <span class="n">A_obs</span><span class="nd">@FO_tmp</span> <span class="o">-</span> <span class="n">b_obs</span>
+                
+                <span class="c1"># turn into function</span>
+                <span class="n">obs_constraint_pz_slice</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">obs_constraint_pz</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">center_slice_all_dep</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                
+                <span class="c1"># add gradients</span>
+                <span class="n">grad_obs_constraint_pz_slice</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">obs_constraint_pz</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">grad_center_slice_all_dep</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                
+                <span class="c1"># save</span>
+                <span class="n">obs_constraints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_obs_constraint</span><span class="p">(</span><span class="n">obs_constraint_pz_slice</span><span class="p">,</span> <span class="n">grad_obs_constraint_pz_slice</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        
+        <span class="c1"># create the constraint callback</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_constraints</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_constraints</span><span class="p">),</span> <span class="n">obs_constraints</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span></div>
+    
+
+<div class="viewcode-block" id="FOInstance.batch_obs_constraint"><a class="viewcode-back" href="../../../planner/generated/armour.reachsets.FOInstance.html#armour.reachsets.FOInstance.batch_obs_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">batch_obs_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_c</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Made a separate function to handle the obstacle constraints,</span>
+<span class="sd">        because the gradient requires knowing the index causing</span>
+<span class="sd">        the max of the constraints</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">h_obs</span><span class="p">,</span> <span class="n">max_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grad_eval</span> <span class="o">=</span> <span class="n">grad_c</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">grad_h_obs</span> <span class="o">=</span> <span class="n">grad_eval</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">grad_eval</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">max_idx</span><span class="p">,:]</span>
+        <span class="c1"># grad_h_obs = [-grad[-h_obs,:] for grad in grad_eval]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">h_obs</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">grad_h_obs</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span></div>
+        
+    
+<div class="viewcode-block" id="FOInstance.eval_constraints"><a class="viewcode-back" href="../../../planner/generated/armour.reachsets.FOInstance.html#armour.reachsets.FOInstance.eval_constraints">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">eval_constraints</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n_c</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">obs_constraints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_c</span><span class="o">*</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">grad_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_c</span><span class="o">*</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+        <span class="n">k_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_c</span><span class="p">):</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">batch_size</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">batch_size</span><span class="p">],</span> <span class="n">grad_h</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">batch_size</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">batch_size</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">obs_constraints</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">k_tensor</span><span class="p">)</span>
+        
+        <span class="n">grad_heq</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">heq</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">heq</span><span class="p">,</span> <span class="n">grad_h</span><span class="p">,</span> <span class="n">grad_heq</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ROAHM Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

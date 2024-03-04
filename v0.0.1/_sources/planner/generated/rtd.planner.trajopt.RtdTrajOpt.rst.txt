@@ -1,0 +1,27 @@
+﻿rtd.planner.trajopt.RtdTrajOpt
+==============================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: RtdTrajOpt
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RtdTrajOpt.__init__
+      ~RtdTrajOpt.solveTrajOpt
+   
+   
+
+   
+   
+   

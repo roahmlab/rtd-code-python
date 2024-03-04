@@ -1,0 +1,30 @@
+﻿armour.trajectory.BernsteinArmTrajectory
+========================================
+
+.. currentmodule:: armour.trajectory
+
+.. autoclass:: BernsteinArmTrajectory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BernsteinArmTrajectory.__init__
+      ~BernsteinArmTrajectory.getCommand
+      ~BernsteinArmTrajectory.internalUpdate
+      ~BernsteinArmTrajectory.setParameters
+      ~BernsteinArmTrajectory.validate
+   
+   
+
+   
+   
+   

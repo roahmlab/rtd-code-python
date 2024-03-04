@@ -1,0 +1,39 @@
+﻿rtd.planner.trajopt.TrajOptProps
+================================
+
+.. currentmodule:: rtd.planner.trajopt
+
+.. autoclass:: TrajOptProps
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TrajOptProps.__init__
+      ~TrajOptProps.count
+      ~TrajOptProps.index
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TrajOptProps.doTimeout
+      ~TrajOptProps.horizonTime
+      ~TrajOptProps.planTime
+      ~TrajOptProps.randomInit
+      ~TrajOptProps.timeForCost
+      ~TrajOptProps.timeoutTime
+   
+   

@@ -1,0 +1,30 @@
+﻿armour.trajectory.PiecewiseArmTrajectory
+========================================
+
+.. currentmodule:: armour.trajectory
+
+.. autoclass:: PiecewiseArmTrajectory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PiecewiseArmTrajectory.__init__
+      ~PiecewiseArmTrajectory.getCommand
+      ~PiecewiseArmTrajectory.internalUpdate
+      ~PiecewiseArmTrajectory.setParameters
+      ~PiecewiseArmTrajectory.validate
+   
+   
+
+   
+   
+   

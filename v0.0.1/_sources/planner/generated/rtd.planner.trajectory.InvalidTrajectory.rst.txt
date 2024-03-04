@@ -1,0 +1,6 @@
+﻿rtd.planner.trajectory.InvalidTrajectory
+========================================
+
+.. currentmodule:: rtd.planner.trajectory
+
+.. autoexception:: InvalidTrajectory

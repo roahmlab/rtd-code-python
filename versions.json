@@ -1,0 +1,13 @@
+[
+    {
+        "name": "devel",
+        "version": "dev",
+        "url": "https://roahmlab.github.io/rtd-code-python/dev/"
+    },
+    {
+        "name": "latest (v0.0.1)",
+        "version": "v0.0.1",
+        "url": "https://roahmlab.github.io/rtd-code-python/v0.0.1/",
+        "preferred": true
+    }
+]

@@ -1,0 +1,28 @@
+﻿armour.reachsets.IRSInstance
+============================
+
+.. currentmodule:: armour.reachsets
+
+.. autoclass:: IRSInstance
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :undoc-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~IRSInstance.__init__
+      ~IRSInstance.eval_constraints
+      ~IRSInstance.genNLConstraint
+   
+   
+
+   
+   
+   
